@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- Hessian配置 Begin -->
+    <!-- 公共接口 -->
+    <bean name="/CommonHessianService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="commonHessianService"/>
+        <property name="serviceInterface" value="com.xs.common.hessian.service.CommonHessianService"/>
+    </bean>
+    <bean id="commonHessianService" class="com.xs.common.hessian.service.impl.CommonHessianServiceImpl"/>
+    <!-- 人事架构接口 -->
+    <bean name="/HrHessianService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="hrService"/>
+        <property name="serviceInterface" value="com.xs.common.hessian.service.HrService"/>
+    </bean>
+    <bean id="hrService" class="com.xs.common.hessian.service.impl.HrServiceImpl"/>
+    <!-- 数据库接口 -->
+    <bean name="/DbHessianService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="databaseService"/>
+        <property name="serviceInterface" value="com.xs.common.hessian.service.DatabaseService"/>
+    </bean>
+    <bean id="databaseService" class="com.xs.common.hessian.service.impl.DatabaseServiceImpl" />
+    <!-- 统计接口 -->
+    <bean name="/StatisticHessianService" class="org.springframework.remoting.caucho.HessianServiceExporter">
+        <property name="service" ref="statisticService"/>
+        <property name="serviceInterface" value="com.xs.common.hessian.service.StatisticService"/>
+    </bean>
+    <bean id="statisticService" class="com.xs.common.hessian.service.impl.StatisticServiceImpl"/>
+    <!-- Hessian配置 End -->
+
+</beans>

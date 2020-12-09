@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xs.module.org.dao.OrgDao">
+
+    <resultMap id="orgMap" type="com.xs.module.org.model.dto.OrgDTO">
+        <!--<association property="deptDto" javaType="com.xs.test.model.dto.DeptDTO" resultMap="deptMap"/>-->
+        <!--<association property="postDto" javaType="com.xs.test.model.dto.PostDTO" resultMap="postMap"/>-->
+        <!--<association property="userDto" javaType="com.xs.test.model.dto.UserDTO" resultMap="com.xs.test.dao.UserDao.userMap"/>-->
+        <collection property="deptList" javaType="java.util.ArrayList" ofType="com.xs.module.org.model.dto.DeptDTO"/>
+        <collection property="postList" javaType="java.util.ArrayList" ofType="com.xs.module.org.model.dto.PostDTO"/>
+        <!-- column设定的参数对应select指定方法的入参 -->
+        <collection property="userList" javaType="java.util.ArrayList"
+                    ofType="com.xs.module.org.model.dto.UserDTO"
+                    column="{gender=gender}"
+                    select="com.xs.module.org.dao.UserDao.listUser"/>
+    </resultMap>
+
+    <resultMap id="deptMap" type="com.xs.module.org.model.dto.DeptDTO">
+        <result property="deptId" column="dept_id"/>
+        <result property="deptName" column="dept_name"/>
+    </resultMap>
+
+    <resultMap id="postMap" type="com.xs.module.org.model.dto.PostDTO">
+        <result property="postId" column="post_id"/>
+        <result property="postName" column="post_name"/>
+    </resultMap>
+
+    <select id="getOrg" parameterType="com.xs.module.org.model.form.OrgForm" resultMap="orgMap">
+        <include refid="com.xs.module.org.dao.UserDao.listCommon"/>
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="userPo.userId != null and userPo.userId != ''">
+                AND pu.user_id = #{userPo.userId}
+            </if>
+            <if test="userPo.userName != null and userPo.userName != ''">
+                OR pu.user_name like CONCAT(#{userPo.userName}, "%")
+            </if>
+        </trim>
+        limit 1
+    </select>
+
+    <select id="listOrg" parameterType="com.xs.module.org.model.form.OrgForm" resultMap="orgMap">
+        <include refid="com.xs.module.org.dao.UserDao.listCommon"/>
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="userPo.userId != null and userPo.userId != ''">
+                AND pu.user_id = #{userPo.userId}
+            </if>
+            <if test="userPo.userName != null and userPo.userName != ''">
+                OR pu.user_name like CONCAT(#{userPo.userName}, "%")
+            </if>
+        </trim>
+    </select>
+
+</mapper>

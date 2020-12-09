@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xs.common.dao.BaseDao">
+
+    <insert id="insert" parameterType="java.util.Map">
+        insert into ${_tableName} (${_columns})
+        values ${_values}
+    </insert>
+
+    <select id="queryColumns" resultType="java.lang.String">
+        SELECT COLUMN_NAME
+        FROM information_schema.`COLUMNS`
+        WHERE table_name = ${tableName}
+    </select>
+
+    <select id="query" resultType="java.util.HashMap">
+        select * from ${_tableName} where 1 = 1
+        <if test="_condition != null and _condition != ''">
+            ${_condition}
+        </if>
+        <if test="_sortBy != null">
+            ORDER BY #{_sortBy}
+        </if>
+        <if test="_direction != null">
+            #{_direction}
+        </if>
+        <if test="_start != null and _rows != null">
+            limit #{_start}, #{_rows}
+        </if>
+    </select>
+
+    <select id="createSqlQuery" parameterType="java.lang.String" resultType="java.util.HashMap">
+        SELECT x.*
+        FROM ( ${str} ) x
+    </select>
+
+</mapper>
