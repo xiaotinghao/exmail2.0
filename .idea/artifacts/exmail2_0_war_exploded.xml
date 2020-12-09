@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="exmail2.0:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/exmail2.0_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="exmail2.0/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="exmail2.0" />
+        </element>
+        <element id="directory" name="lib" />
+      </element>
+    </root>
+  </artifact>
+</component>
