@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xs.module.exmail.department.dao.DeptDao">
+
+    <resultMap id="deptMap" type="com.xs.module.exmail.department.model.dto.DeptDTO">
+        <result property="deptId" column="dept_id"/>
+        <result property="deptName" column="dept_name"/>
+        <association property="leaderPost" column="{postId = leader_post_id}"
+                     select="com.xs.module.exmail.department.dao.PostDao.getPost"/>
+        <association property="leaderUser" column="{userId = leader_user_id}"
+                     select="com.xs.module.exmail.department.dao.UserDao.getUser"/>
+        <!-- column设定的参数对应select指定方法的入参 -->
+        <collection property="deptPostList" javaType="java.util.ArrayList"
+                    ofType="com.xs.module.exmail.department.model.dto.PostDTO"
+                    column="{ postIds = post_ids }"
+                    select="com.xs.module.exmail.department.dao.PostDao.listPost"/>
+        <collection property="deptUserList" javaType="java.util.ArrayList"
+                    ofType="com.xs.module.exmail.department.model.dto.UserDTO"
+                    column="{ deptId = dept_id, postIds = post_ids }"
+                    select="com.xs.module.exmail.department.dao.UserDao.listUser"/>
+    </resultMap>
+
+    <select id="getDept" parameterType="com.xs.module.exmail.department.model.form.DeptForm" resultMap="deptMap">
+        <include refid="listCommon" />
+        <include refid="conditionCommon" />
+        limit 1
+    </select>
+
+    <select id="listDept" parameterType="com.xs.module.exmail.department.model.form.DeptForm" resultMap="deptMap">
+        <include refid="listCommon" />
+        <include refid="conditionCommon" />
+    </select>
+
+    <sql id="listCommon">
+        SELECT
+            pd.dept_id,
+            pd.dept_name,
+            pd.leader_post_id,
+            pu.user_id leader_user_id,
+            rdp.post_ids
+        FROM
+            p_dept pd
+            LEFT JOIN p_post pp ON pd.leader_post_id = pp.post_id
+            LEFT JOIN r_post_user rpu ON rpu.post_id = pp.post_id
+            LEFT JOIN p_user pu ON pu.user_id = rpu.user_id
+            LEFT JOIN ( SELECT GROUP_CONCAT( post_id ) post_ids, dept_id FROM r_dept_post GROUP BY dept_id ) rdp
+              ON rdp.dept_id = pd.dept_id
+    </sql>
+
+    <sql id="conditionCommon">
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="deptId != null and deptId != ''">
+                AND pd.dept_id = #{deptId}
+            </if>
+            <if test="deptName != null and deptName != ''">
+                AND pd.dept_name LIKE CONCAT(#{deptName}, '%')
+            </if>
+            <if test="leaderPostId != null and leaderPostId != ''">
+                AND pd.leader_post_id = #{leaderPostId}
+            </if>
+        </trim>
+    </sql>
+
+</mapper>

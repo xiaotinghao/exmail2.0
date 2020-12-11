@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xs.module.exmail.department.dao.PostDao">
+
+    <resultMap id="postMap" type="com.xs.module.exmail.department.model.dto.PostDTO">
+        <result property="postId" column="post_id"/>
+        <result property="postName" column="post_name"/>
+        <association property="postDept" column="{deptId = post_dept_id}"
+                    select="com.xs.module.exmail.department.dao.DeptDao.getDept"/>
+        <association property="postUser" column="{userId = post_user_id}"
+                     select="com.xs.module.exmail.department.dao.UserDao.getUser"/>
+        <!-- column设定的参数对应select指定方法的入参 -->
+        <collection property="mgtDeptList" javaType="java.util.ArrayList"
+                    ofType="com.xs.module.exmail.department.model.dto.DeptDTO"
+                    column="{leaderPostId = post_id}"
+                    select="com.xs.module.exmail.department.dao.DeptDao.listDept"/>
+    </resultMap>
+
+    <select id="getPost" parameterType="com.xs.module.exmail.department.model.form.PostForm" resultMap="postMap">
+        <include refid="listCommon" />
+        <include refid="conditionCommon" />
+        limit 1
+    </select>
+
+    <select id="listPost" parameterType="com.xs.module.exmail.department.model.form.PostForm" resultMap="postMap">
+        <include refid="listCommon" />
+        <include refid="conditionCommon" />
+    </select>
+
+    <sql id="listCommon">
+        SELECT
+            pp.post_id,
+            pp.post_name,
+            pd.dept_id post_dept_id,
+            pd.dept_name post_dept_name,
+            pu.user_id post_user_id,
+            pu.user_name post_user_name
+        FROM
+            p_post pp
+            LEFT JOIN r_dept_post rdp ON pp.post_id = rdp.post_id
+            LEFT JOIN p_dept pd ON rdp.dept_id = pd.dept_id
+            LEFT JOIN r_post_user rpu ON pp.post_id = rpu.post_id
+            LEFT JOIN p_user pu ON rpu.user_id = pu.user_id
+    </sql>
+
+    <sql id="conditionCommon">
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="postId != null and postId != ''">
+                AND pp.post_id = #{postId}
+            </if>
+            <if test="postName != null and postName != ''">
+                AND pp.post_name LIKE CONCAT(#{postName}, '%')
+            </if>
+            <if test="postIds != null and postIds != ''">
+                AND rdp.post_id IN
+                <foreach collection="postIds.split(',', -1)" item="item" index="index"
+                         open="(" close=")" separator=",">
+                    #{item}
+                </foreach>
+            </if>
+        </trim>
+    </sql>
+
+</mapper>

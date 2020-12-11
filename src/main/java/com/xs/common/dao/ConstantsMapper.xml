@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xs.common.dao.ConstantsDao">
+
+    <select id="getBaseConstants" resultType="java.lang.String">
+        SELECT
+          constants_value
+        FROM
+          t_constants_base
+        WHERE
+          constants_key = #{key}
+          AND `status` = 1
+        LIMIT 1
+    </select>
+
+    <select id="getModuleConstants" resultType="java.lang.String">
+        SELECT
+          constants_value
+        FROM
+          t_constants_${module}
+        WHERE
+          constants_key = #{key}
+          AND `status` = 1
+        LIMIT 1
+    </select>
+
+    <select id="listBaseConstants" resultType="java.lang.String">
+        SELECT
+          constants_value
+        FROM
+          t_constants_base
+        WHERE
+          constants_key = #{key}
+          AND `status` = 1
+    </select>
+
+    <select id="listModuleConstants" resultType="java.lang.String">
+        SELECT
+          constants_value
+        FROM
+          t_constants_${module}
+        WHERE
+          constants_key = #{key}
+          AND `status` = 1
+    </select>
+
+    <select id="getCodeMsg" resultType="com.xs.common.entity.CodeMsg">
+        SELECT
+          code,
+          msg
+        FROM
+          t_reslut_code_msg
+        WHERE
+          key = #{key}
+          AND `status` = 1
+          LIMIT 1
+    </select>
+
+</mapper>

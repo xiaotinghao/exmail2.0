@@ -11,9 +11,11 @@
 		http://www.springframework.org/schema/task
 		http://www.springframework.org/schema/task/spring-task-4.0.xsd">
 
-    <!-- 扫描包service及dao，使注解生效 -->
-    <context:component-scan base-package="**.com.**.service"/>
-    <context:component-scan base-package="**.com.**.dao"/>
+    <!-- 扫描包，使注解生效 -->
+    <context:component-scan base-package="com.**.module.**.api"/>
+    <context:component-scan base-package="com.**.module.**.controller"/>
+    <context:component-scan base-package="com.**.module.**.service"/>
+    <context:component-scan base-package="com.**.module.**.dao"/>
 
     <!-- 加载配置文件 -->
     <bean id="propertyConfigurer" class="com.xs.common.utils.ConfigProperties">

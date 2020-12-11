@@ -1,7 +1,6 @@
 package com.xs.common.utils;
 
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * 工具类
@@ -40,7 +39,7 @@ public class XsUtils {
             } else if (object instanceof Character) {
                 return object + "";
             } else if (object instanceof Date) {
-                return "'" + DateUtil.formatDateToString((Date) object, DateUtil.DEFAULT_FORMAT) + "'";
+                return "'" + DateUtils.formatDateToString((Date) object, DateUtils.DEFAULT_FORMAT) + "'";
             } else if (object instanceof String) {
                 return "'" + object + "'";
             } else {
@@ -49,12 +48,6 @@ public class XsUtils {
         } else {
             return "''";
         }
-    }
-
-    public static void main(String[] args) {
-        QueueUtils.list.addLast("123");
-        QueueUtils.list.addLast("234");
-        QueueUtils.list.addLast("345");
     }
 
 }

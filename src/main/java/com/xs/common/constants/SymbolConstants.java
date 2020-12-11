@@ -62,4 +62,9 @@ public class SymbolConstants {
      */
     public static final String BRACES_R = "}";
 
+    /**
+     * 独特的分隔符 -._
+     */
+    public static final String SEPARATOR = HYPHEN + DOT + UNDERLINE;
+
 }

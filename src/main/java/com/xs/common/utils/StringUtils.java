@@ -68,11 +68,28 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return null;
     }
 
-    public static void main(String[] args) {
-        System.out.println(underlineToHump("flow_todo_statistic"));
-        System.out.println(humpToUnderline("billReviewChange"));
-        System.out.println(humpUnderlineExchange("flow_todo_statistic"));
-        System.out.println(humpUnderlineExchange("billReviewChange"));
+    /**
+     * 拆分字符串
+     */
+    public static String[] splitString(String string, int len) {
+        int x = string.length() / len;
+        int y = string.length() % len;
+        int z = 0;
+        if (y != 0) {
+            z = 1;
+        }
+        String[] strings = new String[x + z];
+        String str;
+        for (int i = 0; i < x + z; i++) {
+            if (i == x + z - 1 && y != 0) {
+                str = string.substring(i * len, i * len + y);
+            } else {
+                str = string.substring(i * len, i * len + len);
+            }
+            strings[i] = str;
+        }
+        return strings;
     }
+
 
 }

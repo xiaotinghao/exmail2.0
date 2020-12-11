@@ -7,8 +7,11 @@ package com.xs.common.entity;
  */
 public class Result {
 
+    /** 常量key */
     private String code;
+    /** 常量key */
     private String msg;
+    /** 常量key */
     private String data;
 
     public String getCode() {

@@ -29,9 +29,12 @@
         </if>
     </select>
 
-    <select id="createSqlQuery" parameterType="java.lang.String" resultType="java.util.HashMap">
-        SELECT x.*
-        FROM ( ${str} ) x
+    <select id="encode" resultType="java.lang.String">
+        SELECT HEX(encode(${str}, ${pwd}));
+    </select>
+
+    <select id="decode" resultType="java.lang.String">
+        SELECT decode(UNHEX(${str}), ${pwd});
     </select>
 
 </mapper>

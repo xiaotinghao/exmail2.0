@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xs.module.register.dao.CorpRegisterDao">
+
+    <select id="valid">
+        SELECT
+          id IS NOT NULL
+        FROM
+          t_corp_register
+        WHERE
+          `status` = 1
+          AND corp_id = #{corpId}
+          AND corp_secret = #{corpSecret}
+          AND invalid_date > CURDATE()
+    </select>
+
+</mapper>

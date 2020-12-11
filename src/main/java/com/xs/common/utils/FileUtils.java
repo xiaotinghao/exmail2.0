@@ -6,7 +6,7 @@ import java.util.List;
 
 import static com.xs.common.constants.CodeConstants.UTF8;
 import static com.xs.common.constants.SymbolConstants.*;
-import static com.xs.common.utils.DateUtil.DATE_SDF;
+import static com.xs.common.utils.DateUtils.DATE_SDF;
 
 /**
  * 文件工具类
@@ -51,6 +51,27 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
             }
         }
         return fileContent.toString();
+    }
+
+    /**
+     * 获取文件内容
+     *
+     * @param filePath 文件路径
+     * @return 文件内容
+     */
+    public static String loadFileContent(String filePath) {
+        StringBuilder sb = new StringBuilder();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(filePath));
+            String readLine;
+            while ((readLine = br.readLine()) != null) {
+                sb.append(readLine);
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sb.toString();
     }
 
     /**
@@ -198,6 +219,26 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    /**
+     * 向文件中写入文本（全覆盖）
+     *
+     * @param fileName 文件路径（包含名称）
+     * @param text     文本内容
+     */
+    public static void writeText(String fileName, String text) {
+        try {
+            // 将文本对写入到文件
+            FileWriter fw = new FileWriter(fileName);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(text);
+            bw.flush();
+            bw.close();
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
