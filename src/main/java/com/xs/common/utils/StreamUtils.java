@@ -5,7 +5,7 @@ import java.io.*;
 /**
  * 输入输出流工具类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class StreamUtils extends org.apache.commons.io.FileUtils {
 

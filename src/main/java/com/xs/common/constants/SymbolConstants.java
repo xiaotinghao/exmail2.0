@@ -3,9 +3,14 @@ package com.xs.common.constants;
 /**
  * 常用符号常量类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class SymbolConstants {
+
+    /**
+     * 星号
+     */
+    public static final String ASTERISK = "*";
 
     /**
      * 中横线
@@ -31,6 +36,11 @@ public class SymbolConstants {
      * 小数点
      */
     public static final String DOT = ".";
+
+    /**
+     * 英文逗号
+     */
+    public static final String COMMA = ",";
 
     /**
      * 圆括号

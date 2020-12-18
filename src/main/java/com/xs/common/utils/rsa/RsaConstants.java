@@ -3,7 +3,7 @@ package com.xs.common.utils.rsa;
 /**
  * Exmail模块常量类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 class RsaConstants {
 

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * 组织架构外部接口
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public interface OrgOuterService {
 

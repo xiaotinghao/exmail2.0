@@ -3,7 +3,7 @@ package com.xs.common.constants;
 /**
  * 数据库操作分类枚举类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public enum DbOptTypeEnum {
     /**

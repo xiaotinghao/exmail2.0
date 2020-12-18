@@ -5,7 +5,7 @@ import com.xs.common.entity.QueryEntity;
 /**
  * 用户实体
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class UserPO extends QueryEntity {
     /**

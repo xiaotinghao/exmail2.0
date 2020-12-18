@@ -1,19 +1,17 @@
 package com.xs.common.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Map工具类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class XsMapUtils {
 
@@ -24,7 +22,7 @@ public class XsMapUtils {
      * @return 转换结果
      */
     public static <T> Map<String, Object> convert2Map(T t) {
-        Map<String, Object> result = new HashMap<>(16);
+        Map<String, Object> result = MapUtils.init();
         Method[] methods = t.getClass().getMethods();
         try {
             for (Method m : methods) {
@@ -63,7 +61,7 @@ public class XsMapUtils {
      * @return 转换结果
      */
     public static <T> List<Map<String, Object>> convert2MapList(List<T> list) {
-        List<Map<String, Object>> resultList = new ArrayList<>(16);
+        List<Map<String, Object>> resultList = new ArrayList<>();
         for (T t : list) {
             Map<String, Object> result = convert2Map(t);
             resultList.add(result);

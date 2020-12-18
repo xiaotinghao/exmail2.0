@@ -1,11 +1,15 @@
 package com.xs.common.utils;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
+
 /**
  * 数组工具类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
-public class ArrayUtils {
+public class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
 
     /**
      * 拆分数组
@@ -29,6 +33,10 @@ public class ArrayUtils {
             arrays[i] = arr;
         }
         return arrays;
+    }
+
+    public String[] toArray (Collection<Object> o) {
+        return o.toArray(new String[o.size()]);
     }
 
 }

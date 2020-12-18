@@ -2,10 +2,57 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	   	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 		http://www.springframework.org/schema/mvc
-		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+		http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 扫描包，使注解生效 -->
+    <context:component-scan base-package="com.xs.common.annotation"/>
+    <context:component-scan base-package="com.xs.common.aop"/>
+    <context:component-scan base-package="com.xs.common.interceptor"/>
+    <context:component-scan base-package="com.xs.**.api"/>
+    <context:component-scan base-package="com.xs.**.cgi"/>
+    <context:component-scan base-package="com.xs.**.controller"/>
+    <context:component-scan base-package="com.xs.**.service"/>
+    <context:component-scan base-package="com.xs.**.dao"/>
+
+    <!-- 拦截器配置 -->
+    <mvc:interceptors>
+        <!--  -->
+        <!--<bean class="com.xs.common.interceptor.AuthInterceptor" />-->
+        <!--<mvc:interceptor>-->
+            <!--<mvc:mapping path="/api-bin/**"/>-->
+            <!--<bean class="com.xs.common.interceptor.ApiCheckInterceptor" />-->
+        <!--</mvc:interceptor>-->
+        <!--<mvc:interceptor>-->
+            <!--<mvc:mapping path="/cgi-bin/**"/>-->
+            <!--<bean class="com.xs.common.interceptor.CgiCheckInterceptor" />-->
+        <!--</mvc:interceptor>-->
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/login/**"/>
+            <bean class="com.xs.common.interceptor.LoggerInterceptor" />
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/register/**"/>
+            <bean class="com.xs.common.interceptor.LoginInterceptor" />
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/getToken/**"/>
+            <bean class="com.xs.common.interceptor.AuthInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <mvc:default-servlet-handler/>
 
     <mvc:annotation-driven>
         <mvc:message-converters>
@@ -39,5 +86,8 @@
             </props>
         </property>
     </bean>
+
+    <!-- 开启aop注解方式，此步骤不能少，这样java类中的aop注解才会生效 -->
+    <aop:aspectj-autoproxy />
 
 </beans>

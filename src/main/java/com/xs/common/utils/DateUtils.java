@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * 时间工具类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 

@@ -6,16 +6,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/applicationContext.xml"})
+@ContextConfiguration(locations = {"/applicationContext.xml", "/springMvc-servlet.xml"})
 public class ConstantsDaoTest {
 
     @Autowired
     ConstantsDao constantsDao;
+
+    @Test
+    public void listConstants() throws Exception {
+        List<String> list = new ArrayList<>();
+        list.add("t_constants_base,t_constants_token");
+        list.add("t_constants_token");
+        String tables = constantsDao.constantsTables();
+        List<Map<String, Object>> maps = constantsDao.listConstants(tables);
+        System.out.println(maps);
+    }
 
     @Test
     public void getBaseConstants() throws Exception {

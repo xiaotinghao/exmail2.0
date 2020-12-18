@@ -1,6 +1,7 @@
 package com.xs.common.service.impl;
 
 import com.xs.common.service.BaseService;
+import com.xs.common.utils.MapUtils;
 import com.xs.common.utils.XsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,14 +16,13 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * 基础业务接口实现
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 @Service
 public class BaseServiceImpl implements BaseService {
@@ -80,7 +80,7 @@ public class BaseServiceImpl implements BaseService {
 
     @Override
     public Map<String, Object> requestParamToMap(HttpServletRequest request) {
-        Map<String, Object> param = new HashMap<>(16);
+        Map<String, Object> param = MapUtils.init();
         Enumeration<String> e = request.getParameterNames();
         String name;
         String[] str;

@@ -5,12 +5,10 @@ import com.xs.module.register.service.CorpRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.xs.common.constants.NumberConstants.ZERO;
-
 /**
  * 企业注册接口服务接口实现
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 @Service
 public class CorpRegisterServiceImpl implements CorpRegisterService {
@@ -20,8 +18,7 @@ public class CorpRegisterServiceImpl implements CorpRegisterService {
 
     @Override
     public boolean valid(String corpId, String corpSecret) {
-        int result = corpRegisterDao.valid(corpId, corpSecret);
-        return result != ZERO;
+        return corpRegisterDao.valid(corpId, corpSecret) != 0;
     }
 
 }

@@ -20,13 +20,12 @@ import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpATTRS;
 import com.jcraft.jsch.SftpException;
 
-import static com.xs.common.constants.CodeConstants.UTF8;
 import static com.xs.common.constants.SymbolConstants.SLASH;
 
 /**
  * 文件传输工具类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 
 public class SftpUtils {
@@ -133,7 +132,7 @@ public class SftpUtils {
         }
         try {
             sftp.cd(directory);
-            sftp.put(new ByteArrayInputStream(content.getBytes(UTF8)), fileName);
+            sftp.put(new ByteArrayInputStream(content.getBytes("UTF-8")), fileName);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

@@ -1,22 +1,20 @@
 package com.xs.common.utils.xml;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import com.xs.common.utils.FileUtils;
+import com.xs.common.utils.MapUtils;
 import com.xs.common.utils.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
-import static com.xs.common.constants.NumberConstants.SIXTEEN;
-
 /**
  * XML解析类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 @SuppressWarnings("unused")
 public class XmlParser {
@@ -40,7 +38,7 @@ public class XmlParser {
      * @return xml文件解析结果
      */
     public static Map<String, String> parse(String originFilePath, String backupPath) {
-        Map<String, String> resultMap = new HashMap<>(SIXTEEN);
+        Map<String, String> resultMap = MapUtils.init();
         // 解析前先备份文件
         if (!FileUtils.backup(originFilePath, backupPath)) {
             return resultMap;

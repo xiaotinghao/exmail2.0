@@ -1,6 +1,7 @@
-package com.xs.module.exmail.api;
+package com.xs.module.exmail.cgi;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xs.common.annotation.InterfaceLog;
 import com.xs.module.exmail.token.service.TokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * Token接口
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 @RestController
-public class TokenApi {
+public class TokenCgi {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -25,8 +26,6 @@ public class TokenApi {
 
     /**
      * 通过CorpID和CorpSecret换取ACCESS_TOKEN
-     * 每企业调用单个cgi/api不可超过500次/分，15000次/小时
-     * 企业每ip调用接口不可超过10000次/分，300000次/小时
      *
      * @param corpId     企业id
      * @param corpSecret 应用的凭证密钥
@@ -35,6 +34,7 @@ public class TokenApi {
      * expires_in 凭证的有效时间（秒）
      */
     @GetMapping(value = "/cgi-bin/gettoken", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @InterfaceLog
     public String getToken(@RequestParam String corpId, @RequestParam String corpSecret) {
         logger.info("接收参数：corpid:{},corpsecret:{}", corpId, corpSecret);
         JSONObject result = tokenService.getToken(corpId, corpSecret);

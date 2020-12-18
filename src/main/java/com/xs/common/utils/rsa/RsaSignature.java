@@ -16,7 +16,7 @@ import static com.xs.common.utils.rsa.RsaConstants.*;
 /**
  * RSA签名验签类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class RsaSignature {
 

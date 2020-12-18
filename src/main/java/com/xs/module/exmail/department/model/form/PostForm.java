@@ -5,7 +5,7 @@ import com.xs.module.exmail.department.model.po.PostPO;
 /**
  * 岗位查询对象
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class PostForm extends PostPO {
 

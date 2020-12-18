@@ -9,7 +9,7 @@ import java.util.Properties;
 /**
  * 配置工具类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class ConfigProperties extends PropertyPlaceholderConfigurer {
 

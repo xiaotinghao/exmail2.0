@@ -3,7 +3,7 @@ package com.xs.module.exmail.token;
 /**
  * Token算法
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class TokenAlgorithm {
 

@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 /**
  * Token服务接口
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public interface TokenService {
 
@@ -19,6 +19,18 @@ public interface TokenService {
      * expires_in 凭证的有效时间（秒）
      */
     JSONObject getToken(String corpId, String corpSecret);
+
+    /**
+     * 通过调用接口凭证解析
+     * 企业id和应用的凭证密钥
+     *
+     * @param accessToken 调用接口凭证
+     * @return Array
+     * corpId = array[0]
+     * corpSecret = array[1]
+     * currentTimeMillis = array[2]
+     */
+    String[] parseToken(String accessToken);
 
     /**
      * 检验ACCESS_TOKEN有效性

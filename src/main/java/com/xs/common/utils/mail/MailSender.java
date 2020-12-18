@@ -20,7 +20,7 @@ import javax.mail.internet.MimeMultipart;
 /**
  * 邮件发送类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class MailSender {
 

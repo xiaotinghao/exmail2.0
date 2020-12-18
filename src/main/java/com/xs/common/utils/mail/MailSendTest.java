@@ -11,7 +11,7 @@ import static com.xs.common.utils.mail.MailConstants.MAIL_USER;
 /**
  * 邮件发送测试类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class MailSendTest {
 

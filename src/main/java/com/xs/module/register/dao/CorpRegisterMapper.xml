@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xs.module.register.dao.CorpRegisterDao">
 
-    <select id="valid">
+    <select id="valid" resultType="java.lang.Integer">
         SELECT
           id IS NOT NULL
         FROM

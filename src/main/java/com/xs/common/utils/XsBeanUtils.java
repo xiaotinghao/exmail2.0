@@ -5,7 +5,7 @@ import org.springframework.beans.BeanUtils;
 /**
  * pojo转换工具类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class XsBeanUtils {
 

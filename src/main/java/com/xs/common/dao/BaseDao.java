@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * 基础Dao
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 @Repository
 public interface BaseDao {

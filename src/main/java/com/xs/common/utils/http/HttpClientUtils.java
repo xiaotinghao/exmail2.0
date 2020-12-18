@@ -20,7 +20,7 @@ import com.alibaba.fastjson.JSONObject;
 /**
  * Http客户端请求工具类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class HttpClientUtils {
 

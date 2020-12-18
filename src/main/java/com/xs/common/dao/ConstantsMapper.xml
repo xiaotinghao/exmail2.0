@@ -44,16 +44,39 @@
           AND `status` = 1
     </select>
 
-    <select id="getCodeMsg" resultType="com.xs.common.entity.CodeMsg">
+    <select id="listCodeMsg" resultType="java.util.HashMap">
         SELECT
-          code,
-          msg
+          `key`, code, msg
         FROM
           t_reslut_code_msg
         WHERE
-          key = #{key}
-          AND `status` = 1
-          LIMIT 1
+          `status` = 1
+    </select>
+
+    <select id="constantsTables" resultType="java.lang.String">
+        SELECT
+          GROUP_CONCAT( t.table_name )
+        FROM
+          information_schema.TABLES t
+        WHERE
+          t.table_type = 'base table'
+          AND t.table_name LIKE 't_constants_%'
+          AND EXISTS (
+              SELECT column_name FROM
+                information_schema.COLUMNS
+              WHERE table_name = t.table_name AND column_name = 'constants_key' AND data_type = 'varchar'
+            )
+          AND EXISTS (
+              SELECT column_name FROM
+                information_schema.COLUMNS
+              WHERE table_name = t.table_name AND column_name = 'constants_value' AND data_type = 'varchar'
+            )
+    </select>
+
+    <select id="listConstants" parameterType="java.lang.String" resultType="java.util.HashMap">
+        <foreach collection="tables.split(',',-1)" index="index" item="item" open="" separator=" union all " close="">
+            SELECT constants_key, constants_value FROM ${item}
+        </foreach>
     </select>
 
 </mapper>

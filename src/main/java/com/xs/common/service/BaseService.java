@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * 基础业务接口
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public interface BaseService {
 

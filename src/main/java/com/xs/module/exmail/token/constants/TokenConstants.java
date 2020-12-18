@@ -5,7 +5,7 @@ import static com.xs.common.constants.SymbolConstants.SEPARATOR;
 /**
  * Token常量类（与t_constants_token表中的constants_key保持一致）
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class TokenConstants {
 

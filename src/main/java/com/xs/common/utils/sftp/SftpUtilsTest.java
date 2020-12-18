@@ -8,7 +8,7 @@ import static com.xs.common.utils.sftp.SftpConstants.*;
 /**
  * 文件传输工具测试类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class SftpUtilsTest {
 

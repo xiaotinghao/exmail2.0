@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 /**
  * 用户服务接口
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public interface UserService {
 

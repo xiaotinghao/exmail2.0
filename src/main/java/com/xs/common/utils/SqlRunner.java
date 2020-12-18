@@ -11,7 +11,7 @@ import java.util.Properties;
  * 运行Sql脚本
  * sql脚本放在resources下
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public final class SqlRunner {
 

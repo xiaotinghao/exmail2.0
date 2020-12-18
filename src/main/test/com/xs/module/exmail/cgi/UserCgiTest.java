@@ -1,4 +1,4 @@
-package com.xs.module.exmail.api;
+package com.xs.module.exmail.cgi;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -6,20 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import static org.junit.Assert.*;
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/applicationContext.xml"})
-public class UserApiTest {
+@ContextConfiguration(locations = {"/applicationContext.xml", "/springMvc-servlet.xml"})
+public class UserCgiTest {
 
     @Autowired
-    UserApi userApi;
+    UserCgi userCgi;
 
     @Test
     public void getLoginUrl() throws Exception {
-        String result = userApi.getLoginUrl("1%21", "xth@qq.com");
-        System.out.println(result);
-        assertNotNull(result);
+        String res = userCgi.getLoginUrl("E26ABD9555AED20B4B8B0A4B0F71692CD946ADE493E4DF0EB0B53997D2070FE2", "xth@qq.com");
+        System.out.println(res);
     }
 
 }

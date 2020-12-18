@@ -5,7 +5,7 @@ import static com.xs.common.constants.SymbolConstants.UNDERLINE;
 /**
  * 字符串工具类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class StringUtils extends org.apache.commons.lang3.StringUtils {
 

@@ -3,7 +3,7 @@ package com.xs.common.utils.sftp;
 /**
  * 文件传输常量类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class SftpConstants {
 

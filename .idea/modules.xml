@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/exmail2.0.iml" filepath="$PROJECT_DIR$/exmail2.0.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../references/references.iml" filepath="$PROJECT_DIR$/../references/references.iml" />
     </modules>
   </component>
 </project>

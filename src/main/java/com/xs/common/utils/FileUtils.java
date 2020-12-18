@@ -1,17 +1,18 @@
 package com.xs.common.utils;
 
+import com.xs.common.constants.ConstantsBase;
+
 import java.io.*;
 import java.util.Date;
 import java.util.List;
 
-import static com.xs.common.constants.CodeConstants.UTF8;
 import static com.xs.common.constants.SymbolConstants.*;
 import static com.xs.common.utils.DateUtils.DATE_SDF;
 
 /**
  * 文件工具类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class FileUtils extends org.apache.commons.io.FileUtils {
 
@@ -34,7 +35,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
 
         try {
             fis = new FileInputStream(filePath);
-            isr = new InputStreamReader(fis, UTF8);
+            isr = new InputStreamReader(fis, "UTF-8");
             fileContent.append(inputStream2String(isr));
         } catch (Exception e) {
             e.printStackTrace();

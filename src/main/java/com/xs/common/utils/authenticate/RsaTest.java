@@ -7,7 +7,7 @@ import com.xs.common.utils.rsa.RsaSignature;
 /**
  * RSA测试类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class RsaTest {
 

@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 分页实体组件
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class QueryEntity implements Serializable {
 

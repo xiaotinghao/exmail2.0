@@ -3,7 +3,7 @@ package com.xs.common.utils.mail;
 /**
  * 邮件发送常量类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class MailConstants {
 

@@ -3,7 +3,7 @@ package com.xs.common.utils;
 /**
  * 随机码工具类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class RandomCodeUtil {
 

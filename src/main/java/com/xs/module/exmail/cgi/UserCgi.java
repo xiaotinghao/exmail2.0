@@ -1,6 +1,7 @@
-package com.xs.module.exmail.api;
+package com.xs.module.exmail.cgi;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xs.common.annotation.InterfaceLog;
 import com.xs.module.exmail.user.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,10 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 用户接口
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 @RestController
-public class UserApi {
+public class UserCgi {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -33,6 +34,7 @@ public class UserApi {
      * expires_in url有效时长，单位为秒
      */
     @GetMapping(value = "/cgi-bin/service/get_login_url", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @InterfaceLog
     public String getLoginUrl(@RequestParam String accessToken, @RequestParam String userId) {
         logger.info("接收参数：access_token:{},userid:{}", accessToken, userId);
         JSONObject result = userService.getLoginUrl(accessToken, userId);

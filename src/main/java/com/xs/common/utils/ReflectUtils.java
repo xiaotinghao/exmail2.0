@@ -2,13 +2,15 @@ package com.xs.common.utils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 
 /**
  * Java反射工具类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class ReflectUtils {
+
     /**
      * java反射bean的get方法
      *
@@ -84,6 +86,42 @@ public class ReflectUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 获取方法调用者的类名、方法名、代码行数
+     *
+     * @return Array 方法调用者的类名、方法名、代码行数
+     * className array[0]
+     * methodName array[1]
+     * lineNumber array[2]
+     */
+    public static String[] getClassMethodLine() {
+        String[] result = new String[3];
+        StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        StackTraceElement log = stackTrace[1];
+        boolean flag = false;
+        for (int i = 1; i < stackTrace.length; i++) {
+            StackTraceElement e = stackTrace[i];
+            if (!e.getClassName().equals(log.getClassName())) {
+                result[0] = e.getClassName();
+                result[1] = e.getMethodName();
+                result[2] = String.valueOf(e.getLineNumber());
+                flag = true;
+                break;
+            }
+        }
+        if (!flag) {
+            result[0] = log.getClassName();
+            result[1] = log.getMethodName();
+            result[2] = String.valueOf(log.getLineNumber());
+        }
+        return result;
+    }
+
+    public <T> Class<T> getClazz() {
+        Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        return entityClass;
     }
 
 }

@@ -5,10 +5,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.xs.common.entity.Result;
 import org.apache.http.HttpStatus;
 
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 
 import static com.xs.common.constants.WebConstants.GET;
 import static com.xs.common.constants.WebConstants.POST;
@@ -16,7 +16,7 @@ import static com.xs.common.constants.WebConstants.POST;
 /**
  * Http连接工具类
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class HttpConnectionUtils {
 
@@ -85,29 +85,71 @@ public class HttpConnectionUtils {
         return JSONObject.toJSONString(Result.success(output.toString()));
     }
 
-    public static void main(String[] args) {
-        String targetURL = "http://services.cytsbiz.com/BaokuAirWebAPI/api/RuiAnAirOrder";
-        String requestStr = "{\"departBeginTime\":\"" + "2020-11-10" + "\"," +
-                "\"departEndTime\":\"" + "2020-11-15" + "\"}";
-        String res = HttpConnectionUtils.post(targetURL, requestStr);
-        JSONObject jsonObject = JSON.parseObject(res);
-        String code = jsonObject.getString("code");
-        if ("1".equals(code)) {
-            System.out.println(jsonObject.get("data"));
-        } else {
-            System.out.println(jsonObject.get("msg"));
+    /**
+     * 抓取网站html信息
+     *
+     * @param netUrl 网站地址
+     * @return 网站html信息
+     */
+    public static String getOuterNetIp(String netUrl) {
+        String result = "";
+        URLConnection connection;
+        BufferedReader in = null;
+        try {
+            URL url = new URL(netUrl);
+            connection = url.openConnection();
+            connection.setRequestProperty("accept", "*/*");
+            connection.setRequestProperty("connection", "KeepAlive");
+            connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            connection.setConnectTimeout(3000);
+            connection.setReadTimeout(3000);
+            connection.connect();
+            in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            while ((line = in.readLine()) != null) {
+                result += line;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+            } catch (IOException e) {
+                e.getMessage();
+            }
         }
+        return result;
+    }
 
-        targetURL += "?departBeginTime=" + "2020-11-10" +
-                "&departEndTime=" + "2020-11-15";
-        String res2 = HttpConnectionUtils.get(targetURL);
-        JSONObject jsonObject2 = JSON.parseObject(res2);
-        String code2 = jsonObject2.getString("code");
-        if ("1".equals(code2)) {
-            System.out.println(jsonObject2.get("data"));
-        } else {
-            System.out.println(jsonObject2.get("msg"));
-        }
+    public static void main(String[] args) {
+//        String targetURL = "http://services.cytsbiz.com/BaokuAirWebAPI/api/RuiAnAirOrder";
+//        String requestStr = "{\"departBeginTime\":\"" + "2020-11-10" + "\"," +
+//                "\"departEndTime\":\"" + "2020-11-15" + "\"}";
+//        String res = HttpConnectionUtils.post(targetURL, requestStr);
+//        JSONObject jsonObject = JSON.parseObject(res);
+//        String code = jsonObject.getString("code");
+//        if ("1".equals(code)) {
+//            System.out.println(jsonObject.get("data"));
+//        } else {
+//            System.out.println(jsonObject.get("msg"));
+//        }
+//
+//        targetURL += "?departBeginTime=" + "2020-11-10" +
+//                "&departEndTime=" + "2020-11-15";
+//        String res2 = HttpConnectionUtils.get(targetURL);
+//        JSONObject jsonObject2 = JSON.parseObject(res2);
+//        String code2 = jsonObject2.getString("code");
+//        if ("1".equals(code2)) {
+//            System.out.println(jsonObject2.get("data"));
+//        } else {
+//            System.out.println(jsonObject2.get("msg"));
+//        }
+
+        String outerNetIp = getOuterNetIp("http://www.baidu.com");
+        System.out.println(outerNetIp);
+
     }
 
 }

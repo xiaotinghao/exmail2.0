@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 /**
  * 企业注册数据服务层
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 @Repository
 public interface CorpRegisterDao {

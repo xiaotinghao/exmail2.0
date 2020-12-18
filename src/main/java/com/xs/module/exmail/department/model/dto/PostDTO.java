@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * 岗位DTO
  *
- * @author xiaotinghao
+ * @author 18871430207@163.com
  */
 public class PostDTO {
 
