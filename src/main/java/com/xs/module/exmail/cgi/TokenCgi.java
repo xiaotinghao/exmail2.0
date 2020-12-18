@@ -1,7 +1,7 @@
 package com.xs.module.exmail.cgi;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xs.common.annotation.InterfaceLog;
+import com.xs.framework.annotation.InterfaceLog;
 import com.xs.module.exmail.token.service.TokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

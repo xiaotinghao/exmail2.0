@@ -1,10 +1,9 @@
-package com.xs.common.interceptor.service.impl;
+package com.xs.framework.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import com.xs.common.constants.ResultCodeMsg;
-import com.xs.common.entity.CodeMsg;
+import com.xs.common.model.Result2;
 import com.xs.common.utils.http.HttpUtils;
-import com.xs.common.interceptor.service.CgiCheckService;
+import com.xs.framework.service.CgiCheckService;
+import com.xs.framework.service.InterfaceCheckService;
 import com.xs.module.exmail.token.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,14 +20,16 @@ import static com.xs.module.constants.ExmailConstants.*;
  * @author 18871430207@163.com
  */
 @Service
-public class CgiCheckServiceImpl extends InterfaceCheckServiceImpl implements CgiCheckService {
+public class CgiCheckServiceImpl implements CgiCheckService {
 
+    @Autowired
+    InterfaceCheckService interfaceCheckService;
     @Autowired
     TokenService tokenService;
 
     @Override
     public boolean check(HandlerMethod handlerMethod) {
-        boolean superCheck = super.check(handlerMethod);
+        boolean superCheck = interfaceCheckService.check(handlerMethod);
         if (superCheck) {
             Method method = handlerMethod.getMethod();
             String methodName = method.getName();
@@ -39,14 +40,12 @@ public class CgiCheckServiceImpl extends InterfaceCheckServiceImpl implements Cg
                 if (tokenService.validate(accessToken)) {
                     String[] splits = tokenService.parseToken(accessToken);
                     String corpId = splits[0];
-                    if (!super.corpValid(corpId, methodName)) {
-                        Map<String, Object> objectMap = ResultCodeMsg.map.get("CALL_TOO_FREQUENTLY");
-                        HttpUtils.write(JSONObject.toJSONString(objectMap));
+                    if (!interfaceCheckService.corpValid(corpId, methodName)) {
+                        HttpUtils.sendError(400, Result2.get("CALL_TOO_FREQUENTLY"));
                         return false;
                     }
                 } else {
-                    Map<String, Object> objectMap = ResultCodeMsg.map.get("INVALID_ACCESS_TOKEN");
-                    HttpUtils.write(JSONObject.toJSONString(objectMap));
+                    HttpUtils.sendError(400, Result2.get("INVALID_ACCESS_TOKEN"));
                     return false;
                 }
             }

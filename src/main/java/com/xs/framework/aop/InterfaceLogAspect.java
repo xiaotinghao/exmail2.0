@@ -1,6 +1,6 @@
-package com.xs.common.aop;
+package com.xs.framework.aop;
 
-import com.xs.common.annotation.InterfaceLog;
+import com.xs.framework.annotation.InterfaceLog;
 import com.xs.module.exmail.log.service.InterfaceLogService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;

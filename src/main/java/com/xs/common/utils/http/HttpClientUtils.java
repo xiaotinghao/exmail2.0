@@ -2,10 +2,8 @@ package com.xs.common.utils.http;
 
 import java.nio.charset.Charset;
 
-import com.alibaba.fastjson.JSON;
-import com.xs.common.entity.Result;
+import com.xs.common.model.Result2;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
@@ -15,7 +13,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
-import com.alibaba.fastjson.JSONObject;
 
 /**
  * Http客户端请求工具类
@@ -24,7 +21,7 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class HttpClientUtils {
 
-    private static int connectTimeout = 5000;
+    private static int connectTimeout = 50001;
     private static int connectRequestTimeout = 30000;
     private static int socketTimeout = 5000;
 
@@ -74,46 +71,17 @@ public class HttpClientUtils {
      * @return Http响应
      */
     private static String execute(HttpUriRequest uriRequest) {
-        Result result = new Result();
         HttpClient client = HttpClients.createDefault();
         uriRequest.addHeader("Content-type", "application/json;charset=utf-8");
         uriRequest.setHeader("Accept", "application/json");
         try {
             HttpResponse httpResponse = client.execute(uriRequest);
             String response = EntityUtils.toString(httpResponse.getEntity());
-            if (httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                result = Result.success(response);
-            } else {
-                result = Result.fail(response);
-            }
+            int httpStatusCode = httpResponse.getStatusLine().getStatusCode();
+            return Result2.make(httpStatusCode, response);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        return JSONObject.toJSONString(result);
-    }
-
-    public static void main(String[] args) {
-        String targetURL = "http://services.cytsbiz.com/BaokuAirWebAPI/api/RuiAnAirOrder";
-        String requestStr = "{\"departBeginTime\":\"" + "2020-11-10" + "\"," +
-                "\"departEndTime\":\"" + "2020-11-15" + "\"}";
-		String res = HttpClientUtils.doPost(targetURL, requestStr);
-        JSONObject jsonObject = JSON.parseObject(res);
-        String code = jsonObject.getString("code");
-        if ("1".equals(code)) {
-            System.out.println(jsonObject.get("data"));
-        } else {
-            System.out.println(jsonObject.get("msg"));
-        }
-
-        targetURL += "?departBeginTime=" + "2020-11-10" +
-                "&departEndTime=" + "2020-11-15";
-		String res2 = HttpClientUtils.doGet(targetURL);
-        JSONObject jsonObject2 = JSON.parseObject(res2);
-        String code2 = jsonObject2.getString("code");
-        if ("1".equals(code2)) {
-            System.out.println(jsonObject2.get("data"));
-        } else {
-            System.out.println(jsonObject2.get("msg"));
+            return Result2.error(e.getMessage());
         }
     }
 

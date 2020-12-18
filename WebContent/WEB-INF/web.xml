@@ -4,33 +4,16 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
          http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          id="WebApp_ID" version="3.0">
+    <!-- 系统名称 -->
     <display-name>run</display-name>
 
+    <!-- 配置监听器start -->
     <listener>
-        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+        <listener-class>com.xs.framework.listener.XsContextLoaderListener</listener-class>
     </listener>
+    <!-- 配置监听器end -->
 
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:applicationContext.xml</param-value>
-    </context-param>
-
-    <!-- Spring MVC -->
-    <servlet>
-        <servlet-name>springMvc</servlet-name>
-        <!--<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>-->
-        <servlet-class>com.xs.common.servlet.XsDispatcherServlet</servlet-class>
-        <init-param>
-            <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:springMvc-servlet.xml</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>springMvc</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
-
+    <!-- 配置过滤器start -->
     <filter>
         <filter-name>characterEncodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -47,9 +30,35 @@
         <filter-name>characterEncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
+    <!-- 配置过滤器end -->
 
+    <!-- Spring基础配置start -->
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:applicationContext.xml</param-value>
+    </context-param>
+    <!-- Spring基础配置end -->
+
+    <!-- SpringMVC配置start -->
+    <servlet>
+        <servlet-name>springMvc</servlet-name>
+        <servlet-class>com.xs.framework.servlet.XsDispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:springMvc-servlet.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springMvc</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+    <!-- SpringMVC配置end -->
+
+    <!-- 欢迎页面start -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
+    <!-- 欢迎页面end -->
 
 </web-app>

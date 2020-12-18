@@ -1,7 +1,6 @@
-package com.xs.common.interceptor;
+package com.xs.framework.interceptor;
 
-import com.alibaba.fastjson.JSONObject;
-import com.xs.common.constants.ResultCodeMsg;
+import com.xs.common.model.Result2;
 import com.xs.common.utils.http.HttpUtils;
 import com.xs.module.exmail.token.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +32,11 @@ public class AuthInterceptor implements HandlerInterceptor {
             if (tokenService.validate(accessToken)) {
                 return true;
             } else {
-                Map<String, Object> objectMap = ResultCodeMsg.map.get("INVALID_ACCESS_TOKEN");
-                response.sendError(401, JSONObject.toJSONString(objectMap));
+                response.sendError(401, Result2.get("INVALID_ACCESS_TOKEN"));
                 return false;
             }
         }
-        Map<String, Object> objectMap = ResultCodeMsg.map.get("ACCESS_TOKEN_MISSING");
-        response.sendError(401, JSONObject.toJSONString(objectMap));
+        response.sendError(401, Result2.get("ACCESS_TOKEN_MISSING"));
         return false;
     }
 

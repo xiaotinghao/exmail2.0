@@ -14,41 +14,42 @@
 		http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!-- 扫描包，使注解生效 -->
-    <context:component-scan base-package="com.xs.common.annotation"/>
-    <context:component-scan base-package="com.xs.common.aop"/>
-    <context:component-scan base-package="com.xs.common.interceptor"/>
-    <context:component-scan base-package="com.xs.**.api"/>
-    <context:component-scan base-package="com.xs.**.cgi"/>
+    <context:component-scan base-package="com.xs.framework"/>
     <context:component-scan base-package="com.xs.**.controller"/>
-    <context:component-scan base-package="com.xs.**.service"/>
+    <context:component-scan base-package="com.xs.framework.service"/>
     <context:component-scan base-package="com.xs.**.dao"/>
+    <context:component-scan base-package="com.xs.module.**.api"/>
+    <context:component-scan base-package="com.xs.module.**.cgi"/>
 
     <!-- 拦截器配置 -->
     <mvc:interceptors>
-        <!--  -->
-        <!--<bean class="com.xs.common.interceptor.AuthInterceptor" />-->
-        <!--<mvc:interceptor>-->
-            <!--<mvc:mapping path="/api-bin/**"/>-->
-            <!--<bean class="com.xs.common.interceptor.ApiCheckInterceptor" />-->
-        <!--</mvc:interceptor>-->
-        <!--<mvc:interceptor>-->
-            <!--<mvc:mapping path="/cgi-bin/**"/>-->
-            <!--<bean class="com.xs.common.interceptor.CgiCheckInterceptor" />-->
-        <!--</mvc:interceptor>-->
-        <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <mvc:exclude-mapping path="/login/**"/>
-            <bean class="com.xs.common.interceptor.LoggerInterceptor" />
-        </mvc:interceptor>
+        <!-- 直接定义在mvc:interceptors根下面的interceptor将拦截所有的请求 -->
+        <bean class="com.xs.framework.interceptor.XsInterceptor"/>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
             <mvc:exclude-mapping path="/register/**"/>
-            <bean class="com.xs.common.interceptor.LoginInterceptor" />
+            <mvc:exclude-mapping path="/api-bin/**"/>
+            <mvc:exclude-mapping path="/cgi-bin/**"/>
+            <bean class="com.xs.framework.interceptor.LoginInterceptor"/>
         </mvc:interceptor>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/login/**"/>
+            <bean class="com.xs.framework.interceptor.LoggerInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/get-token/**"/>
             <mvc:exclude-mapping path="/getToken/**"/>
-            <bean class="com.xs.common.interceptor.AuthInterceptor" />
+            <bean class="com.xs.framework.interceptor.AuthInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/api-bin/**"/>
+            <bean class="com.xs.framework.interceptor.ApiCheckInterceptor"/>
+        </mvc:interceptor>
+        <mvc:interceptor>
+            <mvc:mapping path="/cgi-bin/**"/>
+            <bean class="com.xs.framework.interceptor.CgiCheckInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 
@@ -88,6 +89,6 @@
     </bean>
 
     <!-- 开启aop注解方式，此步骤不能少，这样java类中的aop注解才会生效 -->
-    <aop:aspectj-autoproxy />
+    <aop:aspectj-autoproxy/>
 
 </beans>

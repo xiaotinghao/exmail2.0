@@ -1,7 +1,6 @@
-package com.xs.common.interceptor;
+package com.xs.framework.interceptor;
 
-import com.xs.common.interceptor.service.CgiCheckService;
-import com.xs.common.interceptor.service.InterfaceCheckService;
+import com.xs.framework.service.ApiCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -11,18 +10,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 公共网关接口校验拦截器
+ * 应用程序接口校验拦截器
  *
  * @author 18871430207@163.com
  */
-public class CgiCheckInterceptor implements HandlerInterceptor {
+public class ApiCheckInterceptor implements HandlerInterceptor {
 
     @Autowired
-    InterfaceCheckService interfaceCheckService;
+    ApiCheckService apiCheckService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        return interfaceCheckService.check((HandlerMethod) handler);
+        return apiCheckService.check((HandlerMethod) handler);
     }
 
     @Override

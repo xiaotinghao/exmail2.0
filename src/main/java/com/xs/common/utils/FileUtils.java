@@ -1,7 +1,5 @@
 package com.xs.common.utils;
 
-import com.xs.common.constants.ConstantsBase;
-
 import java.io.*;
 import java.util.Date;
 import java.util.List;

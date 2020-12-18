@@ -1,17 +1,14 @@
 package com.xs.common.utils.http;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import com.xs.common.entity.Result;
+import com.xs.common.model.Result2;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
-
-import static com.xs.common.constants.WebConstants.GET;
-import static com.xs.common.constants.WebConstants.POST;
 
 /**
  * Http连接工具类
@@ -31,7 +28,7 @@ public class HttpConnectionUtils {
      * @return http响应
      */
     public static String post(String targetURL, String jsonData) {
-        return connect(targetURL, POST, jsonData);
+        return connect(targetURL, HttpPost.METHOD_NAME, jsonData);
     }
 
     /**
@@ -41,7 +38,7 @@ public class HttpConnectionUtils {
      * @return http响应
      */
     public static String get(String targetURL) {
-        return connect(targetURL, GET, null);
+        return connect(targetURL, HttpGet.METHOD_NAME, null);
     }
 
     private static String connect(String targetURL, String requestMethod, String jsonData) {
@@ -82,7 +79,7 @@ public class HttpConnectionUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return JSONObject.toJSONString(Result.success(output.toString()));
+        return Result2.success(output.toString());
     }
 
     /**

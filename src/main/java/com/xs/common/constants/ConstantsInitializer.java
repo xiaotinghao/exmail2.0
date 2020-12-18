@@ -8,9 +8,9 @@ import com.xs.common.utils.spring.SpringTool;
  *
  * @author 18871430207@163.com
  */
-public class ConstantsInitializer {
+class ConstantsInitializer {
 
-    public static ConstantsDao constantsDao;
+    static ConstantsDao constantsDao;
 
     static {
         if (constantsDao == null) {

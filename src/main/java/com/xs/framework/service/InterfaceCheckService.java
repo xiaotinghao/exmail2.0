@@ -1,4 +1,4 @@
-package com.xs.common.interceptor.service;
+package com.xs.framework.service;
 
 import org.springframework.web.method.HandlerMethod;
 

@@ -1,13 +1,13 @@
-package com.xs.common.entity;
+package com.xs.common.model;
 
 import java.io.Serializable;
 
 /**
- * 分页实体组件
+ * 分页查询实体组件
  *
  * @author 18871430207@163.com
  */
-public class QueryEntity implements Serializable {
+public class PageQuery implements Serializable {
 
     /** 序列号 */
     private static final long serialVersionUID = 1L;

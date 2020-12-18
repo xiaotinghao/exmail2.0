@@ -1,6 +1,5 @@
 package com.xs.common.dao;
 
-import com.xs.common.entity.CodeMsg;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -14,40 +13,6 @@ import java.util.Map;
  */
 @Repository
 public interface ConstantsDao {
-
-    /**
-     * 根据常量key获取常量
-     *
-     * @param key 常量key
-     * @return 常量
-     */
-    String getBaseConstants(@Param("key") String key);
-
-    /**
-     * 根据常量key获取常量
-     *
-     * @param key    常量key
-     * @param module 模块名称
-     * @return 常量
-     */
-    String getModuleConstants(@Param("key") String key, @Param("module") String module);
-
-    /**
-     * 根据常量key获取常量
-     *
-     * @param key 常量key
-     * @return 常量列表
-     */
-    List<String> listBaseConstants(@Param("key") String key);
-
-    /**
-     * 根据常量key获取常量
-     *
-     * @param key    常量key
-     * @param module 模块名称
-     * @return 常量列表
-     */
-    List<String> listModuleConstants(@Param("key") String key, @Param("module") String module);
 
     /**
      * 获取所有返回编码&信息
@@ -70,6 +35,5 @@ public interface ConstantsDao {
      * @return 所有常量配置
      */
     List<Map<String, Object>> listConstants(@Param("tables") String tables);
-
 
 }

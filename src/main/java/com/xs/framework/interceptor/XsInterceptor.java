@@ -1,4 +1,4 @@
-package com.xs.common.interceptor;
+package com.xs.framework.interceptor;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -7,15 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * 日志拦截器
+ * 自定义拦截器
  *
  * @author 18871430207@163.com
  */
-public class LoggerInterceptor implements HandlerInterceptor {
+public class XsInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("LoggerInterceptor:" + request.getContextPath() + "," + request.getRequestURI() + "," + request.getMethod());
         return true;
     }
 

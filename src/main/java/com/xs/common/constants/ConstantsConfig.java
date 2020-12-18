@@ -1,6 +1,8 @@
 package com.xs.common.constants;
 
-import java.util.HashMap;
+import com.xs.common.utils.MapUtils;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,18 +11,23 @@ import java.util.Map;
  *
  * @author 18871430207@163.com
  */
-public class ConstantsBase extends ConstantsInitializer {
+public class ConstantsConfig extends ConstantsInitializer {
 
     /**
      * map的key与`t_constants_*`表字段`constants_key`一一对应
      */
-    public static Map<String, String> map;
+    private static Map<String, String> map;
 
     static {
         if (map == null) {
-            map = new HashMap<>();
+            map = MapUtils.init();
             String tables = constantsDao.constantsTables();
-            List<Map<String, Object>> mapList = constantsDao.listConstants(tables);
+            List<Map<String, Object>> mapList = new ArrayList<>();
+            try {
+                mapList.addAll(constantsDao.listConstants(tables));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             for (Map<String, Object> entryMap : mapList) {
                 // `t_constants_*`表字段`constants_key`
                 String key = (String) entryMap.get("constants_key");
@@ -29,6 +36,16 @@ public class ConstantsBase extends ConstantsInitializer {
                 map.put(key, value);
             }
         }
+    }
+
+    /**
+     * 通过key查询其在`t_constants_*`表中的配置值
+     *
+     * @param key 关键字
+     * @return 配置值
+     */
+    public static String get(String key) {
+        return map.get(key);
     }
 
 }

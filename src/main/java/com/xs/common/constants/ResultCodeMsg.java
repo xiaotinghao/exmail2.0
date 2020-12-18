@@ -1,6 +1,8 @@
 package com.xs.common.constants;
 
-import java.util.HashMap;
+import com.xs.common.utils.MapUtils;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,12 +16,17 @@ public class ResultCodeMsg extends ConstantsInitializer {
     /**
      * map的key与`t_result_code_msg`表字段`key`一一对应
      */
-    public static Map<String, Map<String, Object>> map;
+    private static Map<String, Map<String, Object>> map;
 
     static {
         if (map == null) {
-            map = new HashMap<>();
-            List<Map<String, Object>> mapList = constantsDao.listCodeMsg();
+            map = MapUtils.init();
+            List<Map<String, Object>> mapList = new ArrayList<>();
+            try {
+                mapList.addAll(constantsDao.listCodeMsg());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             // `t_result_code_msg`表字段`key`
             String constantsKey = "key";
             for (Map<String, Object> entryMap : mapList) {
@@ -28,6 +35,16 @@ public class ResultCodeMsg extends ConstantsInitializer {
                 map.put(key, entryMap);
             }
         }
+    }
+
+    /**
+     * 通过key查询其在`t_result_code_msg`表中的配置值
+     *
+     * @param key 关键字
+     * @return 配置值
+     */
+    public static Map<String, Object> get(String key) {
+        return map.get(key);
     }
 
 }

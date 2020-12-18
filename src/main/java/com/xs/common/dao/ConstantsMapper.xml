@@ -34,16 +34,6 @@
           AND `status` = 1
     </select>
 
-    <select id="listModuleConstants" resultType="java.lang.String">
-        SELECT
-          constants_value
-        FROM
-          t_constants_${module}
-        WHERE
-          constants_key = #{key}
-          AND `status` = 1
-    </select>
-
     <select id="listCodeMsg" resultType="java.util.HashMap">
         SELECT
           `key`, code, msg

@@ -75,6 +75,6 @@ public class SymbolConstants {
     /**
      * 独特的分隔符 -._
      */
-    public static final String SEPARATOR = HYPHEN + DOT + UNDERLINE;
+    public static final String SEPARATOR = "-._";
 
 }

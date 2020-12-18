@@ -1,13 +1,13 @@
 package com.xs.module.exmail.department.model.po;
 
-import com.xs.common.entity.QueryEntity;
+import com.xs.common.model.PageQuery;
 
 /**
  * 岗位实体
  *
  * @author 18871430207@163.com
  */
-public class PostPO extends QueryEntity {
+public class PostPO extends PageQuery {
     /**
      * 岗位ID
      */

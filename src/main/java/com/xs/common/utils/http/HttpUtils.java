@@ -126,6 +126,33 @@ public class HttpUtils {
     }
 
     /**
+     * 返回HTTP错误信息
+     *
+     * @param code HTTP状态码
+     */
+    public static void sendError(int code) {
+        try {
+            getCurrentResponse().sendError(code);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 返回HTTP错误信息
+     *
+     * @param code HTTP状态码
+     * @param msg  响应信息
+     */
+    public static void sendError(int code, String msg) {
+        try {
+            getCurrentResponse().sendError(code, msg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 获取客户端真实IP地址
      *
      * @return 客户端真实IP地址

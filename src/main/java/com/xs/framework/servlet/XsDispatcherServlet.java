@@ -1,4 +1,4 @@
-package com.xs.common.servlet;
+package com.xs.framework.servlet;
 
 import org.springframework.web.servlet.DispatcherServlet;
 
