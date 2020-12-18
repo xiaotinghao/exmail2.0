@@ -1,6 +1,6 @@
 package com.xs.framework.interceptor;
 
-import com.xs.common.model.Result2;
+import com.xs.common.model.Result;
 import com.xs.common.utils.http.HttpUtils;
 import com.xs.module.exmail.token.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,11 +32,11 @@ public class AuthInterceptor implements HandlerInterceptor {
             if (tokenService.validate(accessToken)) {
                 return true;
             } else {
-                response.sendError(401, Result2.get("INVALID_ACCESS_TOKEN"));
+                response.sendError(401, Result.get("INVALID_ACCESS_TOKEN"));
                 return false;
             }
         }
-        response.sendError(401, Result2.get("ACCESS_TOKEN_MISSING"));
+        response.sendError(401, Result.get("ACCESS_TOKEN_MISSING"));
         return false;
     }
 

@@ -20,7 +20,7 @@ public class MapUtils {
      * @return Map对象
      */
     public static <K, V> Map<K, V> init() {
-        int initialCapacity = Integer.valueOf(ConstantsConfig.get("MAP_INITIAL_CAPACITY"));
+        int initialCapacity = Integer.valueOf(ConstantsConfig.get("MAP_INITIAL_CAPACITY", "16"));
         return new HashMap<>(initialCapacity);
     }
 

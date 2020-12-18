@@ -44,7 +44,8 @@ public class ResultCodeMsg extends ConstantsInitializer {
      * @return 配置值
      */
     public static Map<String, Object> get(String key) {
-        return map.get(key);
+        Map<String, Object> objectMap = map.get(key);
+        return objectMap == null ? MapUtils.init() : objectMap;
     }
 
 }

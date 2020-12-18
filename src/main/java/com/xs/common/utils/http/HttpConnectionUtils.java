@@ -1,6 +1,6 @@
 package com.xs.common.utils.http;
 
-import com.xs.common.model.Result2;
+import com.xs.common.model.Result;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -79,7 +79,7 @@ public class HttpConnectionUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Result2.success(output.toString());
+        return Result.success(output.toString());
     }
 
     /**

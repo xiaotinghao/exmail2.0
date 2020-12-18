@@ -1,6 +1,6 @@
 package com.xs.framework.service.impl;
 
-import com.xs.common.model.Result2;
+import com.xs.common.model.Result;
 import com.xs.common.utils.http.HttpUtils;
 import com.xs.framework.service.CgiCheckService;
 import com.xs.framework.service.InterfaceCheckService;
@@ -41,11 +41,11 @@ public class CgiCheckServiceImpl implements CgiCheckService {
                     String[] splits = tokenService.parseToken(accessToken);
                     String corpId = splits[0];
                     if (!interfaceCheckService.corpValid(corpId, methodName)) {
-                        HttpUtils.sendError(400, Result2.get("CALL_TOO_FREQUENTLY"));
+                        HttpUtils.sendError(400, Result.get("CALL_TOO_FREQUENTLY"));
                         return false;
                     }
                 } else {
-                    HttpUtils.sendError(400, Result2.get("INVALID_ACCESS_TOKEN"));
+                    HttpUtils.sendError(400, Result.get("INVALID_ACCESS_TOKEN"));
                     return false;
                 }
             }

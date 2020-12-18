@@ -16,7 +16,7 @@
     <!-- 扫描包，使注解生效 -->
     <context:component-scan base-package="com.xs.framework"/>
     <context:component-scan base-package="com.xs.**.controller"/>
-    <context:component-scan base-package="com.xs.framework.service"/>
+    <context:component-scan base-package="com.xs.**.service"/>
     <context:component-scan base-package="com.xs.**.dao"/>
     <context:component-scan base-package="com.xs.module.**.api"/>
     <context:component-scan base-package="com.xs.module.**.cgi"/>

@@ -2,7 +2,7 @@ package com.xs.common.utils.http;
 
 import java.nio.charset.Charset;
 
-import com.xs.common.model.Result2;
+import com.xs.common.model.Result;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
@@ -78,10 +78,10 @@ public class HttpClientUtils {
             HttpResponse httpResponse = client.execute(uriRequest);
             String response = EntityUtils.toString(httpResponse.getEntity());
             int httpStatusCode = httpResponse.getStatusLine().getStatusCode();
-            return Result2.make(httpStatusCode, response);
+            return Result.make(httpStatusCode, response);
         } catch (Exception e) {
             e.printStackTrace();
-            return Result2.error(e.getMessage());
+            return Result.error(e.getMessage());
         }
     }
 

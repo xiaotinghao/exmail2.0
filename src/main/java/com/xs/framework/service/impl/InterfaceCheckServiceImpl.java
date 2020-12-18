@@ -1,7 +1,7 @@
 package com.xs.framework.service.impl;
 
 import com.xs.common.constants.ConstantsConfig;
-import com.xs.common.model.Result2;
+import com.xs.common.model.Result;
 import com.xs.common.utils.http.HttpUtils;
 import com.xs.module.exmail.log.dao.InterfaceLogDao;
 import com.xs.framework.service.InterfaceCheckService;
@@ -30,24 +30,24 @@ public class InterfaceCheckServiceImpl implements InterfaceCheckService {
 
     @Override
     public boolean corpValid(String corpId, String methodName) {
-        String minuteLimit = ConstantsConfig.get("CORP_API_CALL_MINUTE_UPPER_LIMIT");
+        String minuteLimit = ConstantsConfig.get("CORP_API_CALL_MINUTE_UPPER_LIMIT", "50");
         int minuteFrequency = interfaceLogDao.countCorpMinuteFrequency(corpId, methodName);
         if (Integer.valueOf(minuteLimit) < minuteFrequency) {
             return false;
         }
-        String hourLimit = ConstantsConfig.get("CORP_API_CALL_HOUR_UPPER_LIMIT");
+        String hourLimit = ConstantsConfig.get("CORP_API_CALL_HOUR_UPPER_LIMIT", "1000");
         int hourFrequency = interfaceLogDao.countCorpHourFrequency(corpId, methodName);
         return Integer.valueOf(hourLimit) >= hourFrequency;
     }
 
     @Override
     public boolean ipValid(String ipAddress) {
-        String minuteLimit = ConstantsConfig.get("IP_API_CALL_MINUTE_UPPER_LIMIT");
+        String minuteLimit = ConstantsConfig.get("IP_API_CALL_MINUTE_UPPER_LIMIT", "500");
         int minuteFrequency = interfaceLogDao.countIpMinuteFrequency(ipAddress);
         if (Integer.valueOf(minuteLimit) < minuteFrequency) {
             return false;
         }
-        String hourLimit = ConstantsConfig.get("IP_API_CALL_HOUR_UPPER_LIMIT");
+        String hourLimit = ConstantsConfig.get("IP_API_CALL_HOUR_UPPER_LIMIT", "10000");
         int hourFrequency = interfaceLogDao.countIpHourFrequency(ipAddress);
         return Integer.valueOf(hourLimit) >= hourFrequency;
     }
@@ -59,7 +59,7 @@ public class InterfaceCheckServiceImpl implements InterfaceCheckService {
         // 校验企业每ip调用接口频率
         String ipAddress = HttpUtils.getClientRealIp();
         if (!this.ipValid(ipAddress)) {
-            HttpUtils.sendError(400, Result2.get("CALL_TOO_FREQUENTLY"));
+            HttpUtils.sendError(400, Result.get("CALL_TOO_FREQUENTLY"));
             return false;
         }
         // 获取请求参数
@@ -67,7 +67,7 @@ public class InterfaceCheckServiceImpl implements InterfaceCheckService {
         if (map.containsKey(CORP_ID)) {
             String corpId = (String) map.get(CORP_ID);
             if (!this.corpValid(corpId, methodName)) {
-                HttpUtils.sendError(400, Result2.get("CALL_TOO_FREQUENTLY"));
+                HttpUtils.sendError(400, Result.get("CALL_TOO_FREQUENTLY"));
                 return false;
             }
         }

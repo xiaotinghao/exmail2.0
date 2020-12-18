@@ -2,7 +2,7 @@ package com.xs.module.exmail.user.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xs.common.dao.ConstantsDao;
-import com.xs.common.model.Result2;
+import com.xs.common.model.Result;
 import com.xs.module.exmail.token.service.TokenService;
 import com.xs.module.exmail.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
                     "?fun=bizopenssologin&method=openapi&userid=zhangsanp@gzdev.com&authkey=XXXX");
             jsonObject.put("expires_in", 300);
         } else {
-            jsonObject = (JSONObject) JSONObject.toJSON(Result2.get("ACCESS_TOKEN_OVERAGE"));
+            jsonObject = (JSONObject) JSONObject.toJSON(Result.get("ACCESS_TOKEN_OVERAGE"));
         }
         return jsonObject;
     }

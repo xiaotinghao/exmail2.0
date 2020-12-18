@@ -45,7 +45,20 @@ public class ConstantsConfig extends ConstantsInitializer {
      * @return 配置值
      */
     public static String get(String key) {
-        return map.get(key);
+        String value = map.get(key);
+        return value == null ? "" : value;
+    }
+
+    /**
+     * 通过key查询其在`t_constants_*`表中的配置值
+     *
+     * @param key          关键字
+     * @param defaultValue 缺省值
+     * @return 配置值
+     */
+    public static String get(String key, String defaultValue) {
+        String value = map.get(key);
+        return value == null ? defaultValue : value;
     }
 
 }
