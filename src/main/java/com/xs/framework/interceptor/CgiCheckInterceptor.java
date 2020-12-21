@@ -2,7 +2,6 @@ package com.xs.framework.interceptor;
 
 import com.xs.framework.service.CgiCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,7 +20,7 @@ public class CgiCheckInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        return cgiCheckService.check((HandlerMethod) handler);
+        return cgiCheckService.check(request, response, handler);
     }
 
     @Override

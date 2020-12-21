@@ -43,6 +43,15 @@ public class SymbolConstants {
     public static final String COMMA = ",";
 
     /**
+     * 制表符
+     */
+    public static final String TAB = "\t";
+    /**
+     * 换行符
+     */
+    public static final String LINE_BREAK = "\n";
+
+    /**
      * 圆括号
      */
     public static final String ROUND_BRACKETS_L = "(";

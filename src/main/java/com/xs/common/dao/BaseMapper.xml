@@ -10,4 +10,30 @@
         SELECT decode(UNHEX(#{str}), #{pwd});
     </select>
 
+    <select id="queryColumns" resultType="java.lang.String">
+        SELECT c.COLUMN_NAME
+        FROM information_schema.`COLUMNS` c
+        LEFT JOIN ( SELECT count( 1 ) FROM ${tableName} ) x ON 1 = 1
+        WHERE c.table_name = #{tableName}
+    </select>
+
+    <select id="checkTable">
+        SELECT
+          `table_name`
+        FROM
+          information_schema.`TABLES`
+        WHERE
+          `table_name` = #{tableName}
+    </select>
+
+    <select id="checkColumn">
+        SELECT
+          `column_name`
+        FROM
+          information_schema.`COLUMNS`
+        WHERE
+          `table_name` = #{tableName}
+          AND `column_name` = #{columnName}
+    </select>
+
 </mapper>

@@ -1,6 +1,6 @@
 package com.xs.common.constants;
 
-import com.xs.common.utils.MapUtils;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +14,13 @@ import java.util.Map;
 public class ConstantsConfig extends ConstantsInitializer {
 
     /**
-     * map的key与`t_constants_*`表字段`constants_key`一一对应
+     * key与`t_constants_*`表字段`constants_key`一一对应
      */
-    private static Map<String, String> map;
+    private static JSONObject jsonObject;
 
     static {
-        if (map == null) {
-            map = MapUtils.init();
+        if (jsonObject == null) {
+            jsonObject = new JSONObject();
             String tables = constantsDao.constantsTables();
             List<Map<String, Object>> mapList = new ArrayList<>();
             try {
@@ -33,7 +33,7 @@ public class ConstantsConfig extends ConstantsInitializer {
                 String key = (String) entryMap.get("constants_key");
                 // `t_constants_*`表字段`constants_value`
                 String value = (String) entryMap.get("constants_value");
-                map.put(key, value);
+                jsonObject.put(key, value);
             }
         }
     }
@@ -45,7 +45,7 @@ public class ConstantsConfig extends ConstantsInitializer {
      * @return 配置值
      */
     public static String get(String key) {
-        String value = map.get(key);
+        String value = jsonObject.getString(key);
         return value == null ? "" : value;
     }
 
@@ -57,7 +57,7 @@ public class ConstantsConfig extends ConstantsInitializer {
      * @return 配置值
      */
     public static String get(String key, String defaultValue) {
-        String value = map.get(key);
+        String value = jsonObject.getString(key);
         return value == null ? defaultValue : value;
     }
 

@@ -20,6 +20,10 @@ public class WebConstants {
      */
     public static final String LOCALHOST = "localhost";
     /**
+     * POSTMAN_IP_HOST
+     */
+    public static final String POSTMAN_IP_HOST = "0:0:0:0:0:0:0:1";
+    /**
      * 公共网关接口(Common Gateway Interface)
      */
     public static final String CGI = "cgi";
@@ -27,5 +31,13 @@ public class WebConstants {
      * 应用程序接口(Application Program Interface)
      */
     public static final String API = "api";
+    /**
+     * 从拦截器中获取的类名称分隔符
+     */
+    public static final String HANDLE_BEAN_NAME_SEPARATOR = "$$";
+    /**
+     * 拦截器请求开始时间
+     */
+    public static final String HANDLE_START_TIME = ConstantsConfig.get("HANDLE_START_TIME", "startTime");
 
 }

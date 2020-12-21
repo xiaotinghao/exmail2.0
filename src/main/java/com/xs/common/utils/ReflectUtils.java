@@ -119,9 +119,4 @@ public class ReflectUtils {
         return result;
     }
 
-    public <T> Class<T> getClazz() {
-        Class<T> entityClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-        return entityClass;
-    }
-
 }

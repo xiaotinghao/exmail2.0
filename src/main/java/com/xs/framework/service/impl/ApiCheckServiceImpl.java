@@ -4,7 +4,9 @@ import com.xs.framework.service.ApiCheckService;
 import com.xs.framework.service.InterfaceCheckService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.method.HandlerMethod;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 应用程序接口校验接口实现
@@ -18,8 +20,8 @@ public class ApiCheckServiceImpl implements ApiCheckService {
     InterfaceCheckService interfaceCheckService;
 
     @Override
-    public boolean check(HandlerMethod handlerMethod) {
-        return interfaceCheckService.check(handlerMethod);
+    public boolean check(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        return interfaceCheckService.check(request, response, handler);
     }
 
 }

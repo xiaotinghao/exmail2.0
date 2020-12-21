@@ -18,7 +18,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Map;
 
-import static com.xs.common.constants.SymbolConstants.COMMA;
+import static com.xs.common.constants.SymbolConstants.*;
 import static com.xs.common.constants.WebConstants.*;
 
 /**
@@ -33,7 +33,7 @@ public class HttpUtils {
     static {
         try {
             // 获取RequestAttributes
-            RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
+            RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
             servletRequestAttributes = (ServletRequestAttributes) requestAttributes;
         } catch (Exception e) {
             e.printStackTrace();
@@ -45,7 +45,7 @@ public class HttpUtils {
      *
      * @return HttpServletRequest
      */
-    public static HttpServletRequest getCurrentRequest() {
+    private static HttpServletRequest getCurrentRequest() {
         if (servletRequestAttributes != null) {
             // 从获取RequestAttributes中获取HttpServletRequest的信息
             return servletRequestAttributes.getRequest();
@@ -58,7 +58,7 @@ public class HttpUtils {
      *
      * @return HttpServletResponse
      */
-    public static HttpServletResponse getCurrentResponse() {
+    private static HttpServletResponse getCurrentResponse() {
         if (servletRequestAttributes != null) {
             // 从获取RequestAttributes中获取HttpServletResponse的信息
             return servletRequestAttributes.getResponse();
@@ -69,7 +69,7 @@ public class HttpUtils {
     /**
      * 获取HttpServletRequest请求参数
      */
-    public static Map<String, Object> getRequestParam() {
+    private static Map<String, Object> getRequestParam() {
         return getRequestParam(getCurrentRequest());
     }
 
@@ -157,7 +157,7 @@ public class HttpUtils {
      *
      * @return 客户端真实IP地址
      */
-    public static String getClientRealIp() {
+    private static String getClientRealIp() {
         return getClientRealIp(getCurrentRequest());
     }
 
@@ -181,7 +181,7 @@ public class HttpUtils {
         }
         if (ipAddress == null || ipAddress.length() == 0 || UNKNOWN.equalsIgnoreCase(ipAddress)) {
             ipAddress = request.getRemoteAddr();
-            if (LOCAL_IP.equals(ipAddress)) {
+            if (LOCAL_IP.equals(ipAddress) || POSTMAN_IP_HOST.equals(ipAddress)) {
                 // 根据网卡取本机配置的IP
                 try {
                     ipAddress = InetAddress.getLocalHost().getHostAddress();
@@ -206,7 +206,7 @@ public class HttpUtils {
      *
      * @return 客户端的真实主机名
      */
-    public static String getClientHostName() {
+    private static String getClientHostName() {
         return getClientHostName(getCurrentRequest());
     }
 
@@ -218,7 +218,7 @@ public class HttpUtils {
      */
     public static String getClientHostName(HttpServletRequest request) {
         String remoteHost = request.getRemoteHost();
-        if (LOCALHOST.equals(remoteHost)) {
+        if (LOCALHOST.equals(remoteHost) || POSTMAN_IP_HOST.equals(remoteHost)) {
             // 根据网卡取本机主机名
             try {
                 remoteHost = InetAddress.getLocalHost().getHostName();

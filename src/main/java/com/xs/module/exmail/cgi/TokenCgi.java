@@ -1,8 +1,8 @@
 package com.xs.module.exmail.cgi;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xs.framework.annotation.InterfaceLog;
-import com.xs.module.exmail.token.service.TokenService;
+import com.xs.common.annotation.InterfaceLog;
+import com.xs.module.token.service.TokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class TokenCgi {
      * @param corpSecret 应用的凭证密钥
      * @return ACCESS_TOKEN
      * access_token 获取到的凭证。长度为64至512个字节
-     * expires_in 凭证的有效时间（秒）
+     * expires_in 凭证的有效时间（毫秒）
      */
     @GetMapping(value = "/cgi-bin/gettoken", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @InterfaceLog

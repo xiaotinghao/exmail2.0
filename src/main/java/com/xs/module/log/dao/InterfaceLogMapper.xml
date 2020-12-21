@@ -1,58 +1,71 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.xs.module.exmail.log.dao.InterfaceLogDao">
+<mapper namespace="com.xs.module.log.dao.InterfaceLogDao">
 
+    <!-- 保存接口调用日志 -->
     <insert id="saveCallLog" parameterType="java.util.Map">
-        insert into `t_interface_call_log`
-        (class_name, method_name, arg_types, corp_id, client_ip, client_host)
+        insert into `t_input_interface_call_log`
+          (
+            class_name,
+            method_name,
+            arg_types,
+            arg_map,
+            client_ip,
+            client_host,
+            response_millis
+          )
         values
-        (#{class_name}, #{method_name}, #{arg_types}, #{corp_id}, #{client_ip}, #{client_host})
+          (
+            #{class_name},
+            #{method_name},
+            #{arg_types},
+            #{arg_map},
+            #{client_ip},
+            #{client_host},
+            #{response_millis}
+          )
     </insert>
 
     <select id="countCorpMinuteFrequency" resultType="java.lang.Integer">
         SELECT
           count( id )
         FROM
-          `t_interface_call_log`
+          `t_input_interface_call_log`
         WHERE
           corp_id = #{corpId}
           AND method_name = #{methodName}
-          <![CDATA[ AND TIMESTAMPDIFF( MINUTE, update_time, SYSDATE( ) ) > 1
-        ]]>
+          <![CDATA[ AND TIMESTAMPDIFF( MINUTE, update_time, SYSDATE( ) ) > 1 ]]>
     </select>
 
     <select id="countCorpHourFrequency" resultType="java.lang.Integer">
         SELECT
           count( id )
         FROM
-          `t_interface_call_log`
+          `t_input_interface_call_log`
         WHERE
           corp_id = #{corpId}
           AND method_name = #{methodName}
-          <![CDATA[ AND TIMESTAMPDIFF( HOUR, update_time, SYSDATE( ) ) > 1
-        ]]>
+          <![CDATA[ AND TIMESTAMPDIFF( HOUR, update_time, SYSDATE( ) ) > 1 ]]>
     </select>
 
     <select id="countIpMinuteFrequency" resultType="java.lang.Integer">
         SELECT
           count( id )
         FROM
-          `t_interface_call_log`
+          `t_input_interface_call_log`
         WHERE
           client_ip = #{clientIp}
-          <![CDATA[ AND TIMESTAMPDIFF( MINUTE, update_time, SYSDATE( ) ) > 1
-        ]]>
+          <![CDATA[ AND TIMESTAMPDIFF( MINUTE, update_time, SYSDATE( ) ) > 1 ]]>
     </select>
 
     <select id="countIpHourFrequency" resultType="java.lang.Integer">
         SELECT
           count( id )
         FROM
-          `t_interface_call_log`
+          `t_input_interface_call_log`
         WHERE
           client_ip = #{clientIp}
-          <![CDATA[ AND TIMESTAMPDIFF( HOUR, update_time, SYSDATE( ) ) > 1
-        ]]>
+          <![CDATA[ AND TIMESTAMPDIFF( HOUR, update_time, SYSDATE( ) ) > 1 ]]>
     </select>
 
 </mapper>

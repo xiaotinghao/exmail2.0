@@ -1,6 +1,8 @@
 package com.xs.common.constants;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xs.common.utils.MapUtils;
+import com.xs.common.utils.XsUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +16,14 @@ import java.util.Map;
 public class ResultCodeMsg extends ConstantsInitializer {
 
     /**
-     * map的key与`t_result_code_msg`表字段`key`一一对应
+     * key与`t_result_code_msg`表字段`key`一一对应
+     * value 类型为Map<String,Object>
      */
-    private static Map<String, Map<String, Object>> map;
+    private static JSONObject jsonObject;
 
     static {
-        if (map == null) {
-            map = MapUtils.init();
+        if (jsonObject == null) {
+            jsonObject = new JSONObject();
             List<Map<String, Object>> mapList = new ArrayList<>();
             try {
                 mapList.addAll(constantsDao.listCodeMsg());
@@ -32,7 +35,7 @@ public class ResultCodeMsg extends ConstantsInitializer {
             for (Map<String, Object> entryMap : mapList) {
                 String key = (String) entryMap.get(constantsKey);
                 entryMap.remove(constantsKey);
-                map.put(key, entryMap);
+                jsonObject.put(key, entryMap);
             }
         }
     }
@@ -44,7 +47,7 @@ public class ResultCodeMsg extends ConstantsInitializer {
      * @return 配置值
      */
     public static Map<String, Object> get(String key) {
-        Map<String, Object> objectMap = map.get(key);
+        Map<String, Object> objectMap = XsUtils.cast(jsonObject.get(key));
         return objectMap == null ? MapUtils.init() : objectMap;
     }
 

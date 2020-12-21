@@ -1,9 +1,8 @@
 package com.xs.module.exmail.user.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xs.common.dao.ConstantsDao;
 import com.xs.common.model.Result;
-import com.xs.module.exmail.token.service.TokenService;
+import com.xs.module.token.service.TokenService;
 import com.xs.module.exmail.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,8 +17,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     TokenService tokenService;
-    @Autowired
-    ConstantsDao constantsDao;
 
     @Override
     public JSONObject getLoginUrl(String accessToken, String userId) {

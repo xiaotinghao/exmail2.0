@@ -2,6 +2,9 @@ package com.xs.framework.service;
 
 import org.springframework.web.method.HandlerMethod;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * 应用程序接口调用校验接口
  *
@@ -12,9 +15,11 @@ public interface ApiCheckService {
     /**
      * 应用程序接口校验
      *
-     * @param handlerMethod 拦截器方法对象
+     * @param request  HttpServletRequest
+     * @param response HttpServletResponse
+     * @param handler  拦截器对象
      * @return 校验结果
      */
-    boolean check(HandlerMethod handlerMethod);
+    boolean check(HttpServletRequest request, HttpServletResponse response, Object handler);
 
 }

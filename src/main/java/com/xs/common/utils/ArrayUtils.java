@@ -1,8 +1,8 @@
 package com.xs.common.utils;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
+
+import static com.xs.common.constants.SymbolConstants.COMMA;
 
 /**
  * 数组工具类
@@ -35,8 +35,20 @@ public class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
         return arrays;
     }
 
-    public String[] toArray (Collection<Object> o) {
+    public static String[] toArray(Collection<Object> o) {
         return o.toArray(new String[o.size()]);
+    }
+
+    public static String toString(Object[] arr) {
+        return toString(arr, COMMA);
+    }
+
+    public static String toString(Object[] arr, String separator) {
+        StringBuilder result = new StringBuilder();
+        for (Object o : arr) {
+            result.append(separator).append(o.toString());
+        }
+        return result.length() > 0 ? result.substring(separator.length()) : result.toString();
     }
 
 }

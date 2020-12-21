@@ -38,9 +38,4 @@ public class PropertyUtils {
         return PropertyUtils.class.getClassLoader().getResource("").getPath();
     }
 
-    public static void main(String[] args) {
-        Properties properties = PropertyUtils.getProperties("jdbc.properties");
-        System.out.println(properties.getProperty("jdbc.username"));
-    }
-
 }

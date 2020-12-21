@@ -1,4 +1,4 @@
-package com.xs.module.exmail.log.dao;
+package com.xs.module.log.dao;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

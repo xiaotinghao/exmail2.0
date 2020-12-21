@@ -1,7 +1,8 @@
 package com.xs.framework.aop;
 
-import com.xs.framework.annotation.InterfaceLog;
-import com.xs.module.exmail.log.service.InterfaceLogService;
+import com.xs.common.utils.ArrayUtils;
+import com.xs.common.annotation.InterfaceLog;
+import com.xs.module.log.service.InterfaceLogService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.Aspect;
@@ -57,8 +58,10 @@ public class InterfaceLogAspect {
             InterfaceLog interfaceLog = method.getAnnotation(InterfaceLog.class);
             if (interfaceLog != null) {
                 // 方法执行前
-                System.out.println("before:" + methodName);
-                interfaceLogService.saveLog(className, methodName, args, parameterNames);
+                System.out.println("className:" + className);
+                System.out.println("methodName:" + methodName);
+                System.out.println("args:" + ArrayUtils.toString(args));
+                System.out.println("parameterNames:" + ArrayUtils.toString(parameterNames));
             }
         }
     }

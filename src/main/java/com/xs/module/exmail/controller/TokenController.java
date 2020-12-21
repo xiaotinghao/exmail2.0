@@ -1,6 +1,6 @@
 package com.xs.module.exmail.controller;
 
-import com.xs.module.exmail.token.service.TokenService;
+import com.xs.module.token.service.TokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

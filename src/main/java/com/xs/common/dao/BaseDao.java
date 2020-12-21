@@ -32,4 +32,29 @@ public interface BaseDao {
      */
     String decode(@Param("str") String str, @Param("pwd") String pwd);
 
+    /**
+     * 查询数据表的所有字段
+     *
+     * @param tableName 表名
+     * @return 查询结果
+     */
+    List<String> queryColumns(@Param("tableName") String tableName);
+
+    /**
+     * 查询数据表是否存在
+     *
+     * @param tableName 表名
+     * @return 表名称
+     */
+    String checkTable(@Param("tableName") String tableName);
+
+    /**
+     * 查询数据表的字段是否存在
+     *
+     * @param tableName  表名
+     * @param columnName 字段名
+     * @return 字段名称
+     */
+    String checkColumn(@Param("tableName") String tableName, @Param("columnName") String columnName);
+
 }
