@@ -63,7 +63,7 @@ public class InterfaceCheckServiceImpl implements InterfaceCheckService {
         }
         // 获取请求参数
         Map<String, Object> map = HttpUtils.getRequestParam(request);
-        String corpIdVariableName = ConstantsConfig.get("CORP_ID_VARIABLE_NAME");
+        String corpIdVariableName = ConstantsConfig.get("REQUEST_CORP_ID");
         if (map.containsKey(corpIdVariableName)) {
             String corpId = (String) map.get(corpIdVariableName);
             if (!this.corpValid(corpId, methodName)) {

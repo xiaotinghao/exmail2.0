@@ -5,7 +5,7 @@ import com.xs.common.annotation.TableCheck;
 import com.xs.common.annotation.ColumnCheckUtils;
 
 /**
- * 常量类，常量值与`t_input_corp_ip_relation`表字段对应
+ * 常量类，与`t_input_corp_ip_relation`表字段对应
  *
  * @author 18871430207@163.com
  */

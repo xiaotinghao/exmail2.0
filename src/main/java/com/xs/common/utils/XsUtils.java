@@ -1,5 +1,8 @@
 package com.xs.common.utils;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 import java.util.*;
 
 /**
@@ -10,8 +13,43 @@ import java.util.*;
 public class XsUtils {
 
     @SuppressWarnings("unchecked")
-    public static <T> T cast (Object object) {
+    public static <T> T cast(Object object) {
         return (T) object;
+    }
+
+    /**
+     * 将字符串转换为其他包装类型
+     *
+     * @param clazz 包装类型的Class类
+     * @param value 字符串
+     * @return 包装类型对象
+     */
+    public static Object cast(Class clazz, String value) {
+        if (clazz == null) {
+            return null;
+        }
+        if (value == null || value.length() == 0) {
+            return null;
+        }
+        if (clazz.equals(Character.class)) {
+            return value.toCharArray()[0];
+        }
+        if (clazz.equals(Date.class)) {
+            return DateUtils.parseDate(value);
+        }
+        try {
+            Constructor constructor = clazz.getConstructor(String.class);
+            return constructor.newInstance(value);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**

@@ -5,14 +5,14 @@ import com.xs.common.annotation.TableCheck;
 import com.xs.common.annotation.ColumnCheckUtils;
 
 /**
- * 常量类，常量值与`t_input_interface_call_log`表字段对应
+ * 常量类，与`t_input_interface_call_log`表字段对应
  *
  * @author 18871430207@163.com
  */
 @TableCheck(tableName = "t_input_interface_call_log")
 public class InterfaceCallLog {
 
-//    @ColumnCheck(columnName = "class_name")
+    @ColumnCheck(columnName = "class_name")
     public static String class_name;
     @ColumnCheck(columnName = "method_name")
     public static String method_name;

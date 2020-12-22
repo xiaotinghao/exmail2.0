@@ -8,9 +8,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
-
-import static com.xs.common.constants.WebConstants.HANDLE_START_TIME;
 
 /**
  * 日志拦截器
@@ -31,8 +28,6 @@ public class LoggerInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 封装拦截器参数
         handleParam = new HandleParam(request, response, handler);
-        // 保存请求开始时间
-        request.setAttribute(HANDLE_START_TIME, new Date());
         return true;
     }
 

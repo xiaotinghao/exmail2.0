@@ -1,6 +1,7 @@
 package com.xs.module.exmail.user.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xs.common.constants.ConstantsConfig;
 import com.xs.common.model.Result;
 import com.xs.module.token.service.TokenService;
 import com.xs.module.exmail.user.service.UserService;
@@ -28,7 +29,8 @@ public class UserServiceImpl implements UserService {
             jsonObject.put("errmsg", "ok");
             jsonObject.put("login_url", "https://exmail.qq.com/cgi-bin/login" +
                     "?fun=bizopenssologin&method=openapi&userid=zhangsanp@gzdev.com&authkey=XXXX");
-            jsonObject.put("expires_in", 300);
+            String responseExpiresIn = ConstantsConfig.get("RESPONSE_EXPIRES_IN");
+            jsonObject.put(responseExpiresIn, 300);
         } else {
             jsonObject = (JSONObject) JSONObject.toJSON(Result.get("ACCESS_TOKEN_OVERAGE"));
         }

@@ -57,4 +57,27 @@ public interface BaseDao {
      */
     String checkColumn(@Param("tableName") String tableName, @Param("columnName") String columnName);
 
+    /**
+     * 查询常量配置
+     *
+     * @param key 对应constants_key的值
+     * @return 常量配置
+     */
+    Map<String, Object> get(@Param("key") String key);
+
+    /**
+     * 查询常量配置
+     *
+     * @return 常量配置
+     */
+    List<Map<String, Object>> list();
+
+    /**
+     * 查询常量配置值
+     *
+     * @param key 对应constants_key的值
+     * @return 常量配置值
+     */
+    String getValue(@Param("key") String key);
+
 }

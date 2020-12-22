@@ -26,7 +26,7 @@ public class CollectionUtils extends org.springframework.util.CollectionUtils {
             Object next = iterator.next();
             sb.append(separator).append(String.valueOf(next));
         }
-        if (LINE_BREAK.equals(separator)) {
+        if (separator.contains(LINE_BREAK)) {
             return sb.toString();
         }
         return sb.length() > 0 ? sb.substring(separator.length()) : sb.toString();

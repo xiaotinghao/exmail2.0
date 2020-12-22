@@ -35,9 +35,5 @@ public class WebConstants {
      * 从拦截器中获取的类名称分隔符
      */
     public static final String HANDLE_BEAN_NAME_SEPARATOR = "$$";
-    /**
-     * 拦截器请求开始时间
-     */
-    public static final String HANDLE_START_TIME = ConstantsConfig.get("HANDLE_START_TIME", "startTime");
 
 }

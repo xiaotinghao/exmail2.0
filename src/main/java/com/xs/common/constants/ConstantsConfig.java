@@ -45,8 +45,7 @@ public class ConstantsConfig extends ConstantsInitializer {
      * @return 配置值
      */
     public static String get(String key) {
-        String value = jsonObject.getString(key);
-        return value == null ? "" : value;
+        return get(key, "");
     }
 
     /**
@@ -57,6 +56,11 @@ public class ConstantsConfig extends ConstantsInitializer {
      * @return 配置值
      */
     public static String get(String key, String defaultValue) {
+        // 如果在t_constants_*表中查不到key对应的配置
+        if (!jsonObject.containsKey(key)) {
+            // 则按key-defaultValue在t_constants_base表中入库一条配置
+            constantsDao.save(key, defaultValue);
+        }
         String value = jsonObject.getString(key);
         return value == null ? defaultValue : value;
     }

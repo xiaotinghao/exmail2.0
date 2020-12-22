@@ -39,7 +39,7 @@ public class CgiCheckServiceImpl implements CgiCheckService {
             String methodName = method.getName();
             // 获取请求参数
             Map<String, Object> map = HttpUtils.getRequestParam(request);
-            String accessTokenVariableName = ConstantsConfig.get("ACCESS_TOKEN_VARIABLE_NAME");
+            String accessTokenVariableName = ConstantsConfig.get("REQUEST_ACCESS_TOKEN");
             if (map.containsKey(accessTokenVariableName)) {
                 String accessToken = (String) map.get(accessTokenVariableName);
                 if (tokenService.validate(accessToken)) {

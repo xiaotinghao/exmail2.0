@@ -24,16 +24,24 @@ public interface ConstantsDao {
     /**
      * 获取所有常量表
      *
-     * @return 所有常量表，英文逗号分隔的字符串，例如：t_constants_base,t_constants_token
+     * @return 所有常量表，英文逗号分隔的字符串，例如：t_constants_base,t_constants_test
      */
     String constantsTables();
 
     /**
      * 获取所有常量表中的所有常量配置
      *
-     * @param tables 英文逗号分隔的字符串，例如：t_constants_base,t_constants_token
+     * @param tables 英文逗号分隔的字符串，例如：t_constants_base,t_constants_test
      * @return 所有常量配置
      */
     List<Map<String, Object>> listConstants(@Param("tables") String tables);
+
+    /**
+     * 保存常量配置
+     *
+     * @param key   对应constants_key的值
+     * @param value 对应constants_value的值
+     */
+    void save(@Param("key") String key, @Param("value") String value);
 
 }

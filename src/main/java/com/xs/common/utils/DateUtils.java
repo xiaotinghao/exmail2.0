@@ -1,7 +1,9 @@
 package com.xs.common.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * 时间工具类
@@ -29,6 +31,15 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils {
 
     public static SimpleDateFormat DATE_SDF = new SimpleDateFormat(DATETIME_FORMAT);
     public static SimpleDateFormat DEFAULT_SDF = new SimpleDateFormat(DEFAULT_FORMAT);
+
+    public static Date parseDate(String str) {
+        try {
+            return parseDate(str, DEFAULT_FORMAT);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     /**
      * 将日期格式化为指定格式的字符串

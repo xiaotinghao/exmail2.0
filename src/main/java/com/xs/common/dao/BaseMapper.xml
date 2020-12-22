@@ -10,6 +10,37 @@
         SELECT decode(UNHEX(#{str}), #{pwd});
     </select>
 
+    <select id="get" resultType="java.util.Map">
+        SELECT
+          constants_key, constants_value
+        FROM
+          `t_constants_base`
+        WHERE
+          constants_key = #{key}
+          AND `status` = 1
+        LIMIT 1
+    </select>
+
+    <select id="list" resultType="java.util.Map">
+        SELECT
+          constants_key, constants_value
+        FROM
+          `t_constants_base`
+        WHERE
+          `status` = 1
+    </select>
+
+    <select id="getValue" resultType="java.lang.String">
+        SELECT
+          constants_value
+        FROM
+          `t_constants_base`
+        WHERE
+          constants_key = #{key}
+          AND `status` = 1
+        LIMIT 1
+    </select>
+
     <select id="queryColumns" resultType="java.lang.String">
         SELECT c.COLUMN_NAME
         FROM information_schema.`COLUMNS` c
@@ -17,7 +48,7 @@
         WHERE c.table_name = #{tableName}
     </select>
 
-    <select id="checkTable">
+    <select id="checkTable" resultType="java.lang.String">
         SELECT
           `table_name`
         FROM
@@ -26,7 +57,7 @@
           `table_name` = #{tableName}
     </select>
 
-    <select id="checkColumn">
+    <select id="checkColumn" resultType="java.lang.String">
         SELECT
           `column_name`
         FROM

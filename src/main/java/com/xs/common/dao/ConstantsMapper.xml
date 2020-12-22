@@ -2,6 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xs.common.dao.ConstantsDao">
 
+    <insert id="save">
+        INSERT INTO `t_constants_base`
+          (constants_key, constants_value)
+        VALUES
+          (#{key}, #{value})
+    </insert>
+
     <select id="getBaseConstants" resultType="java.lang.String">
         SELECT
           constants_value

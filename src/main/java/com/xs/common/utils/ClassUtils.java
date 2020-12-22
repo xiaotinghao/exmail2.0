@@ -45,7 +45,7 @@ public class ClassUtils extends org.apache.commons.lang3.ClassUtils {
         // 元数据集缓存读取工厂，用于读取元数据的
         CachingMetadataReaderFactory readerFactory = new CachingMetadataReaderFactory();
         Resource[] resources = new Resource[0];
-        ClassLoader loader = ClassLoader.getSystemClassLoader();
+        ClassLoader loader = Thread.currentThread().getContextClassLoader();
         try {
             resources = patternResolver.getResources(locationPattern);
         } catch (IOException e) {
@@ -62,13 +62,8 @@ public class ClassUtils extends org.apache.commons.lang3.ClassUtils {
             if (metadataReader != null) {
                 String className = metadataReader.getClassMetadata().getClassName();
                 try {
-                    Class aClass = loader.loadClass(className);
-                    System.out.println(aClass.getName());
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    result.add(getClass(loader, className));
+                    Class<?> clazz = loader.loadClass(className);
+                    result.add(clazz);
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -77,7 +72,7 @@ public class ClassUtils extends org.apache.commons.lang3.ClassUtils {
         return result;
     }
 
-    public static Object newInstance(Class<?> clazz) {
+    public static <T> T newInstance(Class<T> clazz) {
         Object obj = null;
         try {
             obj = clazz.newInstance();
@@ -86,7 +81,7 @@ public class ClassUtils extends org.apache.commons.lang3.ClassUtils {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        return obj;
+        return XsUtils.cast(obj);
     }
 
 }
