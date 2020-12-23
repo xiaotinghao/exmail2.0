@@ -27,7 +27,7 @@ public interface InterfaceLogDao {
      * @param methodName api接口名称
      * @return 每分钟调用频率
      */
-    int countCorpMinuteFrequency(@Param("corpId") String corpId, @Param("methodName") String methodName);
+    long countCorpMinuteFrequency(@Param("corpId") String corpId, @Param("methodName") String methodName);
 
     /**
      * 获取企业单个api接口每小时调用频率
@@ -36,7 +36,7 @@ public interface InterfaceLogDao {
      * @param methodName api接口名称
      * @return 每小时调用频率
      */
-    int countCorpHourFrequency(@Param("corpId") String corpId, @Param("methodName") String methodName);
+    long countCorpHourFrequency(@Param("corpId") String corpId, @Param("methodName") String methodName);
 
     /**
      * 获取企业单个ip每分钟调用接口频率
@@ -44,7 +44,7 @@ public interface InterfaceLogDao {
      * @param clientIp 客户端id
      * @return 每分钟调用频率
      */
-    int countIpMinuteFrequency(@Param("clientIp") String clientIp);
+    long countIpMinuteFrequency(@Param("clientIp") String clientIp);
 
     /**
      * 获取企业单个ip每小时调用接口频率
@@ -52,6 +52,6 @@ public interface InterfaceLogDao {
      * @param clientIp 客户端id
      * @return 每小时调用频率
      */
-    int countIpHourFrequency(@Param("clientIp") String clientIp);
+    long countIpHourFrequency(@Param("clientIp") String clientIp);
 
 }

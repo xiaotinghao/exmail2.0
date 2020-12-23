@@ -43,7 +43,7 @@
 
     <select id="listCodeMsg" resultType="java.util.HashMap">
         SELECT
-          `key`, code, msg
+          `constants_key`, code, msg
         FROM
           t_reslut_code_msg
         WHERE

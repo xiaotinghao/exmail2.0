@@ -1,6 +1,8 @@
 package com.xs.common.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xs.common.annotation.TableCheck;
+import com.xs.common.constants.dynamic.ConstantsBase;
 import com.xs.common.service.BaseService;
 import com.xs.common.utils.ClassUtils;
 import com.xs.common.utils.XsUtils;
@@ -75,35 +77,11 @@ public class BaseServiceImpl implements BaseService {
 
     @Override
     public void refreshConstants() {
-        String locationPattern = "classpath*:com/xs/common/constants/ConstantsBase.class";
+        String locationPattern = "classpath*:com/xs/**/constants/dynamic/*.class";
         List<Class<?>> classes = ClassUtils.getClasses(locationPattern);
         if (classes != null && !classes.isEmpty()) {
             for (Class<?> clazz : classes) {
-                refresh(clazz);
-            }
-        }
-    }
-
-    private <T> void refresh(Class<T> clazz) {
-        T t = ClassUtils.newInstance(clazz);
-        Field[] fields = clazz.getFields();
-        List<Map<String, Object>> mapList = baseDao.list();
-        JSONObject jsonObject = new JSONObject();
-        for (Map<String, Object> entryMap : mapList) {
-            // `t_constants_*`表字段`constants_key`
-            String key = (String) entryMap.get("constants_key");
-            // `t_constants_*`表字段`constants_value`
-            String value = (String) entryMap.get("constants_value");
-            jsonObject.put(key, value);
-        }
-        for (Field field : fields) {
-            String fieldName = field.getName();
-            String value = jsonObject.getString(fieldName);
-            Object cast = XsUtils.cast(field.getType(), value);
-            try {
-                field.set(t, cast);
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+                ConstantsBase.refresh(clazz, baseDao);
             }
         }
     }

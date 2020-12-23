@@ -1,6 +1,6 @@
 package com.xs.framework.interceptor;
 
-import com.xs.common.constants.ConstantsBase;
+import com.xs.common.constants.dynamic.ConstantsBase;
 import com.xs.common.service.BaseService;
 import com.xs.framework.interceptor.model.HandleParam;
 import com.xs.module.corp.service.CorpService;

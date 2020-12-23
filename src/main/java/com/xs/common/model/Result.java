@@ -1,11 +1,13 @@
 package com.xs.common.model;
 
 import com.alibaba.fastjson.JSON;
-import com.xs.common.constants.ConstantsConfig;
 import com.xs.common.constants.ResultCodeMsg;
 import com.xs.common.utils.MapUtils;
 
 import java.util.Map;
+
+import static com.xs.common.constants.dynamic.ConstantsBase.*;
+import static com.xs.common.constants.dynamic.ResultCodeMsg.*;
 
 /**
  * 返回数据封装实体
@@ -13,10 +15,6 @@ import java.util.Map;
  * @author 18871430207@163.com
  */
 public class Result {
-
-    private static String code_key = ConstantsConfig.get("CODE_KEY", "code");
-    private static String msg_key = ConstantsConfig.get("MSG_KEY", "msg");
-    private static String data_key = ConstantsConfig.get("DATA_KEY", "data");
 
     /**
      * 通过key查询其在`t_result_code_msg`表中的配置值
@@ -30,36 +28,36 @@ public class Result {
 
     public static String make(Integer code, String msg) {
         Map<String, Object> errorMap = MapUtils.init();
-        errorMap.put(code_key, code);
-        errorMap.put(msg_key, msg);
+        errorMap.put(CODE_KEY, code);
+        errorMap.put(MSG_KEY, msg);
         return JSON.toJSONString(errorMap);
     }
 
     public static String make(Integer code, String msg, Object data) {
         Map<String, Object> errorMap = MapUtils.init();
-        errorMap.put(code_key, code);
-        errorMap.put(msg_key, msg);
-        errorMap.put(data_key, data);
+        errorMap.put(CODE_KEY, code);
+        errorMap.put(MSG_KEY, msg);
+        errorMap.put(DATA_KEY, data);
         return JSON.toJSONString(errorMap);
     }
 
     public static String success() {
-        return JSON.toJSONString(ResultCodeMsg.get("SUCCESS_CODE_MESSAGE"));
+        return JSON.toJSONString(ResultCodeMsg.get(SUCCESS_CODE_MESSAGE));
     }
 
     public static String success(Object data) {
-        Map<String, Object> successMap = ResultCodeMsg.get("SUCCESS_CODE_MESSAGE");
-        successMap.put(data_key, data);
+        Map<String, Object> successMap = ResultCodeMsg.get(SUCCESS_CODE_MESSAGE);
+        successMap.put(DATA_KEY, data);
         return JSON.toJSONString(successMap);
     }
 
     public static String error() {
-        return JSON.toJSONString(ResultCodeMsg.get("ERROR_CODE_MESSAGE"));
+        return JSON.toJSONString(ResultCodeMsg.get(ERROR_CODE_MESSAGE));
     }
 
     public static String error(String msg) {
-        Map<String, Object> errorMap = ResultCodeMsg.get("ERROR_CODE_MESSAGE");
-        errorMap.put(msg_key, msg);
+        Map<String, Object> errorMap = ResultCodeMsg.get(ERROR_CODE_MESSAGE);
+        errorMap.put(MSG_KEY, msg);
         return JSON.toJSONString(errorMap);
     }
 

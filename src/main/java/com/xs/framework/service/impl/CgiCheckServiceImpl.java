@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import static com.xs.common.constants.dynamic.ResultCodeMsg.*;
+
 /**
  * 通用网关接口校验接口
  *
@@ -46,15 +48,15 @@ public class CgiCheckServiceImpl implements CgiCheckService {
                     String corpId = tokenService.getCorpId(accessToken);
                     if (StringUtils.isNotEmpty(corpId)) {
                         if (!interfaceCheckService.corpValid(corpId, methodName)) {
-                            HttpUtils.sendError(400, Result.get("CALL_TOO_FREQUENTLY"));
+                            HttpUtils.sendError(400, Result.get(CALL_TOO_FREQUENTLY));
                             return false;
                         }
                     } else {
-                        HttpUtils.sendError(400, Result.get("INVALID_ACCESS_TOKEN"));
+                        HttpUtils.sendError(400, Result.get(INVALID_ACCESS_TOKEN));
                         return false;
                     }
                 } else {
-                    HttpUtils.sendError(400, Result.get("INVALID_ACCESS_TOKEN"));
+                    HttpUtils.sendError(400, Result.get(INVALID_ACCESS_TOKEN));
                     return false;
                 }
             }

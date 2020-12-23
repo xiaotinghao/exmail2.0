@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
+import static com.xs.common.constants.dynamic.ResultCodeMsg.*;
+
 /**
  * 权限拦截器
  *
@@ -32,11 +34,11 @@ public class AuthInterceptor implements HandlerInterceptor {
             if (tokenService.validate(accessToken)) {
                 return true;
             } else {
-                response.sendError(401, Result.get("INVALID_ACCESS_TOKEN"));
+                response.sendError(401, Result.get(INVALID_ACCESS_TOKEN));
                 return false;
             }
         }
-        response.sendError(401, Result.get("ACCESS_TOKEN_MISSING"));
+        response.sendError(401, Result.get(ACCESS_TOKEN_MISSING));
         return false;
     }
 

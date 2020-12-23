@@ -41,6 +41,16 @@ public interface BaseDao {
     List<String> queryColumns(@Param("tableName") String tableName);
 
     /**
+     * 查询数据表的所有key
+     *
+     * @param tableName 表名
+     * @return 查询结果
+     */
+    List<String> queryKeys(@Param("tableName") String tableName);
+
+    void createTable(@Param("tableName") String tableName);
+
+    /**
      * 查询数据表是否存在
      *
      * @param tableName 表名
@@ -68,9 +78,10 @@ public interface BaseDao {
     /**
      * 查询常量配置
      *
+     * @param tableName 表名
      * @return 常量配置
      */
-    List<Map<String, Object>> list();
+    List<Map<String, Object>> list(@Param("tableName") String tableName);
 
     /**
      * 查询常量配置值

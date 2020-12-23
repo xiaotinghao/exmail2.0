@@ -21,11 +21,11 @@
         LIMIT 1
     </select>
 
-    <select id="list" resultType="java.util.Map">
+    <select id="list" parameterType="java.lang.String" resultType="java.util.Map">
         SELECT
           constants_key, constants_value
         FROM
-          `t_constants_base`
+          ${tableName}
         WHERE
           `status` = 1
     </select>
@@ -47,6 +47,22 @@
         LEFT JOIN ( SELECT count( 1 ) FROM ${tableName} ) x ON 1 = 1
         WHERE c.table_name = #{tableName}
     </select>
+
+    <select id="queryKeys" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+          constants_key
+        FROM
+          ${tableName}
+    </select>
+
+    <update id="createTable" parameterType="java.lang.String">
+        CREATE TABLE ${tableName} (
+          `constants_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '常量key',
+          `constants_value` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '常量值',
+          `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+          `status` tinyint(1) NULL DEFAULT 1 COMMENT '状态，1代表启用，0代表停用'
+        ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
+    </update>
 
     <select id="checkTable" resultType="java.lang.String">
         SELECT

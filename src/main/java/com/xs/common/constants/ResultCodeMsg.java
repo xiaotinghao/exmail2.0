@@ -31,7 +31,7 @@ public class ResultCodeMsg extends ConstantsInitializer {
                 e.printStackTrace();
             }
             // `t_result_code_msg`表字段`key`
-            String constantsKey = "key";
+            String constantsKey = "constants_key";
             for (Map<String, Object> entryMap : mapList) {
                 String key = (String) entryMap.get(constantsKey);
                 entryMap.remove(constantsKey);

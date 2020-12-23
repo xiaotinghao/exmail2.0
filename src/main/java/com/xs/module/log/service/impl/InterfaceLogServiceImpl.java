@@ -1,6 +1,6 @@
 package com.xs.module.log.service.impl;
 
-import com.xs.common.constants.ConstantsBase;
+import com.xs.common.constants.dynamic.ConstantsBase;
 import com.xs.common.utils.ArrayUtils;
 import com.xs.common.utils.MapUtils;
 import com.xs.common.utils.http.HttpUtils;

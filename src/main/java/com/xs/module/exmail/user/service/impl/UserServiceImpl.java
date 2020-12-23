@@ -8,6 +8,8 @@ import com.xs.module.exmail.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static com.xs.common.constants.dynamic.ResultCodeMsg.*;
+
 /**
  * Token服务接口实现
  *
@@ -32,7 +34,7 @@ public class UserServiceImpl implements UserService {
             String responseExpiresIn = ConstantsConfig.get("RESPONSE_EXPIRES_IN");
             jsonObject.put(responseExpiresIn, 300);
         } else {
-            jsonObject = (JSONObject) JSONObject.toJSON(Result.get("ACCESS_TOKEN_OVERAGE"));
+            jsonObject = (JSONObject) JSONObject.toJSON(Result.get(ACCESS_TOKEN_OVERAGE));
         }
         return jsonObject;
     }

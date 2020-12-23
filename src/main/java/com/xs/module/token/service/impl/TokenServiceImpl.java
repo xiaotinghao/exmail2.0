@@ -9,6 +9,8 @@ import com.xs.module.register.service.CorpRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static com.xs.common.constants.dynamic.ResultCodeMsg.*;
+
 /**
  * Token服务接口实现
  *
@@ -25,7 +27,7 @@ public class TokenServiceImpl implements TokenService {
         // 校验corpId和corpSecret是否注册
         boolean valid = corpRegisterService.valid(corpId, corpSecret);
         if (!valid) {
-            return (JSONObject) JSONObject.toJSON(Result.get("INVALID_CREDENTIAL"));
+            return (JSONObject) JSONObject.toJSON(Result.get(INVALID_CREDENTIAL));
         }
         JSONObject jsonObject = JSONObject.parseObject(Result.success());
         // 当前时间毫秒数

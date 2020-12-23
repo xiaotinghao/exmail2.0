@@ -1,9 +1,9 @@
 package com.xs.common.utils;
 
-import com.xs.common.constants.ConstantsConfig;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.xs.common.constants.dynamic.ConstantsBase.MAP_INITIAL_CAPACITY;
 
 /**
  * Map工具类
@@ -20,7 +20,7 @@ public class MapUtils {
      * @return Map对象
      */
     public static <K, V> Map<K, V> init() {
-        int initialCapacity = Integer.valueOf(ConstantsConfig.get("MAP_INITIAL_CAPACITY", "16"));
+        int initialCapacity = Integer.valueOf(MAP_INITIAL_CAPACITY);
         return new HashMap<>(initialCapacity);
     }
 
