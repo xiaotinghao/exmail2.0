@@ -5,7 +5,7 @@ import com.xs.common.utils.ClassUtils;
 import com.xs.common.utils.CollectionUtils;
 import com.xs.common.utils.PropertyUtils;
 import com.xs.common.utils.StringUtils;
-import org.springframework.web.context.WebApplicationContext;
+import com.xs.common.utils.spring.SpringTool;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -44,19 +44,28 @@ public @interface TableFieldCheck {
         /**
          * 常量类与数据库表进行一致性校验
          *
-         * @param applicationContext Spring上下文对象
          * @throws RuntimeException 抛出运行时异常
          */
-        public static void checkTableField(WebApplicationContext applicationContext) throws RuntimeException {
+        public static void checkTableField() throws RuntimeException {
             List<String> errMsgList = new LinkedList<>();
             List<Class<?>> classes = ClassUtils.getClasses(scanPath);
             if (classes != null && !classes.isEmpty()) {
+                BaseDao baseDao = SpringTool.getBean(BaseDao.class);
                 for (Class<?> clazz : classes) {
                     TableFieldCheck annotation = clazz.getAnnotation(TableFieldCheck.class);
                     if (annotation != null) {
                         // 获取表名称
                         String tableName = annotation.tableName();
-                        errMsgList.addAll(check(applicationContext, tableName, clazz));
+                        // 校验clazz对应的tableName表是否存在
+                        String tableCheckResult = baseDao.checkTable(tableName);
+                        if (StringUtils.isEmpty(tableCheckResult)) {
+                            String errMsg = "[" + clazz.getName() + "]类对应的数据库表" +
+                                    "`" + tableName + "`不存在";
+                            errMsgList.add(errMsg);
+                        } else {
+                            // 校验tableName表字段是否与clazz对象的属性匹配
+                            errMsgList.addAll(checkField(tableName, clazz));
+                        }
                     }
                 }
             }
@@ -66,23 +75,18 @@ public @interface TableFieldCheck {
         }
 
         /**
-         * 1、校验clazz对应的tableName表是否存在
-         * 2、校验tableName表字段是否与clazz对应的Class对象的属性对应
+         * 校验tableName表字段是否与clazz对象的属性匹配
          *
          * @param tableName 表名称
-         * @param clazz     Class类
+         * @param clazz     Class对象
          * @return 异常信息，无异常时返回空集合
          */
-        public static List<String> check(WebApplicationContext applicationContext, String tableName, Class<?> clazz) {
+        public static List<String> checkField(String tableName, Class<?> clazz) {
             List<String> errMsgList = new LinkedList<>();
-            BaseDao baseDao = applicationContext.getBean(BaseDao.class);
+            BaseDao baseDao = SpringTool.getBean(BaseDao.class);
             // 查询数据表是否存在
             String tableCheckResult = baseDao.checkTable(tableName);
-            if (StringUtils.isEmpty(tableCheckResult)) {
-                String errMsg = "[" + clazz.getName() + "]常量类对应的数据库表`"
-                        + tableName + "`不存在";
-                errMsgList.add(errMsg);
-            } else {
+            if (!StringUtils.isEmpty(tableCheckResult)) {
                 // 表存在，则查询表的所有字段
                 List<String> columns = baseDao.listColumns(tableName);
                 // 获取常量字段，检验是否数据表字段是否对应
@@ -90,8 +94,9 @@ public @interface TableFieldCheck {
                 for (Field field : fields) {
                     String fieldName = field.getName();
                     if (!columns.contains(fieldName)) {
-                        String errMsg = "[" + clazz.getName() + "." + fieldName + "]常量与数据库表`"
-                                + tableName + "`字段不匹配";
+                        String errMsg = "[" + clazz.getName() + "]类的" +
+                                "[" + fieldName + "]属性名与数据库表" +
+                                "`" + tableName + "`的字段名不匹配";
                         errMsgList.add(errMsg);
                     }
                 }

@@ -1,5 +1,6 @@
 package com.xs.framework.listener;
 
+import com.xs.common.annotation.ClassFieldAssign;
 import com.xs.common.annotation.ConfiguredCheck;
 import com.xs.common.annotation.TableFieldCheck;
 import org.springframework.web.context.ContextLoaderListener;
@@ -15,31 +16,26 @@ import javax.servlet.ServletContextEvent;
  */
 public class XsContextLoaderListener extends ContextLoaderListener {
 
-    private WebApplicationContext applicationContext;
-
     @Override
     public WebApplicationContext initWebApplicationContext(ServletContext servletContext) {
-        applicationContext = super.initWebApplicationContext(servletContext);
-
-        // 常量类与数据库表进行一致性校验
-        TableFieldCheck.Utils.checkTableField(applicationContext);
-
-        // 校验数据常量是否已在数据库中配置
-        ConfiguredCheck.Utils.checkConfigured(applicationContext);
-
-        return applicationContext;
+        // 返回WebApplicationContext对象
+        return super.initWebApplicationContext(servletContext);
     }
 
     @Override
     public void contextInitialized(ServletContextEvent event) {
         super.contextInitialized(event);
-        System.out.println("applicationContext已初始化" + applicationContext);
+        // 常量类与数据库表进行一致性校验
+//        TableFieldCheck.Utils.checkTableField();
+        // 校验数据常量是否已在数据库中配置
+//        ConfiguredCheck.Utils.checkConfigured();
+        // 对象字段赋值
+        ClassFieldAssign.Utils.assign();
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent event) {
         super.contextDestroyed(event);
-        System.out.println("applicationContext已销毁" + applicationContext);
     }
 
 }

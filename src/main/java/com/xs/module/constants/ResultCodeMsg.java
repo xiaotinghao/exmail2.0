@@ -1,17 +1,17 @@
 package com.xs.module.constants;
 
-import com.xs.common.annotation.ConfiguredCheck;
+import com.xs.common.annotation.ClassFieldAssign;
 
 /**
  * 测试常量类，类的属性与tableName表columnName字段的值对应
  *
  * @author 18871430207@163.com
  */
-@ConfiguredCheck(tableName = "t_result_code_msg", columnName = "key")
+@ClassFieldAssign(tableName = "t_result_code_msg", columnName = "key")
 public class ResultCodeMsg {
 
     public static class CodeMsg {
-        public Integer code;
+        public Integer code11;
         public String msg;
     }
 

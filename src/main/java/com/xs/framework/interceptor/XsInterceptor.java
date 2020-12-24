@@ -1,6 +1,6 @@
 package com.xs.framework.interceptor;
 
-import com.xs.common.annotation.ConfiguredCheck;
+import com.xs.common.annotation.ClassFieldAssign;
 import com.xs.common.service.BaseService;
 import com.xs.framework.interceptor.model.HandleParam;
 import com.xs.module.corp.service.CorpService;
@@ -36,7 +36,7 @@ public class XsInterceptor implements HandlerInterceptor {
         // 封装拦截器参数
         handleParam = new HandleParam(request, response, handler);
         // 刷新常量配置
-        ConfiguredCheck.Utils.refreshConstants();
+        ClassFieldAssign.Utils.assign();
         // 保存请求开始时间
         request.setAttribute(HANDLE_START_TIME, new Date());
         // 保存企业id和客户端ip的匹配关系
