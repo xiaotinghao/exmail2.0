@@ -1,6 +1,5 @@
 package com.xs.module.log.service.impl;
 
-import com.xs.common.constants.dynamic.ConstantsBase;
 import com.xs.common.utils.ArrayUtils;
 import com.xs.common.utils.MapUtils;
 import com.xs.common.utils.http.HttpUtils;
@@ -16,6 +15,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 import static com.xs.common.constants.WebConstants.HANDLE_BEAN_NAME_SEPARATOR;
+import static com.xs.module.constants.ConstantsBase.HANDLE_START_TIME;
 import static com.xs.module.constants.InterfaceCallLog.*;
 
 /**
@@ -63,7 +63,7 @@ public class InterfaceLogServiceImpl implements InterfaceLogService {
         String clientHostName = HttpUtils.getClientHostName(request);
         objectMap.put(client_host, clientHostName);
         // 获取请求开始时间
-        String handleStartTime = ConstantsBase.HANDLE_START_TIME;
+        String handleStartTime = HANDLE_START_TIME;
         long startTimeMillis = ((Date) request.getAttribute(handleStartTime)).getTime();
         // 接口响应时间（单位：毫秒）
         long responseMillis = System.currentTimeMillis() - startTimeMillis;

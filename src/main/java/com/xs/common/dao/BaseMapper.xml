@@ -41,18 +41,23 @@
         LIMIT 1
     </select>
 
-    <select id="queryColumns" resultType="java.lang.String">
-        SELECT c.COLUMN_NAME
-        FROM information_schema.`COLUMNS` c
-        LEFT JOIN ( SELECT count( 1 ) FROM ${tableName} ) x ON 1 = 1
-        WHERE c.table_name = #{tableName}
+    <select id="listColumns" resultType="java.lang.String">
+        SELECT `column_name`
+        FROM information_schema.`COLUMNS`
+        WHERE
+          `table_schema` = 'test'
+          AND `table_name` = #{tableName}
+    </select>
+
+    <select id="listColumnValues" resultType="java.lang.String">
+        SELECT `${columnName}` FROM `${tableName}`
     </select>
 
     <select id="queryKeys" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT
           constants_key
         FROM
-          ${tableName}
+          `${tableName}`
     </select>
 
     <update id="createTable" parameterType="java.lang.String">
@@ -70,7 +75,8 @@
         FROM
           information_schema.`TABLES`
         WHERE
-          `table_name` = #{tableName}
+          `table_schema` = 'test'
+          AND `table_name` = #{tableName}
     </select>
 
     <select id="checkColumn" resultType="java.lang.String">
@@ -79,7 +85,8 @@
         FROM
           information_schema.`COLUMNS`
         WHERE
-          `table_name` = #{tableName}
+          `table_schema` = 'test'
+          AND `table_name` = #{tableName}
           AND `column_name` = #{columnName}
     </select>
 

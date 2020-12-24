@@ -1,7 +1,7 @@
 package com.xs.module.token.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.xs.common.constants.ConstantsConfig;
 import com.xs.common.model.Result;
 import com.xs.module.token.TokenAlgorithm;
 import com.xs.module.token.service.TokenService;
@@ -9,7 +9,10 @@ import com.xs.module.register.service.CorpRegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.xs.common.constants.dynamic.ResultCodeMsg.*;
+import static com.xs.module.constants.ConstantsBase.RESPONSE_EXPIRES_IN;
+import static com.xs.module.constants.ConstantsToken.RESPONSE_ACCESS_TOKEN;
+import static com.xs.module.constants.ConstantsToken.TOKEN_TIME_EFFICIENT;
+import static com.xs.module.constants.ResultCodeMsg.INVALID_CREDENTIAL;
 
 /**
  * Token服务接口实现
@@ -27,9 +30,9 @@ public class TokenServiceImpl implements TokenService {
         // 校验corpId和corpSecret是否注册
         boolean valid = corpRegisterService.valid(corpId, corpSecret);
         if (!valid) {
-            return (JSONObject) JSONObject.toJSON(Result.get(INVALID_CREDENTIAL));
+            return (JSONObject) JSON.toJSON(INVALID_CREDENTIAL);
         }
-        JSONObject jsonObject = JSONObject.parseObject(Result.success());
+        JSONObject jsonObject = JSON.parseObject(Result.success());
         // 当前时间毫秒数
         long millis = System.currentTimeMillis();
         // 待拼接数组
@@ -38,12 +41,9 @@ public class TokenServiceImpl implements TokenService {
         String encode = TokenAlgorithm.join(arr);
         // 加密生成accessToken
         String accessToken = TokenAlgorithm.encrypt(encode);
-        String responseAccessToken = ConstantsConfig.get("RESPONSE_ACCESS_TOKEN");
-        jsonObject.put(responseAccessToken, accessToken);
+        jsonObject.put(RESPONSE_ACCESS_TOKEN, accessToken);
         // 查询token时效配置（单位毫秒）
-        String timeEfficient = ConstantsConfig.get("TOKEN_TIME_EFFICIENT", "7200000");
-        String responseExpiresIn = ConstantsConfig.get("RESPONSE_EXPIRES_IN");
-        jsonObject.put(responseExpiresIn, Long.valueOf(timeEfficient));
+        jsonObject.put(RESPONSE_EXPIRES_IN, TOKEN_TIME_EFFICIENT);
         return jsonObject;
     }
 
@@ -87,8 +87,7 @@ public class TokenServiceImpl implements TokenService {
         // 当前时间戳
         long t2 = System.currentTimeMillis();
         // 查询token时效（单位毫秒）
-        String timeEfficient = ConstantsConfig.get("TOKEN_TIME_EFFICIENT", "7200000");
-        return t2 - t1 <= Long.valueOf(timeEfficient);
+        return t2 - t1 <= TOKEN_TIME_EFFICIENT;
     }
 
 }

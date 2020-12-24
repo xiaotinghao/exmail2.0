@@ -1,7 +1,5 @@
 package com.xs.framework.service.impl;
 
-import com.xs.common.constants.ConstantsConfig;
-import com.xs.common.model.Result;
 import com.xs.common.utils.StringUtils;
 import com.xs.common.utils.XsUtils;
 import com.xs.common.utils.http.HttpUtils;
@@ -17,7 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import static com.xs.common.constants.dynamic.ResultCodeMsg.*;
+import static com.xs.module.constants.ConstantsToken.REQUEST_ACCESS_TOKEN;
+import static com.xs.module.constants.ResultCodeMsg.CALL_TOO_FREQUENTLY;
+import static com.xs.module.constants.ResultCodeMsg.INVALID_ACCESS_TOKEN;
 
 /**
  * 通用网关接口校验接口
@@ -41,22 +41,21 @@ public class CgiCheckServiceImpl implements CgiCheckService {
             String methodName = method.getName();
             // 获取请求参数
             Map<String, Object> map = HttpUtils.getRequestParam(request);
-            String accessTokenVariableName = ConstantsConfig.get("REQUEST_ACCESS_TOKEN");
-            if (map.containsKey(accessTokenVariableName)) {
-                String accessToken = (String) map.get(accessTokenVariableName);
+            if (map.containsKey(REQUEST_ACCESS_TOKEN)) {
+                String accessToken = (String) map.get(REQUEST_ACCESS_TOKEN);
                 if (tokenService.validate(accessToken)) {
                     String corpId = tokenService.getCorpId(accessToken);
                     if (StringUtils.isNotEmpty(corpId)) {
                         if (!interfaceCheckService.corpValid(corpId, methodName)) {
-                            HttpUtils.sendError(400, Result.get(CALL_TOO_FREQUENTLY));
+                            HttpUtils.sendError(400, CALL_TOO_FREQUENTLY.msg);
                             return false;
                         }
                     } else {
-                        HttpUtils.sendError(400, Result.get(INVALID_ACCESS_TOKEN));
+                        HttpUtils.sendError(400, INVALID_ACCESS_TOKEN.msg);
                         return false;
                     }
                 } else {
-                    HttpUtils.sendError(400, Result.get(INVALID_ACCESS_TOKEN));
+                    HttpUtils.sendError(400, INVALID_ACCESS_TOKEN.msg);
                     return false;
                 }
             }

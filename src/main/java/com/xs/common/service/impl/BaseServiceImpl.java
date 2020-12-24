@@ -1,11 +1,6 @@
 package com.xs.common.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import com.xs.common.annotation.TableCheck;
-import com.xs.common.constants.dynamic.ConstantsBase;
 import com.xs.common.service.BaseService;
-import com.xs.common.utils.ClassUtils;
-import com.xs.common.utils.XsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +10,8 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Field;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 基础业务接口实现
@@ -73,17 +65,6 @@ public class BaseServiceImpl implements BaseService {
             sb.append(String.format(str, args));
         }
         return sb.toString();
-    }
-
-    @Override
-    public void refreshConstants() {
-        String locationPattern = "classpath*:com/xs/**/constants/dynamic/*.class";
-        List<Class<?>> classes = ClassUtils.getClasses(locationPattern);
-        if (classes != null && !classes.isEmpty()) {
-            for (Class<?> clazz : classes) {
-                ConstantsBase.refresh(clazz, baseDao);
-            }
-        }
     }
 
 }

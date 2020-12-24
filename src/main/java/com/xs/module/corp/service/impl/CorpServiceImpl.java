@@ -1,6 +1,5 @@
 package com.xs.module.corp.service.impl;
 
-import com.xs.common.constants.ConstantsConfig;
 import com.xs.common.utils.MapUtils;
 import com.xs.common.utils.StringUtils;
 import com.xs.common.utils.http.HttpUtils;
@@ -15,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
+import static com.xs.module.constants.ConstantsBase.REQUEST_CORP_ID;
+import static com.xs.module.constants.ConstantsToken.REQUEST_ACCESS_TOKEN;
 import static com.xs.module.constants.CorpIpRelation.*;
 
 /**
@@ -38,13 +39,11 @@ public class CorpServiceImpl implements CorpService {
         Map<String, Object> requestParam = HttpUtils.getRequestParam(request);
         // 获取客户端的真实IP地址
         String clientIp = HttpUtils.getClientRealIp(request);
-        String corpIdVariableName = ConstantsConfig.get("REQUEST_CORP_ID");
-        String accessTokenVariableName = ConstantsConfig.get("REQUEST_ACCESS_TOKEN");
-        if (requestParam.containsKey(corpIdVariableName)) {
-            objectMap.put(corp_id, requestParam.get(corpIdVariableName));
+        if (requestParam.containsKey(REQUEST_CORP_ID)) {
+            objectMap.put(corp_id, requestParam.get(REQUEST_CORP_ID));
             objectMap.put(client_ip, clientIp);
-        } else if (requestParam.containsKey(accessTokenVariableName)) {
-            String accessToken = (String) requestParam.get(accessTokenVariableName);
+        } else if (requestParam.containsKey(REQUEST_ACCESS_TOKEN)) {
+            String accessToken = (String) requestParam.get(REQUEST_ACCESS_TOKEN);
             String corpId = tokenService.getCorpId(accessToken);
             if (StringUtils.isNotEmpty(corpId)) {
                 objectMap.put(corp_id, corpId);

@@ -1,7 +1,5 @@
 package com.xs.framework.service.impl;
 
-import com.xs.common.constants.ConstantsConfig;
-import com.xs.common.model.Result;
 import com.xs.common.utils.XsUtils;
 import com.xs.common.utils.http.HttpUtils;
 import com.xs.module.log.dao.InterfaceLogDao;
@@ -15,8 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
 import java.util.Map;
 
-import static com.xs.common.constants.dynamic.ConstantsBase.*;
-import static com.xs.common.constants.dynamic.ResultCodeMsg.*;
+import static com.xs.module.constants.ConstantsBase.*;
+import static com.xs.module.constants.ResultCodeMsg.CALL_TOO_FREQUENTLY;
 
 /**
  * 接口调用频率校验接口实现
@@ -57,16 +55,15 @@ public class InterfaceCheckServiceImpl implements InterfaceCheckService {
         // 校验企业每ip调用接口频率
         String ipAddress = HttpUtils.getClientRealIp(request);
         if (!this.ipValid(ipAddress)) {
-            HttpUtils.sendError(400, Result.get(CALL_TOO_FREQUENTLY));
+            HttpUtils.sendError(400, CALL_TOO_FREQUENTLY.msg);
             return false;
         }
         // 获取请求参数
         Map<String, Object> map = HttpUtils.getRequestParam(request);
-        String corpIdVariableName = ConstantsConfig.get("REQUEST_CORP_ID");
-        if (map.containsKey(corpIdVariableName)) {
-            String corpId = (String) map.get(corpIdVariableName);
+        if (map.containsKey(REQUEST_CORP_ID)) {
+            String corpId = (String) map.get(REQUEST_CORP_ID);
             if (!this.corpValid(corpId, methodName)) {
-                HttpUtils.sendError(400, Result.get(CALL_TOO_FREQUENTLY));
+                HttpUtils.sendError(400, CALL_TOO_FREQUENTLY.msg);
                 return false;
             }
         }

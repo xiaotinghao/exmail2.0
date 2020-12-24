@@ -15,6 +15,20 @@ import java.util.Map;
 public interface ConstantsDao {
 
     /**
+     * 通过key获取常量值
+     *
+     * @param tableName  表名
+     * @param columnName 字段名
+     * @param key        常量查询key
+     * @return 常量值
+     */
+    Map<String, Object> getConstantByKey(
+            @Param("tableName") String tableName,
+            @Param("columnName") String columnName,
+            @Param("key") String key
+    );
+
+    /**
      * 获取所有返回编码&信息
      *
      * @return 所有返回编码&信息

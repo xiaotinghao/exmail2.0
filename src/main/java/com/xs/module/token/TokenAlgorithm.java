@@ -1,10 +1,10 @@
 package com.xs.module.token;
 
-import com.xs.common.constants.ConstantsConfig;
 import com.xs.common.dao.BaseDao;
 import com.xs.common.utils.spring.SpringTool;
 
 import static com.xs.common.constants.SymbolConstants.SEPARATOR;
+import static com.xs.module.constants.ConstantsToken.TOKEN_ENCRYPTION_KEY;
 
 /**
  * Token算法
@@ -12,11 +12,6 @@ import static com.xs.common.constants.SymbolConstants.SEPARATOR;
  * @author 18871430207@163.com
  */
 public class TokenAlgorithm {
-
-    /**
-     * 获取token加密密钥配置
-     */
-    private static String pwd = ConstantsConfig.get("TOKEN_ENCRYPTION_KEY", "xxx");
 
     private static BaseDao baseDao;
 
@@ -61,7 +56,7 @@ public class TokenAlgorithm {
      * @return 加密后的字符decode
      */
     public static String encrypt(String encode) {
-        return baseDao.encode(encode, pwd);
+        return baseDao.encode(encode, TOKEN_ENCRYPTION_KEY);
     }
 
     /**
@@ -71,7 +66,7 @@ public class TokenAlgorithm {
      * @return 解密获得的字符encode
      */
     public static String decrypt(String decode) {
-        return baseDao.decode(decode, pwd);
+        return baseDao.decode(decode, TOKEN_ENCRYPTION_KEY);
     }
 
 }

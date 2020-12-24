@@ -16,9 +16,4 @@ public interface BaseService {
      */
     String getSql(String sqlPath, Object... args);
 
-    /**
-     * 刷新常量配置
-     */
-    void refreshConstants();
-
 }

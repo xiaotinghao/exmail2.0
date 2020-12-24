@@ -21,7 +21,7 @@ public class ColumnCheckUtils {
         Field[] fields = obj.getClass().getFields();
         for (Field field : fields) {
             try {
-                String value = (String) field.get(obj);
+                Object value = field.get(obj);
                 if (value == null) {
                     field.set(obj, field.getAnnotation(ColumnCheck.class).columnName());
                 }

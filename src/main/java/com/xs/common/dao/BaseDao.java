@@ -38,7 +38,16 @@ public interface BaseDao {
      * @param tableName 表名
      * @return 查询结果
      */
-    List<String> queryColumns(@Param("tableName") String tableName);
+    List<String> listColumns(@Param("tableName") String tableName);
+
+    /**
+     * 查询数据表某字段的全部值
+     *
+     * @param tableName  表名
+     * @param columnName 字段名
+     * @return 查询结果
+     */
+    List<String> listColumnValues(@Param("tableName") String tableName, @Param("columnName") String columnName);
 
     /**
      * 查询数据表的所有key

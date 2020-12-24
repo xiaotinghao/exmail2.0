@@ -1,7 +1,5 @@
 package com.xs.framework.interceptor;
 
-import com.xs.common.constants.ConstantsConfig;
-import com.xs.common.model.Result;
 import com.xs.common.utils.http.HttpUtils;
 import com.xs.module.token.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
-import static com.xs.common.constants.dynamic.ResultCodeMsg.*;
+import static com.xs.module.constants.ConstantsToken.REQUEST_ACCESS_TOKEN;
+import static com.xs.module.constants.ResultCodeMsg.ACCESS_TOKEN_MISSING;
+import static com.xs.module.constants.ResultCodeMsg.INVALID_ACCESS_TOKEN;
 
 /**
  * 权限拦截器
@@ -28,17 +28,16 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         // 获取请求参数
         Map<String, Object> map = HttpUtils.getRequestParam(request);
-        String accessTokenVariableName = ConstantsConfig.get("REQUEST_ACCESS_TOKEN");
-        if (map.containsKey(accessTokenVariableName)) {
-            String accessToken = (String) map.get(accessTokenVariableName);
+        if (map.containsKey(REQUEST_ACCESS_TOKEN)) {
+            String accessToken = (String) map.get(REQUEST_ACCESS_TOKEN);
             if (tokenService.validate(accessToken)) {
                 return true;
             } else {
-                response.sendError(401, Result.get(INVALID_ACCESS_TOKEN));
+                response.sendError(401, INVALID_ACCESS_TOKEN.msg);
                 return false;
             }
         }
-        response.sendError(401, Result.get(ACCESS_TOKEN_MISSING));
+        response.sendError(401, ACCESS_TOKEN_MISSING.msg);
         return false;
     }
 
