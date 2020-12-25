@@ -1,0 +1,20 @@
+# 注解扫描路径缺失
+scanPathMissing=%s%s系统已使用@%s注解，但未在配置文件中发现%s.scanPath
+
+# 注解扫描路径缺失
+tableNotExists=[%s]类对应的数据库表`%s`不存在
+
+# 注解扫描路径缺失
+scanPathMissing=%s%s系统已使用@%s注解，但未在配置文件中发现%s.scanPath
+
+# 注解扫描路径缺失
+scanPathMissing=%s%s系统已使用@%s注解，但未在配置文件中发现%s.scanPath
+
+# 注解扫描路径缺失
+scanPathMissing=%s%s系统已使用@%s注解，但未在配置文件中发现%s.scanPath
+
+# 注解扫描路径缺失
+scanPathMissing=%s%s系统已使用@%s注解，但未在配置文件中发现%s.scanPath
+
+# 注解扫描路径缺失
+scanPathMissing=%s%s系统已使用@%s注解，但未在配置文件中发现%s.scanPath

@@ -42,13 +42,23 @@ public @interface MatchTable {
 
         private static BaseDao baseDao = SpringTool.getBean(BaseDao.class);
 
+        private static String scanPathMissing_template;
+        private static String tableNotExists_template;
+
+        static {
+            String fileName = "file/annotationMsg.txt";
+            scanPathMissing_template = PropertyUtils.getProperties(fileName).getProperty("scanPathMissing");
+            tableNotExists_template = PropertyUtils.getProperties(fileName).getProperty("tableNotExists");
+        }
+
         /**
          * 对类的属性进行赋值
          */
         public static void assign() throws RuntimeException {
             List<String> errMsgList = new LinkedList<>();
             if (StringUtils.isEmpty(scanPath)) {
-                String errMsg = LINE_BREAK + TAB + "系统已使用@MatchTable注解，但未在配置文件中发现MatchTable.scanPath";
+                String annotationName = MatchTable.class.getSimpleName();
+                String errMsg = String.format(scanPathMissing_template, LINE_BREAK, TAB, annotationName, annotationName);
                 throw new RuntimeException(errMsg);
             }
             List<Class<?>> classes = ClassUtils.getClasses(scanPath);
@@ -84,8 +94,7 @@ public @interface MatchTable {
             // 校验clazz对应的tableName表是否存在
             String tableCheckResult = baseDao.checkTable(tableName);
             if (StringUtils.isEmpty(tableCheckResult)) {
-                String errMsg = "[" + clazz.getName() + "]类对应的数据库表" +
-                        "`" + tableName + "`不存在";
+                String errMsg = String.format(tableNotExists_template, clazz.getName(), tableName);
                 errMsgList.add(errMsg);
             } else {
                 // 校验tableName表字段是否与clazz对象的属性匹配

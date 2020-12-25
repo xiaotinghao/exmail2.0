@@ -3,11 +3,10 @@ package com.xs.common.utils;
 import org.apache.ibatis.io.Resources;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
-import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
+import java.io.InputStreamReader;
 import java.util.Properties;
 
 /**
@@ -24,10 +23,11 @@ public class PropertyUtils {
      * @param fileName 配置文件名
      */
     public static Properties getProperties(String fileName) {
-        Properties properties = null;
+        Properties properties = new Properties();
         try {
             // 获取相关配置信息
-            properties = Resources.getResourceAsProperties(fileName);
+            InputStream is = Resources.getResourceAsStream(fileName);
+            properties.load(new InputStreamReader(is, "UTF-8"));
         } catch (IOException e) {
             e.printStackTrace();
         }

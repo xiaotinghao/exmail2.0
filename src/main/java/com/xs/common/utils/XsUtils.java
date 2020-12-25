@@ -24,7 +24,7 @@ public class XsUtils {
         System.out.println(format);
 
         String[] arr2 = {LINE_BREAK,TAB,simpleName,simpleName};
-        String regexStr2 = "{0}{1}系统已使用@{2}注解，但未在配置文件中发现{3}.scanPath";
+        String regexStr2 = PropertyUtils.getProperties("file/annotationMsg.txt").getProperty("scanPathMissing");
         String format2 = String.format(regexStr2, arr2);
         System.out.println(format2);
 
