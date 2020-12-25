@@ -2,7 +2,6 @@ package com.xs.module.constants;
 
 import com.xs.common.annotation.ColumnCheck;
 import com.xs.common.annotation.TableCheck;
-import com.xs.common.annotation.ColumnCheckUtils;
 
 /**
  * 常量类，与`t_input_interface_call_log`表字段对应
@@ -28,7 +27,7 @@ public class InterfaceCallLog {
     public static String response_millis;
 
     static {
-        ColumnCheckUtils.initFieldValue(InterfaceCallLog.class);
+        ColumnCheck.Utils.initFieldValue(InterfaceCallLog.class);
     }
 
 }

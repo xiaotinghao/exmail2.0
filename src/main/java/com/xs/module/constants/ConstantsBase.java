@@ -1,17 +1,15 @@
 package com.xs.module.constants;
 
 import com.xs.common.annotation.ClassFieldAssign;
-import com.xs.common.annotation.Column;
 
 /**
  * 基础常量类，类的属性与tableName表columnName字段的值对应
  *
  * @author 18871430207@163.com
  */
-@ClassFieldAssign(tableName = "t_constants_base", columnName = "constants_key2")
+@ClassFieldAssign(tableName = "t_constants_base")
 public class ConstantsBase {
 
-    @Column(name = "constants_value")
     public static Long CORP_API_CALL_MINUTE_UPPER_LIMIT;
     public static Long CORP_API_CALL_HOUR_UPPER_LIMIT;
     public static Long IP_API_CALL_MINUTE_UPPER_LIMIT;

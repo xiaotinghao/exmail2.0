@@ -1,8 +1,6 @@
 package com.xs.framework.listener;
 
 import com.xs.common.annotation.ClassFieldAssign;
-import com.xs.common.annotation.ConfiguredCheck;
-import com.xs.common.annotation.TableFieldCheck;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -25,10 +23,6 @@ public class XsContextLoaderListener extends ContextLoaderListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {
         super.contextInitialized(event);
-        // 常量类与数据库表进行一致性校验
-//        TableFieldCheck.Utils.checkTableField();
-        // 校验数据常量是否已在数据库中配置
-//        ConfiguredCheck.Utils.checkConfigured();
         // 对象字段赋值
         ClassFieldAssign.Utils.assign();
     }

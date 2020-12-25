@@ -7,7 +7,7 @@ import com.xs.common.annotation.ClassFieldAssign;
  *
  * @author 18871430207@163.com
  */
-@ClassFieldAssign(tableName = "t_constants_token", columnName = "constants_key")
+@ClassFieldAssign(tableName = "t_constants_exmail")
 public class ConstantsExmail {
 
 

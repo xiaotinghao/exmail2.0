@@ -7,11 +7,11 @@ import com.xs.common.annotation.ClassFieldAssign;
  *
  * @author 18871430207@163.com
  */
-@ClassFieldAssign(tableName = "t_result_code_msg", columnName = "key")
+@ClassFieldAssign(tableName = "t_result_code_msg", keyColumn = "key")
 public class ResultCodeMsg {
 
     public static class CodeMsg {
-        public Integer code11;
+        public Integer code;
         public String msg;
     }
 
