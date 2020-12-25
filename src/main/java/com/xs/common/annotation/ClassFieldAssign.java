@@ -31,8 +31,7 @@ public @interface ClassFieldAssign {
     /**
      * 注解扫描路径
      */
-    String scanPath = PropertyUtils.getProperties("annotation.properties")
-            .getProperty("ClassFieldAssign_scanPath");
+    String scanPath = PropertyUtils.list().getProperty("ClassFieldAssign_scanPath");
 
     /**
      * 校验的数据库表名
@@ -58,6 +57,10 @@ public @interface ClassFieldAssign {
          */
         public static void assign() throws RuntimeException {
             List<String> errMsgList = new LinkedList<>();
+            if (StringUtils.isEmpty(scanPath)) {
+                String errMsg = LINE_BREAK + TAB + "系统已使用@ClassFieldAssign注解，但未在*.properties文件中配置ClassFieldAssign_scanPath";
+                throw new RuntimeException(errMsg);
+            }
             List<Class<?>> classes = ClassUtils.getClasses(scanPath);
             if (classes != null && !classes.isEmpty()) {
                 for (Class<?> clazz : classes) {
@@ -243,7 +246,7 @@ public @interface ClassFieldAssign {
                         Class packagedClass = type;
                         // 如果Class对象为表示八个基本类型，则转换为包装类型
                         if (type.isPrimitive()) {
-                            packagedClass = XsUtils.getPackagedClass(type);
+                            packagedClass = XsUtils.getPackagedClass(XsUtils.cast(type));
                         }
                         String stringValue = String.valueOf(constant.get(valueColumn));
                         Object value = XsUtils.cast(packagedClass, stringValue);
