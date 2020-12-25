@@ -5,10 +5,7 @@ import com.xs.common.dao.ConstantsDao;
 import com.xs.common.utils.*;
 import com.xs.common.utils.spring.SpringTool;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -16,22 +13,27 @@ import static com.xs.common.constants.SymbolConstants.LINE_BREAK;
 import static com.xs.common.constants.SymbolConstants.TAB;
 
 /**
- * 自定义类的属性赋值注解
- * 在常量类上添加该注解后，会
- * 1、校验类及其属性与数据库表的一致性
- * 2、校验类的属性值是否已在数据库中配置
- * 3、对类的属性进行赋值
+ * 自定义类的属性赋值注解@ClassFieldAssign
+ * <p> tableName   用于设置表名 </p>
+ * <p> keyColumn   用于设置属性名对应的数据库字段 </p>
+ * <p> valueColumn 用于设置属性取值对应的数据库字段 </p>
+ * <p> 在常量类上添加该注解后，会 </p>
+ * <p> 1、校验类及其属性与数据库表的一致性 </p>
+ * <p> 2、校验类的属性值是否已在数据库中配置 </p>
+ * <p> 3、对类的属性进行赋值 </p>
  *
  * @author 18871430207@163.com
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
+@Documented
 public @interface ClassFieldAssign {
 
     /**
-     * 注解扫描路径
+     * <p> 注解扫描路径 </p>
+     * 可配置，示例：ClassFieldAssign.scanPath=classpath*:com/** /constants/** /*.class
      */
-    String scanPath = PropertyUtils.list().getProperty("ClassFieldAssign_scanPath");
+    String scanPath = PropertyUtils.list().getProperty("ClassFieldAssign.scanPath");
 
     /**
      * 校验的数据库表名
@@ -39,12 +41,12 @@ public @interface ClassFieldAssign {
     String tableName();
 
     /**
-     * 属性名对应的字段名
+     * 属性名对应的数据库字段
      */
     String keyColumn() default "constants_key";
 
     /**
-     * 属性取值对应的字段名
+     * 属性取值对应的数据库字段
      */
     String valueColumn() default "constants_value";
 
@@ -58,7 +60,7 @@ public @interface ClassFieldAssign {
         public static void assign() throws RuntimeException {
             List<String> errMsgList = new LinkedList<>();
             if (StringUtils.isEmpty(scanPath)) {
-                String errMsg = LINE_BREAK + TAB + "系统已使用@ClassFieldAssign注解，但未在*.properties文件中配置ClassFieldAssign_scanPath";
+                String errMsg = LINE_BREAK + TAB + "系统已使用@ClassFieldAssign注解，但未在*.properties文件中配置ClassFieldAssign.scanPath";
                 throw new RuntimeException(errMsg);
             }
             List<Class<?>> classes = ClassUtils.getClasses(scanPath);
@@ -113,7 +115,6 @@ public @interface ClassFieldAssign {
          */
         private static List<String> checkField(String tableName, Class<?> clazz) {
             List<String> errMsgList = new LinkedList<>();
-            BaseDao baseDao = SpringTool.getBean(BaseDao.class);
             // 查询数据表是否存在
             String tableCheckResult = baseDao.checkTable(tableName);
             if (!StringUtils.isEmpty(tableCheckResult)) {

@@ -1,6 +1,7 @@
 package com.xs.framework.listener;
 
 import com.xs.common.annotation.ClassFieldAssign;
+import com.xs.common.annotation.MatchTable;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -25,6 +26,8 @@ public class XsContextLoaderListener extends ContextLoaderListener {
         super.contextInitialized(event);
         // 对象字段赋值
         ClassFieldAssign.Utils.assign();
+        // 对象字段赋值
+        MatchTable.Utils.assign();
     }
 
     @Override

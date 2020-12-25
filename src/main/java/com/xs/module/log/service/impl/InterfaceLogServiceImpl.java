@@ -47,12 +47,12 @@ public class InterfaceLogServiceImpl implements InterfaceLogService {
         String methodName = handlerMethod.getMethod().getName();
         objectMap.put(method_name, methodName);
         Class<?>[] parameterTypes = method.getParameterTypes();
-        String[] argTypes = new String[parameterTypes.length];
+        String[] argTypeArr = new String[parameterTypes.length];
         for (int i = 0; i < parameterTypes.length; i++) {
-            argTypes[i] = parameterTypes[i].getSimpleName();
+            argTypeArr[i] = parameterTypes[i].getSimpleName();
         }
         // 获取请求参数类型
-        objectMap.put(arg_types, ArrayUtils.toString(argTypes));
+        objectMap.put(argTypes, ArrayUtils.toString(argTypeArr));
         // 获取请求参数
         Map<String, Object> map = HttpUtils.getRequestParam(request);
         objectMap.put(arg_map, map.toString());
