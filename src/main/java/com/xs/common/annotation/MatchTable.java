@@ -48,7 +48,7 @@ public @interface MatchTable {
         public static void assign() throws RuntimeException {
             List<String> errMsgList = new LinkedList<>();
             if (StringUtils.isEmpty(scanPath)) {
-                String errMsg = LINE_BREAK + TAB + "系统已使用@Table注解，但未在*.properties文件中配置Table.scanPath";
+                String errMsg = LINE_BREAK + TAB + "系统已使用@MatchTable注解，但未在配置文件中发现MatchTable.scanPath";
                 throw new RuntimeException(errMsg);
             }
             List<Class<?>> classes = ClassUtils.getClasses(scanPath);

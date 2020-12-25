@@ -60,7 +60,7 @@ public @interface ClassFieldAssign {
         public static void assign() throws RuntimeException {
             List<String> errMsgList = new LinkedList<>();
             if (StringUtils.isEmpty(scanPath)) {
-                String errMsg = LINE_BREAK + TAB + "系统已使用@ClassFieldAssign注解，但未在*.properties文件中配置ClassFieldAssign.scanPath";
+                String errMsg = LINE_BREAK + TAB + "系统已使用@ClassFieldAssign注解，但未在配置文件中发现ClassFieldAssign.scanPath";
                 throw new RuntimeException(errMsg);
             }
             List<Class<?>> classes = ClassUtils.getClasses(scanPath);
