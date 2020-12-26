@@ -10,6 +10,8 @@ import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.xs.common.annotation.constants.AnnotationBase.*;
+
 /**
  * 注解工具类
  *
@@ -18,30 +20,6 @@ import java.util.List;
 public class AnnotationUtils extends org.apache.commons.lang3.AnnotationUtils {
 
     protected static BaseDao baseDao = SpringTool.getBean(BaseDao.class);
-
-    public static String SCAN_PATH_MISSING;
-    public static String TABLE_NOT_EXISTS;
-    public static String COLUMN_NOT_EXISTS;
-    public static String FIELD_NOT_CONFIGURED;
-    public static String FIELD_UNMATCHED;
-    public static String FIELD_VALUE_UNMATCHED;
-
-    protected static String scanPathMissing_template;
-    protected static String tableNotExists_template;
-    protected static String columnNotExists_template;
-    protected static String fieldNotConfigured_template;
-    private static String fieldUnmatched_template;
-    private static String fieldValueUnmatched_template;
-
-    static {
-        String fileName = "file/annotationMsg.txt";
-        scanPathMissing_template = PropertyUtils.getProperties(fileName).getProperty("scanPathMissing");
-        tableNotExists_template = PropertyUtils.getProperties(fileName).getProperty("tableNotExists");
-        columnNotExists_template = PropertyUtils.getProperties(fileName).getProperty("columnNotExists");
-        fieldNotConfigured_template = PropertyUtils.getProperties(fileName).getProperty("fieldNotConfigured");
-        fieldUnmatched_template = PropertyUtils.getProperties(fileName).getProperty("fieldUnmatched");
-        fieldValueUnmatched_template = PropertyUtils.getProperties(fileName).getProperty("fieldValueUnmatched");
-    }
 
     /**
      * <p> 获取注解的扫描路径 </p>
@@ -67,7 +45,7 @@ public class AnnotationUtils extends org.apache.commons.lang3.AnnotationUtils {
         // 校验clazz对应的tableName表是否存在
         String tableCheckResult = baseDao.checkTable(tableName);
         if (StringUtils.isEmpty(tableCheckResult)) {
-            String errMsg = String.format(tableNotExists_template, clazz.getName(), tableName);
+            String errMsg = String.format(TABLE_NOT_EXISTS_TEMPLATE, clazz.getName(), tableName);
             errMsgList.add(errMsg);
         } else {
             // 校验tableName表字段是否与clazz对象的属性匹配
@@ -99,12 +77,12 @@ public class AnnotationUtils extends org.apache.commons.lang3.AnnotationUtils {
                 if (field.isAnnotationPresent(Value.class)) {
                     String columnName = field.getAnnotation(Value.class).value();
                     if (!columns.contains(columnName)) {
-                        String errMsg = String.format(fieldValueUnmatched_template, clazz.getName(), fieldName, columnName, tableName);
+                        String errMsg = String.format(FIELD_VALUE_UNMATCHED_TEMPLATE, clazz.getName(), fieldName, columnName, tableName);
                         errMsgList.add(errMsg);
                     }
                 } else {
                     if (!columns.contains(fieldName)) {
-                        String errMsg = String.format(fieldUnmatched_template, clazz.getName(), fieldName, tableName);
+                        String errMsg = String.format(FIELD_UNMATCHED_TEMPLATE, clazz.getName(), fieldName, tableName);
                         errMsgList.add(errMsg);
                     }
                 }

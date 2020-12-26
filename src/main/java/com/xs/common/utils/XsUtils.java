@@ -1,14 +1,10 @@
 package com.xs.common.utils;
 
-import com.xs.common.annotation.ClassFieldAssign;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
-
-import static com.xs.common.constants.SymbolConstants.LINE_BREAK;
-import static com.xs.common.constants.SymbolConstants.TAB;
 
 /**
  * 工具类
@@ -16,19 +12,6 @@ import static com.xs.common.constants.SymbolConstants.TAB;
  * @author 18871430207@163.com
  */
 public class XsUtils {
-
-    public static void main(String[] args) {
-        String regexStr = "%s%s系统已使用@%s注解，但未在配置文件中发现%s.scanPath";
-        String simpleName = ClassFieldAssign.class.getSimpleName();
-        String format = String.format(regexStr, LINE_BREAK, TAB, simpleName, simpleName);
-        System.out.println(format);
-
-        String[] arr2 = {LINE_BREAK,TAB,simpleName,simpleName};
-        String regexStr2 = PropertyUtils.getProperties("file/annotationMsg.txt").getProperty("scanPathMissing");
-        String format2 = String.format(regexStr2, arr2);
-        System.out.println(format2);
-
-    }
 
     @SuppressWarnings("unchecked")
     public static <T> T cast(Object object) {

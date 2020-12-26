@@ -10,6 +10,7 @@ import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.xs.common.annotation.constants.AnnotationBase.*;
 import static com.xs.common.constants.SymbolConstants.LINE_BREAK;
 import static com.xs.common.constants.SymbolConstants.TAB;
 
@@ -45,7 +46,7 @@ public @interface MatchTable {
             List<String> errMsgList = new LinkedList<>();
             if (StringUtils.isEmpty(scanPath)) {
                 String annotationName = annotationClass.getSimpleName();
-                String errMsg = String.format(scanPathMissing_template, LINE_BREAK, TAB, annotationName, annotationName);
+                String errMsg = String.format(SCAN_PATH_MISSING_TEMPLATE, LINE_BREAK, TAB, annotationName, annotationName);
                 throw new RuntimeException(errMsg);
             }
             List<Class<?>> classes = ClassUtils.getClasses(scanPath);

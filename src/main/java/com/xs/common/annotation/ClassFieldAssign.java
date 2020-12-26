@@ -10,6 +10,7 @@ import java.lang.annotation.*;
 import java.lang.reflect.Field;
 import java.util.*;
 
+import static com.xs.common.annotation.constants.AnnotationBase.*;
 import static com.xs.common.constants.SymbolConstants.LINE_BREAK;
 import static com.xs.common.constants.SymbolConstants.TAB;
 
@@ -58,7 +59,7 @@ public @interface ClassFieldAssign {
             List<String> errMsgList = new LinkedList<>();
             if (StringUtils.isEmpty(scanPath)) {
                 String annotationName = annotationClass.getSimpleName();
-                String errMsg = String.format(scanPathMissing_template, LINE_BREAK, TAB, annotationName, annotationName);
+                String errMsg = String.format(SCAN_PATH_MISSING_TEMPLATE, LINE_BREAK, TAB, annotationName, annotationName);
                 throw new RuntimeException(errMsg);
             }
             List<Class<?>> classes = ClassUtils.getClasses(scanPath);
@@ -98,13 +99,13 @@ public @interface ClassFieldAssign {
             // 校验clazz对应的tableName表是否存在
             String tableCheckResult = baseDao.checkTable(tableName);
             if (StringUtils.isEmpty(tableCheckResult)) {
-                String errMsg = String.format(tableNotExists_template, clazz.getName(), tableName);
+                String errMsg = String.format(TABLE_NOT_EXISTS_TEMPLATE, clazz.getName(), tableName);
                 errMsgList.add(errMsg);
             } else {
                 // 校验数据表字段是否存在
                 String checkResult = baseDao.checkColumn(tableName, keyColumn);
                 if (StringUtils.isEmpty(checkResult)) {
-                    String errMsg = String.format(columnNotExists_template, clazz.getName(), tableName, keyColumn);
+                    String errMsg = String.format(COLUMN_NOT_EXISTS_TEMPLATE, clazz.getName(), tableName, keyColumn);
                     errMsgList.add(errMsg);
                 } else {
                     // 1、存在内部类是，校验内部类的属性是否与表字段匹配
@@ -145,7 +146,7 @@ public @interface ClassFieldAssign {
                 String fieldName = field.getName();
                 if (!columnValues.contains(fieldName)) {
                     // 属性值未在表中配置
-                    String errMsg = String.format(fieldNotConfigured_template, clazz.getName(),fieldName, tableName);
+                    String errMsg = String.format(FIELD_NOT_CONFIGURED_TEMPLATE, clazz.getName(),fieldName, tableName);
                     errMsgList.add(errMsg);
                 }
             }
@@ -183,7 +184,7 @@ public @interface ClassFieldAssign {
                         XsUtils.setFieldValue(field, obj, typeObj);
                     } else {
                         if (!constant.containsKey(valueColumn)) {
-                            String errMsg = String.format(columnNotExists_template, clazz.getName(), tableName, valueColumn);
+                            String errMsg = String.format(COLUMN_NOT_EXISTS_TEMPLATE, clazz.getName(), tableName, valueColumn);
                             errMsgList.add(errMsg);
                             return errMsgList;
                         }
