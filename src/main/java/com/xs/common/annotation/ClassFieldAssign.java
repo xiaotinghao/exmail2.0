@@ -1,7 +1,8 @@
 package com.xs.common.annotation;
 
-import com.xs.common.dao.BaseDao;
 import com.xs.common.dao.ConstantsDao;
+import com.xs.commons.lang3.AnnotationUtils;
+import com.xs.common.utils.StringUtils;
 import com.xs.common.utils.*;
 import com.xs.common.utils.spring.SpringTool;
 
@@ -30,12 +31,6 @@ import static com.xs.common.constants.SymbolConstants.TAB;
 public @interface ClassFieldAssign {
 
     /**
-     * <p> 注解扫描路径 </p>
-     * 可配置，示例：ClassFieldAssign.scanPath=classpath*:com/** /constants/** /*.class
-     */
-    String scanPath = PropertyUtils.list().getProperty("ClassFieldAssign.scanPath1");
-
-    /**
      * 校验的数据库表名
      */
     String tableName();
@@ -50,33 +45,26 @@ public @interface ClassFieldAssign {
      */
     String valueColumn() default "constants_value";
 
-    class Utils {
-
-        private static BaseDao baseDao = SpringTool.getBean(BaseDao.class);
-
-        private static String scanPathMissing_template;
-        private static String tableNotExists_template;
-
-        static {
-            String fileName = "file/annotationMsg.txt";
-            scanPathMissing_template = PropertyUtils.getProperties(fileName).getProperty("scanPathMissing");
-            tableNotExists_template = PropertyUtils.getProperties(fileName).getProperty("tableNotExists");
-        }
+    class Utils extends AnnotationUtils {
 
         /**
          * 对类的属性进行赋值
          */
         public static void assign() throws RuntimeException {
+            // 获取注解的Class对象
+            Class<ClassFieldAssign> annotationClass = ClassFieldAssign.class;
+            // 注解扫描路径
+            String scanPath = getScanPath(annotationClass);
             List<String> errMsgList = new LinkedList<>();
             if (StringUtils.isEmpty(scanPath)) {
-                String annotationName = ClassFieldAssign.class.getSimpleName();
+                String annotationName = annotationClass.getSimpleName();
                 String errMsg = String.format(scanPathMissing_template, LINE_BREAK, TAB, annotationName, annotationName);
                 throw new RuntimeException(errMsg);
             }
             List<Class<?>> classes = ClassUtils.getClasses(scanPath);
             if (classes != null && !classes.isEmpty()) {
                 for (Class<?> clazz : classes) {
-                    ClassFieldAssign annotation = clazz.getAnnotation(ClassFieldAssign.class);
+                    ClassFieldAssign annotation = clazz.getAnnotation(annotationClass);
                     if (annotation != null) {
                         // 校验数据常量是否已在数据库中配置
                         List<String> errMsgList2 = checkConfigured(clazz, annotation);
@@ -95,56 +83,6 @@ public @interface ClassFieldAssign {
         }
 
         /**
-         * 校验类及其属性与数据库表的一致性
-         *
-         * @param clazz     Class对象
-         * @param tableName 表名称
-         * @return 异常信息，无异常时返回空集合
-         */
-        private static List<String> checkTableField(Class<?> clazz, String tableName) {
-            List<String> errMsgList = new LinkedList<>();
-            // 校验clazz对应的tableName表是否存在
-            String tableCheckResult = baseDao.checkTable(tableName);
-            if (StringUtils.isEmpty(tableCheckResult)) {
-                String errMsg = String.format(tableNotExists_template, clazz.getName(), tableName);
-                errMsgList.add(errMsg);
-            } else {
-                // 校验tableName表字段是否与clazz对象的属性匹配
-                errMsgList.addAll(checkField(tableName, clazz));
-            }
-            return errMsgList;
-        }
-
-        /**
-         * 校验tableName表字段是否与clazz对象的属性匹配
-         *
-         * @param tableName 表名称
-         * @param clazz     Class对象
-         * @return 异常信息，无异常时返回空集合
-         */
-        private static List<String> checkField(String tableName, Class<?> clazz) {
-            List<String> errMsgList = new LinkedList<>();
-            // 查询数据表是否存在
-            String tableCheckResult = baseDao.checkTable(tableName);
-            if (!StringUtils.isEmpty(tableCheckResult)) {
-                // 表存在，则查询表的所有字段
-                List<String> columns = baseDao.listColumns(tableName);
-                // 获取常量字段，检验是否数据表字段是否对应
-                Field[] fields = clazz.getFields();
-                for (Field field : fields) {
-                    String fieldName = field.getName();
-                    if (!columns.contains(fieldName)) {
-                        String errMsg = "[" + clazz.getName() + "]类的" +
-                                "[" + fieldName + "]属性名与数据库表" +
-                                "`" + tableName + "`的字段名不匹配";
-                        errMsgList.add(errMsg);
-                    }
-                }
-            }
-            return errMsgList;
-        }
-
-        /**
          * 校验类的属性值是否已在数据库中配置
          *
          * @param clazz      Class对象
@@ -160,15 +98,13 @@ public @interface ClassFieldAssign {
             // 校验clazz对应的tableName表是否存在
             String tableCheckResult = baseDao.checkTable(tableName);
             if (StringUtils.isEmpty(tableCheckResult)) {
-                String errMsg = "[" + clazz.getName() + "]类对应的数据库表" +
-                        "`" + tableName + "`不存在";
+                String errMsg = String.format(tableNotExists_template, clazz.getName(), tableName);
                 errMsgList.add(errMsg);
             } else {
                 // 校验数据表字段是否存在
                 String checkResult = baseDao.checkColumn(tableName, keyColumn);
                 if (StringUtils.isEmpty(checkResult)) {
-                    String errMsg = "[" + clazz.getName() + "]类对应的数据库表" +
-                            "`" + tableName + "`的属性名映射字段`" + keyColumn + "`不存在";
+                    String errMsg = String.format(columnNotExists_template, clazz.getName(), tableName, keyColumn);
                     errMsgList.add(errMsg);
                 } else {
                     // 1、存在内部类是，校验内部类的属性是否与表字段匹配
@@ -203,14 +139,13 @@ public @interface ClassFieldAssign {
                     if (!checkedSet.contains(typeClass)) {
                         checkedSet.add(typeClass);
                         // 校验类及其属性与数据库表的一致性
-                        errMsgList.addAll(checkTableField(typeClass, tableName));
+                        errMsgList.addAll(checkTable(typeClass, tableName));
                     }
                 }
                 String fieldName = field.getName();
                 if (!columnValues.contains(fieldName)) {
                     // 属性值未在表中配置
-                    String errMsg = "[" + clazz.getName() + "]类的[" + fieldName + "]属性值未在数据库表" +
-                            "`" + tableName + "`中配置";
+                    String errMsg = String.format(fieldNotConfigured_template, clazz.getName(),fieldName, tableName);
                     errMsgList.add(errMsg);
                 }
             }
@@ -248,8 +183,7 @@ public @interface ClassFieldAssign {
                         XsUtils.setFieldValue(field, obj, typeObj);
                     } else {
                         if (!constant.containsKey(valueColumn)) {
-                            String errMsg = "[" + clazz.getName() + "]类对应的数据库表" +
-                                    "`" + tableName + "`的属性值映射字段`" + valueColumn + "`不存在";
+                            String errMsg = String.format(columnNotExists_template, clazz.getName(), tableName, valueColumn);
                             errMsgList.add(errMsg);
                             return errMsgList;
                         }

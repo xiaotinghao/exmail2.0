@@ -71,7 +71,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     /**
      * 拆分字符串
      */
-    public static String[] splitString(String string, int len) {
+    public static String[] split(String string, int len) {
         int x = string.length() / len;
         int y = string.length() % len;
         int z = 0;

@@ -1,8 +1,8 @@
 package com.xs.common.annotation;
 
-import com.xs.common.dao.BaseDao;
+import com.xs.commons.lang3.AnnotationUtils;
+import com.xs.common.utils.StringUtils;
 import com.xs.common.utils.*;
-import com.xs.common.utils.spring.SpringTool;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.lang.annotation.*;
@@ -28,43 +28,30 @@ import static com.xs.common.constants.SymbolConstants.TAB;
 public @interface MatchTable {
 
     /**
-     * <p> 注解扫描路径 </p>
-     * 可配置，示例：MatchTable.scanPath=classpath*:com/** /constants/** /*.class
-     */
-    String scanPath = PropertyUtils.list().getProperty("MatchTable.scanPath");
-
-    /**
      * 数据库表名
      */
     String tableName();
 
-    class Utils {
-
-        private static BaseDao baseDao = SpringTool.getBean(BaseDao.class);
-
-        private static String scanPathMissing_template;
-        private static String tableNotExists_template;
-
-        static {
-            String fileName = "file/annotationMsg.txt";
-            scanPathMissing_template = PropertyUtils.getProperties(fileName).getProperty("scanPathMissing");
-            tableNotExists_template = PropertyUtils.getProperties(fileName).getProperty("tableNotExists");
-        }
+    class Utils extends AnnotationUtils {
 
         /**
          * 对类的属性进行赋值
          */
         public static void assign() throws RuntimeException {
+            // 获取注解的Class对象
+            Class<MatchTable> annotationClass = MatchTable.class;
+            // 注解扫描路径
+            String scanPath = getScanPath(annotationClass);
             List<String> errMsgList = new LinkedList<>();
             if (StringUtils.isEmpty(scanPath)) {
-                String annotationName = MatchTable.class.getSimpleName();
+                String annotationName = annotationClass.getSimpleName();
                 String errMsg = String.format(scanPathMissing_template, LINE_BREAK, TAB, annotationName, annotationName);
                 throw new RuntimeException(errMsg);
             }
             List<Class<?>> classes = ClassUtils.getClasses(scanPath);
             if (classes != null && !classes.isEmpty()) {
                 for (Class<?> clazz : classes) {
-                    MatchTable annotation = clazz.getAnnotation(MatchTable.class);
+                    MatchTable annotation = clazz.getAnnotation(annotationClass);
                     if (annotation != null) {
                         String tableName = annotation.tableName();
                         // 校验类及其属性与数据库表的一致性
@@ -80,68 +67,6 @@ public @interface MatchTable {
             if (!errMsgList.isEmpty()) {
                 throw new RuntimeException(CollectionUtils.toString(errMsgList, LINE_BREAK + TAB));
             }
-        }
-
-        /**
-         * 校验类及其属性与数据库表的一致性
-         *
-         * @param clazz     Class对象
-         * @param tableName 表名称
-         * @return 异常信息，无异常时返回空集合
-         */
-        private static List<String> checkTable(Class<?> clazz, String tableName) {
-            List<String> errMsgList = new LinkedList<>();
-            // 校验clazz对应的tableName表是否存在
-            String tableCheckResult = baseDao.checkTable(tableName);
-            if (StringUtils.isEmpty(tableCheckResult)) {
-                String errMsg = String.format(tableNotExists_template, clazz.getName(), tableName);
-                errMsgList.add(errMsg);
-            } else {
-                // 校验tableName表字段是否与clazz对象的属性匹配
-                errMsgList.addAll(checkColumn(tableName, clazz));
-            }
-            return errMsgList;
-        }
-
-        /**
-         * 校验tableName表字段是否与clazz对象的属性匹配
-         *
-         * @param tableName 表名称
-         * @param clazz     Class对象
-         * @return 异常信息，无异常时返回空集合
-         */
-        private static List<String> checkColumn(String tableName, Class<?> clazz) {
-            List<String> errMsgList = new LinkedList<>();
-            // 查询数据表是否存在
-            String tableCheckResult = baseDao.checkTable(tableName);
-            if (!StringUtils.isEmpty(tableCheckResult)) {
-                // 表存在，则查询表的所有字段
-                List<String> columns = baseDao.listColumns(tableName);
-                // 获取常量字段，检验是否数据表字段是否对应
-                Field[] fields = clazz.getFields();
-                for (Field field : fields) {
-                    // 获取属性名
-                    String fieldName = field.getName();
-                    // 获取@Column注解的值
-                    if (field.isAnnotationPresent(Value.class)) {
-                        String columnName = field.getAnnotation(Value.class).value();
-                        if (!columns.contains(columnName)) {
-                            String errMsg = "[" + clazz.getName() + "]类的" +
-                                    "[" + fieldName + "]属性映射字段`" + columnName
-                                    + "`与数据库表`" + tableName + "`的字段名不匹配";
-                            errMsgList.add(errMsg);
-                        }
-                    } else {
-                        if (!columns.contains(fieldName)) {
-                            String errMsg = "[" + clazz.getName() + "]类的" +
-                                    "[" + fieldName + "]属性名与数据库表" +
-                                    "`" + tableName + "`的字段名不匹配";
-                            errMsgList.add(errMsg);
-                        }
-                    }
-                }
-            }
-            return errMsgList;
         }
 
         /**
