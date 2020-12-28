@@ -1,6 +1,7 @@
 package com.xs.module.constants;
 
 import com.xs.common.annotation.ClassFieldAssign;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * 测试常量类，类的属性与tableName表columnName字段的值对应
@@ -11,6 +12,7 @@ import com.xs.common.annotation.ClassFieldAssign;
 public class ResultCodeMsg {
 
     public static class CodeMsg {
+        @Value("code")
         public Integer code;
         public String msg;
     }

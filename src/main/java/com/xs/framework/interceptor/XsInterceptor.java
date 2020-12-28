@@ -2,8 +2,11 @@ package com.xs.framework.interceptor;
 
 import com.xs.common.annotation.ClassFieldAssign;
 import com.xs.common.service.BaseService;
+import com.xs.common.utils.spring.SpringTool;
 import com.xs.framework.interceptor.model.HandleParam;
 import com.xs.module.corp.service.CorpService;
+import com.xs.module.qwer1234.dao.ModuleBaseDao;
+import com.xs.module.qwer1234.dao.ModuleConstantsDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -36,7 +39,9 @@ public class XsInterceptor implements HandlerInterceptor {
         // 封装拦截器参数
         handleParam = new HandleParam(request, response, handler);
         // 刷新常量配置
-        ClassFieldAssign.Utils.assign();
+        ModuleBaseDao baseDao = SpringTool.getBean(ModuleBaseDao.class);
+        ModuleConstantsDao constantsDao = SpringTool.getBean(ModuleConstantsDao.class);
+        ClassFieldAssign.Utils.assign(baseDao,constantsDao);
         // 保存请求开始时间
         request.setAttribute(HANDLE_START_TIME, new Date());
         // 保存企业id和客户端ip的匹配关系

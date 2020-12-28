@@ -1,10 +1,9 @@
 package com.xs.common.annotation;
 
+import com.xs.common.dao.BaseDao;
 import com.xs.common.dao.ConstantsDao;
-import com.xs.commons.lang3.AnnotationUtils;
 import com.xs.common.utils.StringUtils;
 import com.xs.common.utils.*;
-import com.xs.common.utils.spring.SpringTool;
 
 import java.lang.annotation.*;
 import java.lang.reflect.Field;
@@ -45,12 +44,15 @@ public @interface ClassFieldAssign {
      */
     String valueColumn() default "constants_value";
 
-    class Utils extends AnnotationUtils {
+    class Utils extends AnnotationBase {
 
         /**
          * 对类的属性进行赋值
+         *
+         * @param baseDao      基础业务数据服务对象
+         * @param constantsDao 常量业务数据服务对象
          */
-        public static void assign() throws RuntimeException {
+        public static void assign(BaseDao baseDao, ConstantsDao constantsDao) throws RuntimeException {
             // 获取注解的Class对象
             Class<ClassFieldAssign> annotationClass = ClassFieldAssign.class;
             // 注解扫描路径
@@ -64,22 +66,37 @@ public @interface ClassFieldAssign {
             List<Class<?>> classes = ClassUtils.getClasses(scanPath);
             if (classes != null && !classes.isEmpty()) {
                 for (Class<?> clazz : classes) {
-                    ClassFieldAssign annotation = clazz.getAnnotation(annotationClass);
-                    if (annotation != null) {
-                        // 校验数据常量是否已在数据库中配置
-                        List<String> errMsgList2 = checkConfigured(clazz, annotation);
-                        if (errMsgList2.isEmpty()) {
-                            // 对象字段值赋值
-                            errMsgList.addAll(assign(clazz, annotation));
-                        } else {
-                            errMsgList.addAll(errMsgList2);
-                        }
-                    }
+                    // 校验类的属性常量配置
+                    errMsgList.addAll(check(clazz, baseDao, constantsDao));
                 }
             }
             if (!errMsgList.isEmpty()) {
                 throw new RuntimeException(CollectionUtils.toString(errMsgList, LINE_BREAK + TAB));
             }
+        }
+
+        /**
+         * 校验类的属性常量配置
+         *
+         * @param clazz        注解的Class类
+         * @param baseDao      基础业务数据服务对象
+         * @param constantsDao 常量业务数据服务对象
+         * @return 异常信息，无异常时返回空集合
+         */
+        private static List<String> check(Class<?> clazz, BaseDao baseDao, ConstantsDao constantsDao) {
+            List<String> errMsgList = new LinkedList<>();
+            ClassFieldAssign annotation = clazz.getAnnotation(ClassFieldAssign.class);
+            if (annotation != null) {
+                // 校验类的属性常量是否已在数据库中配置
+                List<String> errMsgList2 = checkConfigured(clazz, annotation, baseDao);
+                if (errMsgList2.isEmpty()) {
+                    // 对象字段值赋值
+                    errMsgList.addAll(assign(clazz, annotation, constantsDao));
+                } else {
+                    errMsgList.addAll(errMsgList2);
+                }
+            }
+            return errMsgList;
         }
 
         /**
@@ -89,7 +106,7 @@ public @interface ClassFieldAssign {
          * @param annotation ClassFieldAssign注解
          * @return 异常信息，无异常时返回空集合
          */
-        private static List<String> checkConfigured(Class<?> clazz, ClassFieldAssign annotation) {
+        private static List<String> checkConfigured(Class<?> clazz, ClassFieldAssign annotation, BaseDao baseDao) {
             List<String> errMsgList = new LinkedList<>();
             // 获取校验表名称
             String tableName = annotation.tableName();
@@ -109,7 +126,7 @@ public @interface ClassFieldAssign {
                 } else {
                     // 1、存在内部类是，校验内部类的属性是否与表字段匹配
                     // 2、校验clazz对象的属性是否在tableName表中配置有相应的值
-                    errMsgList.addAll(checkConfigured(tableName, keyColumn, clazz));
+                    errMsgList.addAll(checkConfigured(clazz, tableName, keyColumn, baseDao));
                 }
             }
             return errMsgList;
@@ -125,7 +142,7 @@ public @interface ClassFieldAssign {
          * @param clazz      Class对象
          * @return 异常信息，无异常时返回空集合
          */
-        private static List<String> checkConfigured(String tableName, String columnName, Class<?> clazz) {
+        private static List<String> checkConfigured(Class<?> clazz, String tableName, String columnName, BaseDao baseDao) {
             List<String> errMsgList = new LinkedList<>();
             Object obj = ClassUtils.newInstance(clazz);
             Field[] fields = obj.getClass().getFields();
@@ -139,13 +156,13 @@ public @interface ClassFieldAssign {
                     if (!checkedSet.contains(typeClass)) {
                         checkedSet.add(typeClass);
                         // 校验类及其属性与数据库表的一致性
-                        errMsgList.addAll(checkTable(typeClass, tableName));
+                        errMsgList.addAll(MatchTable.Utils.checkTable(typeClass, tableName, baseDao));
                     }
                 }
                 String fieldName = field.getName();
                 if (!columnValues.contains(fieldName)) {
                     // 属性值未在表中配置
-                    String errMsg = String.format(FIELD_NOT_CONFIGURED_TEMPLATE, clazz.getName(),fieldName, tableName);
+                    String errMsg = String.format(FIELD_NOT_CONFIGURED_TEMPLATE, clazz.getName(), fieldName, tableName);
                     errMsgList.add(errMsg);
                 }
             }
@@ -158,12 +175,11 @@ public @interface ClassFieldAssign {
          * @param clazz      Class对象
          * @param annotation ClassFieldAssign注解
          */
-        private static List<String> assign(Class<?> clazz, ClassFieldAssign annotation) {
+        private static List<String> assign(Class<?> clazz, ClassFieldAssign annotation, ConstantsDao constantsDao) {
             List<String> errMsgList = new LinkedList<>();
             String tableName = annotation.tableName();
             String keyColumn = annotation.keyColumn();
             String valueColumn = annotation.valueColumn();
-            ConstantsDao constantsDao = SpringTool.getBean(ConstantsDao.class);
             Object obj = ClassUtils.newInstance(clazz);
             Field[] fields = obj.getClass().getFields();
             for (Field field : fields) {
