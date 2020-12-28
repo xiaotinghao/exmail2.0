@@ -79,9 +79,9 @@ public class RsaEncrypt {
         // 得到私钥字符串
         String privateKeyString = Base64.encode(privateKey.getEncoded());
         // 将公钥对写入到文件
-        FileUtils.writeText(filePath + publicKeyFile, publicKeyString);
+        FileUtils.write(filePath + publicKeyFile, publicKeyString);
         // 将私钥对写入到文件
-        FileUtils.writeText(filePath + privateKeyFile, privateKeyString);
+        FileUtils.write(filePath + privateKeyFile, privateKeyString);
     }
 
     /**

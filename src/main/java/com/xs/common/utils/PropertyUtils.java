@@ -41,35 +41,38 @@ public class PropertyUtils {
      * 配置文件放在resources下
      */
     public static Properties list() {
-        return list("*");
+        if (properties.isEmpty()) {
+            // 刷新资源文件
+            refresh();
+        }
+        return properties;
     }
 
     /**
-     * 读取资源文件
+     * 刷新资源文件
      * 配置文件放在resources下
      */
-    public static Properties list(String pattern) {
-        if (properties.isEmpty()) {
-            // 获取资源文件
-            PathMatchingResourcePatternResolver patternResolver = new PathMatchingResourcePatternResolver();
-            try {
-                String locationPattern1 = "classpath:**/*" + pattern + "*.yml";
-                String locationPattern2 = "classpath:**/*" + pattern + "*.properties";
-                Resource[] resources1 = patternResolver.getResources(locationPattern1);
-                Resource[] resources2 = patternResolver.getResources(locationPattern2);
-                Object[] objects = ArrayUtils.join(resources1, resources2);
-                if (objects != null && objects.length > 0) {
-                    for (Object obj : objects) {
-                        Resource resource = XsUtils.cast(obj);
-                        InputStream inputStream = resource.getInputStream();
-                        properties.load(new InputStreamReader(inputStream, "UTF-8"));
-                    }
+    public static void refresh() {
+        Properties newProperties = new Properties();
+        // 获取资源文件
+        PathMatchingResourcePatternResolver patternResolver = new PathMatchingResourcePatternResolver();
+        try {
+            String locationPattern1 = "classpath:*.yml";
+            String locationPattern2 = "classpath:*.properties";
+            Resource[] resources1 = patternResolver.getResources(locationPattern1);
+            Resource[] resources2 = patternResolver.getResources(locationPattern2);
+            Object[] objects = ArrayUtils.join(resources1, resources2);
+            if (objects != null && objects.length > 0) {
+                for (Object obj : objects) {
+                    Resource resource = XsUtils.cast(obj);
+                    InputStream inputStream = resource.getInputStream();
+                    newProperties.load(new InputStreamReader(inputStream, "UTF-8"));
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+            properties = newProperties;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return properties;
     }
 
     /**

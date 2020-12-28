@@ -138,7 +138,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
         String line;
         try {
             while ((line = in.readLine()) != null) {
-                result.append(line);
+                result.append(line).append("\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -202,23 +202,8 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      * @param fileName 文件路径（包含名称）
      * @param text     文本内容
      */
-    public static void appendText(String fileName, String text) {
-        FileWriter fw = null;
-        try {
-            fw = new FileWriter(fileName, true);
-            fw.write(text);
-            fw.write("\n\n");
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (fw != null) {
-                    fw.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public static void append(String fileName, String text) {
+        appendText(fileName, text, true);
     }
 
     /**
@@ -227,17 +212,31 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      * @param fileName 文件路径（包含名称）
      * @param text     文本内容
      */
-    public static void writeText(String fileName, String text) {
+    public static void write(String fileName, String text) {
+        appendText(fileName, text, false);
+    }
+
+    private static void appendText(String fileName, String text, boolean append) {
+        FileOutputStream fos = null;
+        BufferedWriter bw = null;
         try {
-            // 将文本对写入到文件
-            FileWriter fw = new FileWriter(fileName);
-            BufferedWriter bw = new BufferedWriter(fw);
+            fos = new FileOutputStream(fileName, append);
+            bw = new BufferedWriter(new OutputStreamWriter(fos, "UTF-8"));
             bw.write(text);
             bw.flush();
-            bw.close();
-            fw.close();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (bw != null) {
+                    bw.close();
+                }
+                if (fos != null) {
+                    fos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

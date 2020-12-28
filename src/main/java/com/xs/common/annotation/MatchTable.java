@@ -10,7 +10,6 @@ import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.xs.common.annotation.constants.AnnotationBase.*;
 import static com.xs.common.constants.SymbolConstants.LINE_BREAK;
 import static com.xs.common.constants.SymbolConstants.TAB;
 

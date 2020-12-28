@@ -9,8 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
-
-import static com.xs.common.annotation.constants.AnnotationBase.*;
+import java.util.Properties;
 
 /**
  * 注解工具类
@@ -19,7 +18,29 @@ import static com.xs.common.annotation.constants.AnnotationBase.*;
  */
 public class AnnotationUtils extends org.apache.commons.lang3.AnnotationUtils {
 
+    public static String SCAN_PATH_MISSING_TEMPLATE;
+    public static String TABLE_NOT_EXISTS_TEMPLATE;
+    public static String COLUMN_NOT_EXISTS_TEMPLATE;
+    public static String FIELD_NOT_CONFIGURED_TEMPLATE;
+    public static String FIELD_UNMATCHED_TEMPLATE;
+    public static String FIELD_VALUE_UNMATCHED_TEMPLATE;
+
     protected static BaseDao baseDao = SpringTool.getBean(BaseDao.class);
+
+    static {
+        // 获取resources目录下的全部配置
+        Properties properties = PropertyUtils.list();
+        try {
+            AnnotationUtils obj = AnnotationUtils.class.newInstance();
+            Field[] fields = AnnotationUtils.class.getFields();
+            for (Field field : fields) {
+                String fieldName = field.getName();
+                field.set(obj, properties.getProperty(fieldName));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * <p> 获取注解的扫描路径 </p>
@@ -28,7 +49,7 @@ public class AnnotationUtils extends org.apache.commons.lang3.AnnotationUtils {
      * @param clazz 注解的Class对象
      * @return 注解的扫描路径
      */
-    protected static String getScanPath(Class<?> clazz) {
+    public static String getScanPath(Class<?> clazz) {
         String annotationName = clazz.getSimpleName();
         return PropertyUtils.list().getProperty(annotationName + ".scanPath");
     }
