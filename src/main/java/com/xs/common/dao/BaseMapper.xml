@@ -2,50 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xs.common.dao.BaseDao">
 
+    <sql id="table_schema">
+        `table_schema` = 'test'
+    </sql>
+
     <select id="encode" resultType="java.lang.String">
-        SELECT HEX(encode(#{str}, #{pwd}));
+        SELECT HEX(encode(#{str}, #{pwd}))
     </select>
 
     <select id="decode" resultType="java.lang.String">
-        SELECT decode(UNHEX(#{str}), #{pwd});
-    </select>
-
-    <select id="get" resultType="java.util.Map">
-        SELECT
-          constants_key, constants_value
-        FROM
-          `t_constants_base`
-        WHERE
-          constants_key = #{key}
-          AND `status` = 1
-        LIMIT 1
-    </select>
-
-    <select id="list" parameterType="java.lang.String" resultType="java.util.Map">
-        SELECT
-          constants_key, constants_value
-        FROM
-          ${tableName}
-        WHERE
-          `status` = 1
-    </select>
-
-    <select id="getValue" resultType="java.lang.String">
-        SELECT
-          constants_value
-        FROM
-          `t_constants_base`
-        WHERE
-          constants_key = #{key}
-          AND `status` = 1
-        LIMIT 1
+        SELECT decode(UNHEX(#{str}), #{pwd})
     </select>
 
     <select id="listColumns" resultType="java.lang.String">
-        SELECT `column_name`
-        FROM information_schema.`COLUMNS`
+        SELECT
+          `column_name`
+        FROM
+          information_schema.`COLUMNS`
         WHERE
-          `table_schema` = 'test'
+          <include refid="table_schema"/>
           AND `table_name` = #{tableName}
     </select>
 
@@ -53,21 +28,15 @@
         SELECT `${columnName}` FROM `${tableName}`
     </select>
 
-    <select id="queryKeys" parameterType="java.lang.String" resultType="java.lang.String">
+    <select id="getByKey" resultType="java.util.HashMap">
         SELECT
-          constants_key
+          *
         FROM
           `${tableName}`
+        WHERE
+          `${columnName}` = #{key}
+        LIMIT 1
     </select>
-
-    <update id="createTable" parameterType="java.lang.String">
-        CREATE TABLE ${tableName} (
-          `constants_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '常量key',
-          `constants_value` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '常量值',
-          `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
-          `status` tinyint(1) NULL DEFAULT 1 COMMENT '状态，1代表启用，0代表停用'
-        ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
-    </update>
 
     <select id="checkTable" resultType="java.lang.String">
         SELECT
@@ -75,7 +44,7 @@
         FROM
           information_schema.`TABLES`
         WHERE
-          `table_schema` = 'test'
+          <include refid="table_schema"/>
           AND `table_name` = #{tableName}
     </select>
 
@@ -85,7 +54,7 @@
         FROM
           information_schema.`COLUMNS`
         WHERE
-          `table_schema` = 'test'
+          <include refid="table_schema"/>
           AND `table_name` = #{tableName}
           AND `column_name` = #{columnName}
     </select>

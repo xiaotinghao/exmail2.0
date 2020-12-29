@@ -19,7 +19,7 @@ public interface BaseDao {
      *
      * @param str 待加密字符串
      * @param pwd 密码
-     * @return
+     * @return 加密字符串
      */
     String encode(@Param("str") String str, @Param("pwd") String pwd);
 
@@ -28,7 +28,7 @@ public interface BaseDao {
      *
      * @param str 待解密字符串
      * @param pwd 密码
-     * @return
+     * @return 解密字符串
      */
     String decode(@Param("str") String str, @Param("pwd") String pwd);
 
@@ -50,14 +50,14 @@ public interface BaseDao {
     List<String> listColumnValues(@Param("tableName") String tableName, @Param("columnName") String columnName);
 
     /**
-     * 查询数据表的所有key
+     * 通过关键字查询表数据
      *
-     * @param tableName 表名
-     * @return 查询结果
+     * @param tableName  表名
+     * @param columnName 字段名
+     * @param key        查询关键字
+     * @return 常量值
      */
-    List<String> queryKeys(@Param("tableName") String tableName);
-
-    void createTable(@Param("tableName") String tableName);
+    Map<String, Object> getByKey(@Param("tableName") String tableName, @Param("columnName") String columnName, @Param("key") String key);
 
     /**
      * 查询数据表是否存在
@@ -75,29 +75,5 @@ public interface BaseDao {
      * @return 字段名称
      */
     String checkColumn(@Param("tableName") String tableName, @Param("columnName") String columnName);
-
-    /**
-     * 查询常量配置
-     *
-     * @param key 对应constants_key的值
-     * @return 常量配置
-     */
-    Map<String, Object> get(@Param("key") String key);
-
-    /**
-     * 查询常量配置
-     *
-     * @param tableName 表名
-     * @return 常量配置
-     */
-    List<Map<String, Object>> list(@Param("tableName") String tableName);
-
-    /**
-     * 查询常量配置值
-     *
-     * @param key 对应constants_key的值
-     * @return 常量配置值
-     */
-    String getValue(@Param("key") String key);
 
 }

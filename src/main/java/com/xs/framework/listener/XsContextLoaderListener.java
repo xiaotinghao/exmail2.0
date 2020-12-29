@@ -1,10 +1,10 @@
 package com.xs.framework.listener;
 
-import com.xs.common.annotation.ClassFieldAssign;
-import com.xs.common.annotation.MatchTable;
+import com.xs.common.annotation.AnnotationBase;
+import com.xs.common.annotation.Assign;
+import com.xs.common.annotation.Table;
 import com.xs.common.utils.spring.SpringTool;
 import com.xs.module.qwer1234.dao.ModuleBaseDao;
-import com.xs.module.qwer1234.dao.ModuleConstantsDao;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -27,12 +27,15 @@ public class XsContextLoaderListener extends ContextLoaderListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {
         super.contextInitialized(event);
+
         ModuleBaseDao baseDao = SpringTool.getBean(ModuleBaseDao.class);
-        ModuleConstantsDao constantsDao = SpringTool.getBean(ModuleConstantsDao.class);
+
+        // 初始化注解使用的数据服务对象
+        AnnotationBase.init(baseDao);
         // 对象字段赋值
-        ClassFieldAssign.Utils.assign(baseDao, constantsDao);
+        Assign.Utils.assign();
         // 对象字段赋值
-        MatchTable.Utils.assign(baseDao);
+        Table.Utils.assign();
     }
 
     @Override
