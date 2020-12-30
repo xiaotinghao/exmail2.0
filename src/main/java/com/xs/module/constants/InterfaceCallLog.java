@@ -8,12 +8,12 @@ import com.xs.common.annotation.Table;
  *
  * @author 18871430207@163.com
  */
-@Table(tableName = "t_input_interface_call_log")
+@Table(tableSchema = "test", tableName = "t_input_interface_call_log")
 public class InterfaceCallLog {
 
     public static String class_name;
     public static String method_name;
-    @Column(columnName="arg_types")
+    @Column(columnName = "arg_types")
     public static String argTypes;
     public static String arg_map;
     public static String client_ip;

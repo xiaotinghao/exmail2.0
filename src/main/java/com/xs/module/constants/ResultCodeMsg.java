@@ -9,7 +9,7 @@ import com.xs.common.annotation.Key;
  *
  * @author 18871430207@163.com
  */
-@Assign(tableName = "t_result_code_msg", keyColumn = "key", valueColumn = "msg")
+@Assign(tableSchema = "test", tableName = "t_result_code_msg", keyColumn = "key", valueColumn = "msg")
 public class ResultCodeMsg {
 
     public static class CodeMsg {

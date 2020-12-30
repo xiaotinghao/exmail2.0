@@ -8,7 +8,7 @@ import com.xs.common.annotation.Table;
  *
  * @author 18871430207@163.com
  */
-@Table(tableName = "t_input_corp_ip_relation")
+@Table(tableSchema = "test", tableName = "t_input_corp_ip_relation")
 public class CorpIpRelation {
 
     public static String corp_id;

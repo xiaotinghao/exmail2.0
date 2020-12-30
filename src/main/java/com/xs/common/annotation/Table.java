@@ -23,6 +23,10 @@ import static com.xs.common.constants.SymbolConstants.TAB;
 @Target(ElementType.TYPE)
 @Documented
 public @interface Table {
+    /**
+     * 数据库名
+     */
+    String tableSchema();
 
     /**
      * 数据库表名
@@ -62,9 +66,12 @@ public @interface Table {
                 for (Class<?> clazz : classes) {
                     Table annotation = clazz.getAnnotation(Table.class);
                     if (annotation != null) {
-                        // 获取校验表名称
+                        // 获取数据库名称
+                        String tableSchema = annotation.tableSchema();
+                        // 获取数据表名称
                         String tableName = annotation.tableName();
-                        checkExists(clazz, tableName);
+                        // 校验注解配置的表和字段是否存在
+                        checkExists(clazz, tableSchema, tableName);
                     }
                 }
             }
@@ -75,26 +82,25 @@ public @interface Table {
          *
          * @param clazz Class对象
          */
-        static void checkExists(Class<?> clazz, String tableName) {
+        static void checkExists(Class<?> clazz, String tableSchema, String tableName) {
             // 校验clazz对应的tableName表是否存在
-            String tableCheckResult = baseDao.checkTable(tableName);
+            String tableCheckResult = baseDao.checkTable(tableSchema, tableName);
             if (StringUtils.isEmpty(tableCheckResult)) {
                 String errMsg = String.format(TABLE_NOT_EXISTS_TEMPLATE, clazz.getName(), tableName);
                 errMsgList.add(errMsg);
             } else {
                 // 校验属性名对应的数据库字段是否存在
-                checkColumnExists(clazz, tableName);
+                checkColumnExists(clazz, tableSchema, tableName);
             }
         }
 
         /**
          * 校验类的属性值是否已在数据库中配置
          *
-         * @param clazz     Class对象
-         * @param tableName 表名
+         * @param clazz Class对象
          */
-        private static void checkColumnExists(Class<?> clazz, String tableName) {
-            List<String> columns = baseDao.listColumns(tableName);
+        private static void checkColumnExists(Class<?> clazz, String tableSchema, String tableName) {
+            List<String> columns = baseDao.listColumns(tableSchema, tableName);
             Field[] fields = clazz.getFields();
             for (Field field : fields) {
                 String columnName;

@@ -35,45 +35,50 @@ public interface BaseDao {
     /**
      * 查询数据表的所有字段
      *
-     * @param tableName 表名
+     * @param tableSchema 数据库名称
+     * @param tableName   数据表名称
      * @return 查询结果
      */
-    List<String> listColumns(@Param("tableName") String tableName);
+    List<String> listColumns(@Param("tableSchema") String tableSchema, @Param("tableName") String tableName);
 
     /**
      * 查询数据表某字段的全部值
      *
-     * @param tableName  表名
-     * @param columnName 字段名
+     * @param tableSchema 数据库名称
+     * @param tableName   数据表名称
+     * @param columnName  字段名
      * @return 查询结果
      */
-    List<String> listColumnValues(@Param("tableName") String tableName, @Param("columnName") String columnName);
+    List<String> listColumnValues(@Param("tableSchema") String tableSchema, @Param("tableName") String tableName, @Param("columnName") String columnName);
 
     /**
      * 通过关键字查询表数据
      *
-     * @param tableName  表名
-     * @param columnName 字段名
-     * @param key        查询关键字
+     * @param tableSchema 数据库名称
+     * @param tableName   数据表名称
+     * @param columnName  字段名
+     * @param key         查询关键字
      * @return 常量值
      */
-    Map<String, Object> getByKey(@Param("tableName") String tableName, @Param("columnName") String columnName, @Param("key") String key);
+    Map<String, Object> getByKey(@Param("tableSchema") String tableSchema, @Param("tableName") String tableName, @Param("columnName") String columnName, @Param("key") String key);
 
     /**
      * 查询数据表是否存在
      *
-     * @param tableName 表名
+     * @param tableSchema 数据库名称
+     * @param tableName   数据表名称
      * @return 表名称
      */
-    String checkTable(@Param("tableName") String tableName);
+    String checkTable(@Param("tableSchema") String tableSchema, @Param("tableName") String tableName);
 
     /**
      * 查询数据表的字段是否存在
      *
-     * @param tableName  表名
-     * @param columnName 字段名
+     * @param tableSchema 数据库名称
+     * @param tableName   数据表名称
+     * @param columnName  字段名
      * @return 字段名称
      */
-    String checkColumn(@Param("tableName") String tableName, @Param("columnName") String columnName);
+    String checkColumn(@Param("tableSchema") String tableSchema, @Param("tableName") String tableName, @Param("columnName") String columnName);
 
 }

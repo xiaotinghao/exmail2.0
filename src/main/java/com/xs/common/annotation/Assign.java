@@ -28,7 +28,12 @@ import static com.xs.common.constants.SymbolConstants.TAB;
 public @interface Assign {
 
     /**
-     * 校验的数据库表名
+     * 校验的数据库名称
+     */
+    String tableSchema();
+
+    /**
+     * 校验的数据表名称
      */
     String tableName();
 
@@ -91,18 +96,20 @@ public @interface Assign {
         private static void checkExists(Class<?> clazz) {
             Assign annotation = clazz.getAnnotation(Assign.class);
             if (annotation != null) {
-                // 获取校验表名称
+                // 获取数据库名称
+                String tableSchema = annotation.tableSchema();
+                // 获取数据表名称
                 String tableName = annotation.tableName();
                 // 校验clazz对应的tableName表是否存在
-                String tableCheckResult = baseDao.checkTable(tableName);
+                String tableCheckResult = baseDao.checkTable(tableSchema, tableName);
                 if (StringUtils.isEmpty(tableCheckResult)) {
                     String errMsg = String.format(TABLE_NOT_EXISTS_TEMPLATE, clazz.getName(), tableName);
                     errMsgList.add(errMsg);
                 } else {
                     // 校验属性名对应的数据库字段是否存在
-                    checkColumnExists(clazz, tableName, annotation.keyColumn());
+                    checkColumnExists(clazz, tableSchema, tableName, annotation.keyColumn());
                     // 校验属性取值对应的数据库字段是否存在
-                    checkColumnExists(clazz, tableName, annotation.valueColumn());
+                    checkColumnExists(clazz, tableSchema, tableName, annotation.valueColumn());
                 }
             }
         }
@@ -110,13 +117,14 @@ public @interface Assign {
         /**
          * 校验类的属性值是否已在数据库中配置
          *
-         * @param clazz      Class对象
-         * @param tableName  表名
-         * @param columnName 字段名
+         * @param clazz       Class对象
+         * @param tableSchema 数据库名称
+         * @param tableName   数据表名称
+         * @param columnName  字段名
          */
-        private static void checkColumnExists(Class<?> clazz, String tableName, String columnName) {
+        private static void checkColumnExists(Class<?> clazz, String tableSchema, String tableName, String columnName) {
             // 校验数据表字段是否存在
-            String valueColumnCheckResult = baseDao.checkColumn(tableName, columnName);
+            String valueColumnCheckResult = baseDao.checkColumn(tableSchema, tableName, columnName);
             if (StringUtils.isEmpty(valueColumnCheckResult)) {
                 String errMsg = String.format(COLUMN_NOT_EXISTS_TEMPLATE, clazz.getName(), tableName, columnName);
                 errMsgList.add(errMsg);
@@ -144,16 +152,17 @@ public @interface Assign {
         private static void checkConfigured(Class<?> clazz) {
             Assign annotation = clazz.getAnnotation(Assign.class);
             if (annotation != null) {
+                String tableSchema = annotation.tableSchema();
                 String tableName = annotation.tableName();
                 String keyColumn = annotation.keyColumn();
                 Object obj = ClassUtils.newInstance(clazz);
                 Field[] fields = obj.getClass().getFields();
-                List<String> columnValues = baseDao.listColumnValues(tableName, keyColumn);
+                List<String> columnValues = baseDao.listColumnValues(tableSchema, tableName, keyColumn);
                 // 定义已校验的Class类的集合
                 Set<Class<?>> checkedSet = new HashSet<>();
                 for (Field field : fields) {
                     // 校验类及其属性与数据库表的一致性
-                    checkFieldMatch(field, checkedSet, tableName);
+                    checkFieldMatch(field, checkedSet, tableSchema, tableName);
                     // 校验类的属性值是否在表中配置
                     checkFieldConfigured(clazz, tableName, field, columnValues);
                 }
@@ -163,18 +172,19 @@ public @interface Assign {
         /**
          * 校验类及其属性与数据库表的一致性
          *
-         * @param field      类的属性
-         * @param checkedSet 已校验的Class类的集合
-         * @param tableName  表名
+         * @param field       类的属性
+         * @param checkedSet  已校验的Class类的集合
+         * @param tableSchema 数据库名称
+         * @param tableName   数据表名称
          */
-        private static void checkFieldMatch(Field field, Set<Class<?>> checkedSet, String tableName) {
+        private static void checkFieldMatch(Field field, Set<Class<?>> checkedSet, String tableSchema, String tableName) {
             Class<?> typeClass = field.getType();
             // 数据类型不是基本类型或包装类型，需额外校验
             if (!XsUtils.isPrimitiveOrPackaged(typeClass)) {
                 if (!checkedSet.contains(typeClass)) {
                     checkedSet.add(typeClass);
                     // 校验类及其属性与数据库表的一致性
-                    Table.Utils.checkExists(typeClass, tableName);
+                    Table.Utils.checkExists(typeClass, tableSchema, tableName);
                 }
             }
         }
@@ -222,6 +232,7 @@ public @interface Assign {
         private static void assign(Class<?> clazz) {
             Assign annotation = clazz.getAnnotation(Assign.class);
             if (annotation != null) {
+                String tableSchema = annotation.tableSchema();
                 String tableName = annotation.tableName();
                 String keyColumn = annotation.keyColumn();
                 String valueColumn = annotation.valueColumn();
@@ -234,7 +245,7 @@ public @interface Assign {
                     } else {
                         keyName = field.getName();
                     }
-                    Map<String, Object> constant = baseDao.getByKey(tableName, keyColumn, keyName);
+                    Map<String, Object> constant = baseDao.getByKey(tableSchema, tableName, keyColumn, keyName);
                     if (constant != null) {
                         Class<?> type = field.getType();
                         if (!XsUtils.isPrimitiveOrPackaged(type)) {

@@ -7,7 +7,7 @@ import com.xs.common.annotation.Assign;
  *
  * @author 18871430207@163.com
  */
-@Assign(tableName = "t_constants_exmail", keyColumn = "constants_key", valueColumn = "constants_value")
+@Assign(tableSchema = "test", tableName = "t_constants_exmail", keyColumn = "constants_key", valueColumn = "constants_value")
 public class ConstantsExmail {
 
 
