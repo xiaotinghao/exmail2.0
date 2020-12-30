@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xs.module.qwer1234.dao.ModuleBaseDao">
+
+    <select id="listColumns" resultType="java.lang.String">
+        SELECT
+          `column_name`
+        FROM
+          information_schema.`COLUMNS`
+        WHERE
+          `table_schema` = #{tableSchema}
+          AND `table_name` = #{tableName}
+    </select>
+
+    <select id="listColumnValues" resultType="java.lang.String">
+        SELECT `${columnName}` FROM `${tableSchema}`.`${tableName}`
+    </select>
+
+    <select id="getByKey" resultType="java.util.HashMap">
+        SELECT
+          *
+        FROM
+          `${tableSchema}`.`${tableName}`
+        WHERE
+          `${columnName}` = #{key}
+        LIMIT 1
+    </select>
+
+    <select id="checkTable" resultType="java.lang.String">
+        SELECT
+          `table_name`
+        FROM
+          information_schema.`TABLES`
+        WHERE
+          `table_schema` = #{tableSchema}
+          AND `table_name` = #{tableName}
+    </select>
+
+    <select id="checkColumn" resultType="java.lang.String">
+        SELECT
+          `column_name`
+        FROM
+          information_schema.`COLUMNS`
+        WHERE
+          `table_schema` = #{tableSchema}
+          AND `table_name` = #{tableName}
+          AND `column_name` = #{columnName}
+    </select>
+
+</mapper>

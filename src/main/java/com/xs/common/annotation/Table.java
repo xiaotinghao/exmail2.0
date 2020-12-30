@@ -1,15 +1,10 @@
 package com.xs.common.annotation;
 
-import daisy.commons.lang3.ClassUtils;
 import daisy.commons.lang3.StringUtils;
-import com.xs.common.utils.*;
 
 import java.lang.annotation.*;
 import java.lang.reflect.Field;
 import java.util.List;
-
-import static com.xs.common.constants.SymbolConstants.LINE_BREAK;
-import static com.xs.common.constants.SymbolConstants.TAB;
 
 /**
  * 自定义匹配数据库表的注解@Table
@@ -40,21 +35,17 @@ public @interface Table {
          * 对类的属性进行赋值
          */
         public static void assign() throws RuntimeException {
-            // 注解扫描路径
-            String scanPath = getScanPath(Table.class);
-            if (StringUtils.isBlank(scanPath)) {
-                String annotationName = Table.class.getSimpleName();
-                String errMsg = String.format(SCAN_PATH_MISSING_TEMPLATE, LINE_BREAK, TAB, annotationName, annotationName);
-                throw new RuntimeException(errMsg);
-            }
-            List<Class<?>> classes = ClassUtils.getClasses(scanPath);
+            // 获取注解扫描的Class对象
+            List<Class<?>> classes = getClasses(Table.class);
             // 校验注解配置的表和字段是否存在
             checkExists(classes);
-            if (!errMsgList.isEmpty()) {
-                throw new RuntimeException(CollectionUtils.toString(errMsgList, LINE_BREAK + TAB));
+            try {
+                // 对类的属性进行赋值
+                assign(classes);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException(e.getMessage() + e.getCause());
             }
-            // 对类的属性进行赋值
-            assign(classes);
         }
 
         /**
@@ -76,6 +67,8 @@ public @interface Table {
                     }
                 }
             }
+            // 检测程序是否已出错
+            checkError();
         }
 
         /**
@@ -123,7 +116,7 @@ public @interface Table {
          *
          * @param classes Class对象集合
          */
-        private static void assign(List<Class<?>> classes) {
+        private static void assign(List<Class<?>> classes) throws IllegalAccessException, InstantiationException {
             if (classes != null && !classes.isEmpty()) {
                 for (Class<?> clazz : classes) {
                     assign(clazz);
@@ -136,10 +129,10 @@ public @interface Table {
          *
          * @param clazz Class对象
          */
-        private static void assign(Class<?> clazz) {
+        private static void assign(Class<?> clazz) throws IllegalAccessException, InstantiationException {
             Table annotation = clazz.getAnnotation(Table.class);
             if (annotation != null) {
-                Object obj = ClassUtils.newInstance(clazz);
+                Object obj = clazz.newInstance();
                 Field[] fields = obj.getClass().getFields();
                 for (Field field : fields) {
                     String value;
@@ -148,7 +141,7 @@ public @interface Table {
                     } else {
                         value = field.getName();
                     }
-                    XsUtils.setFieldValue(field, obj, value);
+                    field.set(obj, value);
                 }
             }
         }

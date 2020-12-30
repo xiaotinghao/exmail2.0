@@ -8,9 +8,6 @@ import java.lang.annotation.*;
 import java.lang.reflect.Field;
 import java.util.*;
 
-import static com.xs.common.constants.SymbolConstants.LINE_BREAK;
-import static com.xs.common.constants.SymbolConstants.TAB;
-
 /**
  * 自定义类的属性赋值注解@Assign
  * <p> tableName   用于设置表名 </p>
@@ -54,26 +51,19 @@ public @interface Assign {
          * 对类的属性进行赋值
          */
         public static void assign() throws RuntimeException {
-            // 注解扫描路径
-            String scanPath = getScanPath(Assign.class);
-            if (StringUtils.isBlank(scanPath)) {
-                String annotationName = Assign.class.getSimpleName();
-                String errMsg = String.format(SCAN_PATH_MISSING_TEMPLATE, LINE_BREAK, TAB, annotationName, annotationName);
-                throw new RuntimeException(errMsg);
-            }
-            List<Class<?>> classes = ClassUtils.getClasses(scanPath);
+            // 获取注解扫描的Class对象
+            List<Class<?>> classes = getClasses(Assign.class);
             // 校验注解配置的表和字段是否存在
             checkExists(classes);
-            if (!errMsgList.isEmpty()) {
-                throw new RuntimeException(CollectionUtils.toString(errMsgList, LINE_BREAK + TAB));
-            }
             // 校验类的属性是否在tableName表中配置有相应的值
             checkConfigured(classes);
-            if (!errMsgList.isEmpty()) {
-                throw new RuntimeException(CollectionUtils.toString(errMsgList, LINE_BREAK + TAB));
+            try {
+                // 对类的属性进行赋值
+                assign(classes);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException(e.getMessage() + e.getCause());
             }
-            // 对类的属性进行赋值
-            assign(classes);
         }
 
         /**
@@ -87,6 +77,8 @@ public @interface Assign {
                     checkExists(clazz);
                 }
             }
+            // 检测程序是否已出错
+            checkError();
         }
 
         /**
@@ -143,6 +135,8 @@ public @interface Assign {
                     checkConfigured(clazz);
                 }
             }
+            // 检测程序是否已出错
+            checkError();
         }
 
         /**
@@ -217,7 +211,7 @@ public @interface Assign {
          *
          * @param classes Class对象集合
          */
-        private static void assign(List<Class<?>> classes) {
+        private static void assign(List<Class<?>> classes) throws IllegalAccessException, InstantiationException {
             if (classes != null && !classes.isEmpty()) {
                 for (Class<?> clazz : classes) {
                     assign(clazz);
@@ -230,14 +224,14 @@ public @interface Assign {
          *
          * @param clazz Class对象
          */
-        private static void assign(Class<?> clazz) {
+        private static void assign(Class<?> clazz) throws IllegalAccessException, InstantiationException {
             Assign annotation = clazz.getAnnotation(Assign.class);
             if (annotation != null) {
                 String tableSchema = annotation.tableSchema();
                 String tableName = annotation.tableName();
                 String keyColumn = annotation.keyColumn();
                 String valueColumn = annotation.valueColumn();
-                Object obj = ClassUtils.newInstance(clazz);
+                Object obj = clazz.newInstance();
                 Field[] fields = obj.getClass().getFields();
                 for (Field field : fields) {
                     String keyName;
@@ -269,7 +263,7 @@ public @interface Assign {
          * @param constant 数据库查询数据
          * @param obj      注解对象
          */
-        private static void objectTypeFieldAssign(Class<?> type, Field field, Map<String, Object> constant, Object obj) {
+        private static void objectTypeFieldAssign(Class<?> type, Field field, Map<String, Object> constant, Object obj) throws IllegalAccessException {
             // 获取对象类型属性的对象
             Object typeObj = ClassUtils.newInstance(type);
             // 获取对象类型属性的对象的字段
@@ -285,11 +279,11 @@ public @interface Assign {
                     // 基础类型|包装类型的值
                     Object typeValue = constant.get(keyName);
                     // 基础类型|包装类型属性赋值
-                    XsUtils.setFieldValue(typeField, typeObj, typeValue);
+                    typeField.set(typeObj, typeValue);
                 }
             }
             // 非基础类型/包装类型属性赋值
-            XsUtils.setFieldValue(field, obj, typeObj);
+            field.set(obj, typeObj);
         }
 
         /**
@@ -301,7 +295,7 @@ public @interface Assign {
          * @param constant    数据库查询数据
          * @param obj         注解对象
          */
-        private static void basicTypeFieldAssign(String valueColumn, Class<?> type, Field field, Map<String, Object> constant, Object obj) {
+        private static void basicTypeFieldAssign(String valueColumn, Class<?> type, Field field, Map<String, Object> constant, Object obj) throws IllegalAccessException {
             Class packagedClass = type;
             // 如果Class对象为表示八个基本类型，则转换为包装类型
             if (type.isPrimitive()) {
@@ -310,7 +304,7 @@ public @interface Assign {
             String stringValue = String.valueOf(constant.get(valueColumn));
             Object value = XsUtils.cast(packagedClass, stringValue);
             // 基础类型|包装类型属性赋值
-            XsUtils.setFieldValue(field, obj, value);
+            field.set(obj, value);
         }
 
     }

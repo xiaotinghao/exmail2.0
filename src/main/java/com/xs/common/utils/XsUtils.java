@@ -53,14 +53,6 @@ public class XsUtils {
         return null;
     }
 
-    public static void setFieldValue(Field field, Object obj, Object value) {
-        try {
-            field.set(obj, value);
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
-    }
-
     /**
      * 获取对象字符串
      *

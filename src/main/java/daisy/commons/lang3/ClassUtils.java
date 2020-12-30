@@ -6,6 +6,7 @@ import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +31,20 @@ public class ClassUtils extends org.apache.commons.lang3.ClassUtils {
             e.printStackTrace();
         }
         return clazz;
+    }
+
+    /**
+     * 获取匹配路径下的所有类的Class类
+     *
+     * @param locationPatterns 匹配路径集合
+     * @return 匹配路径下的所有类的Class类
+     */
+    public static List<Class<?>> getClasses(List<String> locationPatterns) {
+        List<Class<?>> result = new ArrayList<>();
+        for (String locationPattern : locationPatterns) {
+            result.addAll(getClasses(locationPattern));
+        }
+        return result;
     }
 
     /**
@@ -76,12 +91,14 @@ public class ClassUtils extends org.apache.commons.lang3.ClassUtils {
         Object obj = null;
         try {
             obj = clazz.newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return clazz.cast(obj);
+    }
+
+    public static boolean isPrimitiveOrWrapper(Class<?> type) {
+        return type != null && (type.isPrimitive() || isPrimitiveWrapper(type) || type.equals(String.class));
     }
 
 }
