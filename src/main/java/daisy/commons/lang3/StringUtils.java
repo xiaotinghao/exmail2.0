@@ -1,4 +1,4 @@
-package com.xs.common.utils;
+package daisy.commons.lang3;
 
 import static com.xs.common.constants.SymbolConstants.UNDERLINE;
 

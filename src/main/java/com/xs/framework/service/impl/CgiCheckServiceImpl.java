@@ -1,6 +1,6 @@
 package com.xs.framework.service.impl;
 
-import com.xs.common.utils.StringUtils;
+import daisy.commons.lang3.StringUtils;
 import com.xs.common.utils.XsUtils;
 import com.xs.common.utils.http.HttpUtils;
 import com.xs.framework.service.CgiCheckService;
@@ -45,7 +45,7 @@ public class CgiCheckServiceImpl implements CgiCheckService {
                 String accessToken = (String) map.get(REQUEST_ACCESS_TOKEN);
                 if (tokenService.validate(accessToken)) {
                     String corpId = tokenService.getCorpId(accessToken);
-                    if (StringUtils.isNotEmpty(corpId)) {
+                    if (StringUtils.isNotBlank(corpId)) {
                         if (!interfaceCheckService.corpValid(corpId, methodName)) {
                             HttpUtils.sendError(400, CALL_TOO_FREQUENTLY.msg);
                             return false;

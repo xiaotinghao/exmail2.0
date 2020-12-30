@@ -1,7 +1,7 @@
 package com.xs.module.corp.service.impl;
 
 import com.xs.common.utils.MapUtils;
-import com.xs.common.utils.StringUtils;
+import daisy.commons.lang3.StringUtils;
 import com.xs.common.utils.http.HttpUtils;
 import com.xs.framework.interceptor.model.HandleParam;
 import com.xs.module.corp.dao.CorpDao;
@@ -45,7 +45,7 @@ public class CorpServiceImpl implements CorpService {
         } else if (requestParam.containsKey(REQUEST_ACCESS_TOKEN)) {
             String accessToken = (String) requestParam.get(REQUEST_ACCESS_TOKEN);
             String corpId = tokenService.getCorpId(accessToken);
-            if (StringUtils.isNotEmpty(corpId)) {
+            if (StringUtils.isNotBlank(corpId)) {
                 objectMap.put(corp_id, corpId);
                 objectMap.put(client_ip, clientIp);
             }

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.xs.common.utils.FileUtils;
 import com.xs.common.utils.MapUtils;
-import com.xs.common.utils.StringUtils;
+import daisy.commons.lang3.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;

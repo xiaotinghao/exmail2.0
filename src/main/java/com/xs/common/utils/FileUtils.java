@@ -92,7 +92,7 @@ public class FileUtils extends org.apache.commons.io.FileUtils {
      */
     @SuppressWarnings("unused")
     public static boolean backup(String originFilePath, String backupPath) {
-        if (StringUtils.isEmpty(backupPath)) {
+        if (backupPath == null || backupPath.length() == 0) {
             backupPath = originFilePath.substring(0, originFilePath.lastIndexOf(SLASH) + 1);
             backupPath += BACKUPS;
         } else {

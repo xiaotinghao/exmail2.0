@@ -1,6 +1,6 @@
 package com.xs.module.exmail.department.model.vo;
 
-import com.xs.common.utils.StringUtils;
+import daisy.commons.lang3.StringUtils;
 
 public class UserVO {
 

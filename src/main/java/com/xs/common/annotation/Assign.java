@@ -1,6 +1,6 @@
 package com.xs.common.annotation;
 
-import com.xs.common.utils.StringUtils;
+import daisy.commons.lang3.StringUtils;
 import com.xs.common.utils.*;
 
 import java.lang.annotation.*;
@@ -55,7 +55,7 @@ public @interface Assign {
         public static void assign() throws RuntimeException {
             // 注解扫描路径
             String scanPath = getScanPath(Assign.class);
-            if (StringUtils.isEmpty(scanPath)) {
+            if (StringUtils.isBlank(scanPath)) {
                 String annotationName = Assign.class.getSimpleName();
                 String errMsg = String.format(SCAN_PATH_MISSING_TEMPLATE, LINE_BREAK, TAB, annotationName, annotationName);
                 throw new RuntimeException(errMsg);
@@ -102,7 +102,7 @@ public @interface Assign {
                 String tableName = annotation.tableName();
                 // 校验clazz对应的tableName表是否存在
                 String tableCheckResult = baseDao.checkTable(tableSchema, tableName);
-                if (StringUtils.isEmpty(tableCheckResult)) {
+                if (StringUtils.isBlank(tableCheckResult)) {
                     String errMsg = String.format(TABLE_NOT_EXISTS_TEMPLATE, clazz.getName(), tableName);
                     errMsgList.add(errMsg);
                 } else {
@@ -125,7 +125,7 @@ public @interface Assign {
         private static void checkColumnExists(Class<?> clazz, String tableSchema, String tableName, String columnName) {
             // 校验数据表字段是否存在
             String valueColumnCheckResult = baseDao.checkColumn(tableSchema, tableName, columnName);
-            if (StringUtils.isEmpty(valueColumnCheckResult)) {
+            if (StringUtils.isBlank(valueColumnCheckResult)) {
                 String errMsg = String.format(COLUMN_NOT_EXISTS_TEMPLATE, clazz.getName(), tableName, columnName);
                 errMsgList.add(errMsg);
             }

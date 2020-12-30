@@ -2,7 +2,7 @@ package com.xs.common.utils.redis.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.xs.common.utils.StringUtils;
+import daisy.commons.lang3.StringUtils;
 import com.xs.common.utils.redis.RedisUtils;
 import org.apache.log4j.Logger;
 import org.springframework.data.redis.connection.DataType;
@@ -48,7 +48,7 @@ public class RedisUtilsImpl implements RedisUtils<String, Object> {
     public <T> List<T> getJsonList(String key, Class tClass) {
         List<T> redisList = new ArrayList<>();
         String result = (String) get(key);
-        if (StringUtils.isNotEmpty(result)) {
+        if (StringUtils.isNotBlank(result)) {
             redisList.addAll(JSONObject.parseArray(result, tClass));
         }
         return redisList;

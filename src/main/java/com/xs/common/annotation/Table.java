@@ -1,6 +1,6 @@
 package com.xs.common.annotation;
 
-import com.xs.common.utils.StringUtils;
+import daisy.commons.lang3.StringUtils;
 import com.xs.common.utils.*;
 
 import java.lang.annotation.*;
@@ -41,7 +41,7 @@ public @interface Table {
         public static void assign() throws RuntimeException {
             // 注解扫描路径
             String scanPath = getScanPath(Table.class);
-            if (StringUtils.isEmpty(scanPath)) {
+            if (StringUtils.isBlank(scanPath)) {
                 String annotationName = Table.class.getSimpleName();
                 String errMsg = String.format(SCAN_PATH_MISSING_TEMPLATE, LINE_BREAK, TAB, annotationName, annotationName);
                 throw new RuntimeException(errMsg);
@@ -85,7 +85,7 @@ public @interface Table {
         static void checkExists(Class<?> clazz, String tableSchema, String tableName) {
             // 校验clazz对应的tableName表是否存在
             String tableCheckResult = baseDao.checkTable(tableSchema, tableName);
-            if (StringUtils.isEmpty(tableCheckResult)) {
+            if (StringUtils.isBlank(tableCheckResult)) {
                 String errMsg = String.format(TABLE_NOT_EXISTS_TEMPLATE, clazz.getName(), tableName);
                 errMsgList.add(errMsg);
             } else {

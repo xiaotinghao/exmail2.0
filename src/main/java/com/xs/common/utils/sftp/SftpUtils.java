@@ -10,7 +10,7 @@ import java.util.Properties;
 import java.util.Vector;
 
 import com.xs.common.utils.StreamUtils;
-import com.xs.common.utils.StringUtils;
+import daisy.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.jcraft.jsch.Channel;

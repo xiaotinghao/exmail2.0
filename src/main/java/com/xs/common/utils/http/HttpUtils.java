@@ -2,7 +2,7 @@ package com.xs.common.utils.http;
 
 import com.alibaba.fastjson.JSON;
 import com.xs.common.utils.MapUtils;
-import com.xs.common.utils.StringUtils;
+import daisy.commons.lang3.StringUtils;
 import com.xs.common.utils.XsUtils;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -18,7 +18,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Map;
 
-import static com.xs.common.constants.SymbolConstants.*;
 import static com.xs.common.constants.WebConstants.*;
 
 /**
@@ -85,7 +84,9 @@ public class HttpUtils {
         for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
             String key = entry.getKey();
             String[] value = entry.getValue();
-            map.put(key, StringUtils.join(value, COMMA));
+            if (key != null && value != null && value.length > 0) {
+                map.put(key, value[0]);
+            }
         }
         // 获取请求body
         byte[] bodyBytes;
@@ -96,7 +97,7 @@ public class HttpUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (StringUtils.isNotEmpty(body)) {
+        if (StringUtils.isNotBlank(body)) {
             map.putAll(XsUtils.cast(JSON.parseObject(body, Map.class)));
         }
         return map;
@@ -191,7 +192,7 @@ public class HttpUtils {
             }
         }
         // 对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
-        if (StringUtils.isNotEmpty(ipAddress) && !UNKNOWN.equalsIgnoreCase(ipAddress)) {
+        if (StringUtils.isNotBlank(ipAddress) && !UNKNOWN.equalsIgnoreCase(ipAddress)) {
             //多次反向代理后会有多个ip值，第一个ip才是真实ip
             int index = ipAddress.indexOf(",");
             if (index != -1) {
