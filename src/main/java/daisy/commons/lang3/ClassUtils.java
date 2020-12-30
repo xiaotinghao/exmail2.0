@@ -1,4 +1,4 @@
-package com.xs.common.utils;
+package daisy.commons.lang3;
 
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -81,7 +81,7 @@ public class ClassUtils extends org.apache.commons.lang3.ClassUtils {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        return XsUtils.cast(obj);
+        return clazz.cast(obj);
     }
 
 }

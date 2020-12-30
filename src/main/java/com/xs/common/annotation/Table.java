@@ -1,5 +1,6 @@
 package com.xs.common.annotation;
 
+import daisy.commons.lang3.ClassUtils;
 import daisy.commons.lang3.StringUtils;
 import com.xs.common.utils.*;
 

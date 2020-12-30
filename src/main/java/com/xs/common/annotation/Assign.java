@@ -1,5 +1,6 @@
 package com.xs.common.annotation;
 
+import daisy.commons.lang3.ClassUtils;
 import daisy.commons.lang3.StringUtils;
 import com.xs.common.utils.*;
 
@@ -180,7 +181,7 @@ public @interface Assign {
         private static void checkFieldMatch(Field field, Set<Class<?>> checkedSet, String tableSchema, String tableName) {
             Class<?> typeClass = field.getType();
             // 数据类型不是基本类型或包装类型，需额外校验
-            if (!XsUtils.isPrimitiveOrPackaged(typeClass)) {
+            if (!ClassUtils.isPrimitiveOrWrapper(typeClass)) {
                 if (!checkedSet.contains(typeClass)) {
                     checkedSet.add(typeClass);
                     // 校验类及其属性与数据库表的一致性
@@ -248,7 +249,7 @@ public @interface Assign {
                     Map<String, Object> constant = baseDao.getByKey(tableSchema, tableName, keyColumn, keyName);
                     if (constant != null) {
                         Class<?> type = field.getType();
-                        if (!XsUtils.isPrimitiveOrPackaged(type)) {
+                        if (!ClassUtils.isPrimitiveOrWrapper(type)) {
                             // 对象类型（非基础类型&非包装类型）属性赋值
                             objectTypeFieldAssign(type, field, constant, obj);
                         } else {
@@ -304,7 +305,7 @@ public @interface Assign {
             Class packagedClass = type;
             // 如果Class对象为表示八个基本类型，则转换为包装类型
             if (type.isPrimitive()) {
-                packagedClass = XsUtils.getPackagedClass(XsUtils.cast(type));
+                packagedClass = ClassUtils.primitiveToWrapper(XsUtils.cast(type));
             }
             String stringValue = String.valueOf(constant.get(valueColumn));
             Object value = XsUtils.cast(packagedClass, stringValue);

@@ -36,7 +36,7 @@ public class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
         if (clazz == null) {
             return null;
         }
-        if (!XsUtils.isPackaged(clazz)) {
+        if (!ClassUtils.isPrimitiveWrapper(clazz)) {
             return null;
         }
         List<T> resultList = new ArrayList<>();
