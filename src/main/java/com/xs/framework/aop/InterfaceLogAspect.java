@@ -1,6 +1,6 @@
 package com.xs.framework.aop;
 
-import com.xs.common.utils.ArrayUtils;
+import daisy.commons.lang3.ArrayUtils;
 import com.xs.common.annotation.InterfaceLog;
 import com.xs.module.log.service.InterfaceLogService;
 import org.aspectj.lang.JoinPoint;

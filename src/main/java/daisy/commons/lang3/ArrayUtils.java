@@ -1,4 +1,6 @@
-package com.xs.common.utils;
+package daisy.commons.lang3;
+
+import com.xs.common.utils.XsUtils;
 
 import java.util.*;
 
@@ -67,22 +69,6 @@ public class ArrayUtils extends org.apache.commons.lang3.ArrayUtils {
             arrays[i] = arr;
         }
         return arrays;
-    }
-
-    public static String[] toArray(Collection<Object> o) {
-        return o.toArray(new String[o.size()]);
-    }
-
-    public static String toString(Object[] arr) {
-        return toString(arr, COMMA);
-    }
-
-    public static String toString(Object[] arr, String separator) {
-        StringBuilder result = new StringBuilder();
-        for (Object o : arr) {
-            result.append(separator).append(o.toString());
-        }
-        return result.length() > 0 ? result.substring(separator.length()) : result.toString();
     }
 
 }

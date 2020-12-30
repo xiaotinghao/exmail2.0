@@ -1,6 +1,6 @@
 package com.xs.module.log.service.impl;
 
-import com.xs.common.utils.ArrayUtils;
+import daisy.commons.lang3.ArrayUtils;
 import com.xs.common.utils.MapUtils;
 import com.xs.common.utils.http.HttpUtils;
 import com.xs.framework.interceptor.model.HandleParam;
